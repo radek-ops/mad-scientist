@@ -4,13 +4,26 @@ class World {
     background = new Backdrop();
     mainCharacter = new Character();
     enemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
-    
 
 
     constructor(canvas) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.draw();
+         window.addEventListener('keydown', (event) => {
+            (event.key === 'w') ? this.mainCharacter.movingUp = true : false;
+            (event.key === 'a') ? this.mainCharacter.movingLeft = true : false;
+            (event.key === 's') ? this.mainCharacter.movingDown = true : false;
+            (event.key === 'd') ? this.mainCharacter.movingRight = true : false;
+        });
+
+         window.addEventListener('keyup', (event) => {
+            (event.key === 'w') ? this.mainCharacter.movingUp = false : false;
+            (event.key === 'a') ? this.mainCharacter.movingLeft = false : false;
+            (event.key === 's') ? this.mainCharacter.movingDown = false : false;
+            (event.key === 'd') ? this.mainCharacter.movingRight = false : false;
+        });
+        
     }
 
 
@@ -27,11 +40,12 @@ class World {
 
 
         this.ctx.drawImage(
-            this.mainCharacter.characterImg,
+            this.mainCharacter.img,
             this.mainCharacter.x,
             this.mainCharacter.y,
             this.mainCharacter.width,
-            this.mainCharacter.height);
+            this.mainCharacter.height
+            );
 
 
         this.enemies.forEach(enemy => {
@@ -45,7 +59,6 @@ class World {
         });
 
 
-        //Draw() wird wider aufgerufen 
         let self = this;
         requestAnimationFrame(function () {
             self.draw();
