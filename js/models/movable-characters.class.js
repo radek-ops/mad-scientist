@@ -12,6 +12,7 @@ class movableCharacters {
         this.img.src = path;
     }
 
+    
        
 
 
