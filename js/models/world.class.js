@@ -1,6 +1,9 @@
 class World {
     ctx;
     canvas;
+    controls;
+    attacks;
+    mainCharacter;
     background = new Backdrop();
     enemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
 
@@ -8,11 +11,10 @@ class World {
     constructor(canvas) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
+        this.shoots =  new Shoot(this.controls);
         this.controls = new Controls();
-        this.mainCharacter = new Character();
-        this.controls.mainCharacter = this.mainCharacter;
+        this.mainCharacter = new Character(this.controls);
         this.draw();
-
     }
 
 
