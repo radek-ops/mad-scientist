@@ -12,13 +12,16 @@ class Character extends movableCharacters {
 
     constructor() {
         super();
-        this.addImages();
+        this.addMoveImages();
+        // this.addGunImages();
+        // this.addShootImages();
+        // this.addThrowBombImages();
         this.x = -70;
         this.y = 240;
         this.width = 475;
         this.height = 475;
         this.img = this.imagesCache[this.IMAGES_IDLE[0]];
-        
+
         // this.characterAttacks();
         this.saveImages(this.IMAGES_IDLE);
         this.saveImages(this.IMAGES_WALK);
@@ -26,26 +29,48 @@ class Character extends movableCharacters {
         this.saveImages(this.IMAGES_PROJECTILE);
         this.saveImages(this.IMAGES_TROWBOMB);
         this.moveCharacter();
-        
+
     }
 
-    addImages() {
+    addMoveImages() {
         for (let i = 0; i < 13; i++) {
-            let number = i < 10 ? '0' + i : i;
-            this.IMAGES_IDLE.push(`./img/PNG/Main_Characters/Gun01/Idle/Idle_${number}.png`);
-            this.IMAGES_WALK.push(`./img/PNG/Main_Characters/Gun01/Walk/Walk_${number}.png`);
-            this.IMAGES_SHOOTFX1.push(`./img/PNG/Main_Characters/Gun01/ShootFX1/ShootFX1_${number}.png`);
-            this.IMAGES_PROJECTILE.push(`./img/PNG/Projectile/Laser/skeleton-animation_${number}.png`);
-            this.IMAGES_TROWBOMB.push(`img/PNG/Main_Characters/Gun01/Throw bomb/Throw bomb_${number}.png`);
+            let imgNumber = i < 10 ? '0' + i : i;
+            this.IMAGES_IDLE.push(`./img/PNG/Main_Characters/Gun01/Idle/Idle_${imgNumber}.png`);
+            this.IMAGES_WALK.push(`./img/PNG/Main_Characters/Gun01/Walk/Walk_${imgNumber}.png`);
         }
     }
 
+    addGunImages() {
+        for (let i = 0; i < 4; i++) {
+            let imgNumber = i < 4 ? '0' + i : i;
+            this.IMAGES_SHOOTFX1.push(`./img/PNG/Main_Characters/Gun01/ShootFX1/ShootFX1_${imgNumber}.png`);
+        }
+    }
+
+    addShootImages() {
+        for (let i = 0; i < 5; i++) {
+            let imgNumber = i < 5 ? '0' + i : i;
+            this.IMAGES_PROJECTILE.push(`./img/PNG/Projectile/Laser/skeleton-animation_${imgNumber}.png`);
+
+        }
+    }
+
+    addThrowBombImages() {
+        for (let i = 0; i < 19; i++) {
+            let imgNumber = i < 10 ? '0' + i : i;
+            this.IMAGES_TROWBOMB.push(`img/PNG/Main_Characters/Gun01/Throw bomb/Throw bomb_${imgNumber}.png`);
+
+        }
+    }
 
 
     saveImages(characterImages) {
         characterImages.forEach((imgPath) => {
             let img = new Image();
+            console.log(img);
             img.src = imgPath;
+            console.log(imgPath);
+            
             this.imagesCache[imgPath] = img;
         });
     }
