@@ -28,13 +28,13 @@ class Controls {
 
 
         window.addEventListener('mousedown', (event) => {
-            (event.button === 0) ? this.mouseClickLeft = true : false;
-            (event.button === 2) ? this.mouseClickRight = true : false;
+            (event.button === 0) ? this.mainCharacter.mouseClickLeft = true : false;
+            (event.button === 2) ? this.mainCharacter.mouseClickRight = true : false;
         });
 
         window.addEventListener('mouseup', (event) => {
-            (event.button === 0) ? this.mouseClickLeft = false : false;
-            (event.button === 2) ? this.mouseClickRight = false : false;
+            (event.button === 0) ? this.mainCharacter.mouseClickLeft = false : false;
+            (event.button === 2) ? this.mainCharacter.mouseClickRight = false : false;
         });
 
     }

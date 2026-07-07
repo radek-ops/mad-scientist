@@ -1,4 +1,4 @@
-class Enemy extends movableCharacters {
+class Enemy extends moveableCharacters {
     IMAGES_IDLE = [];
     IMAGES_WALK = [];
     imagesCache = {};
@@ -13,7 +13,7 @@ class Enemy extends movableCharacters {
         this.width = 375;
         this.height = 375;
         this.img = this.imagesCache[this.IMAGES_IDLE[0]];
-        this.startIdleAnimate()
+        this.startIdleAnimate();
         this.startWalkAnimate();
 
     }

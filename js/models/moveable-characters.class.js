@@ -1,4 +1,4 @@
-class movableCharacters {
+class moveableCharacters {
     x;
     y;
     img;
@@ -13,8 +13,5 @@ class movableCharacters {
     }
 
     
-       
-
-
 }
 
