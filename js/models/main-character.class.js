@@ -6,15 +6,15 @@ class Character extends moveableCharacters {
     IMAGES_PROJECTILE = [];
     IMAGES_THROWBOMB = [];
     imagesCache = {};
-    currentImage = 0; 
+    currentImage = 0;
     controls;
-    shoots;
 
 
-    constructor(controls, shoots) {
+
+    constructor(controls) {
         super();
         this.controls = controls;
-        this.shoots = shoots;
+
         this.addMoveImages();
         this.x = -70;
         this.y = 240;
@@ -24,9 +24,10 @@ class Character extends moveableCharacters {
         this.saveImages(this.IMAGES_WALK);
         this.saveImages(this.IMAGES_SHOOTFX1);
         this.saveImages(this.IMAGES_PROJECTILE);
-        this.saveImages(this.IMAGES_THROWBOMB); 
+        this.saveImages(this.IMAGES_THROWBOMB);
         this.addMoveImages();
         this.moveCharacter();
+        this.characterShoots();
         this.img = this.imagesCache[this.IMAGES_IDLE[0]];
     }
 
@@ -71,50 +72,56 @@ class Character extends moveableCharacters {
 
     moveCharacter() {
         setInterval(() => {
-            this.movement(); // 1. Wohin läuft er?
-            this.animate();       // 2. Welches Bild wird gezeigt?
+            this.movement();
+            this.animate();
+            
         }, 60);
     }
 
 
- movement() {
-    if (this.controls.up && this.y > 190) {
-        this.y -= 10;
+    movement() {
+        if (this.controls.up && this.y > 190) {
+            this.y -= 10;
+        }
+        if (this.controls.down && this.y < 270) {
+            this.y += 10;
+        }
+        if (this.controls.back) {
+            this.x -= 10;
+        }
+        if (this.controls.foward) {
+            this.x += 10;
+        }
     }
-    if (this.controls.down && this.y < 270) {
-        this.y += 10;
+
+
+    animate() {
+
+        let isMoving = this.controls.up || this.controls.back || this.controls.down || this.controls.foward;
+        let images = isMoving ? this.IMAGES_WALK : this.IMAGES_IDLE;
+        this.currentImage++;
+        if (this.currentImage >= images.length) {
+            this.currentImage = 0;
+        }
+
+        let path = images[this.currentImage];
+        this.img = this.imagesCache[path];
     }
-    if (this.controls.back) {
-        this.x -= 10;
+
+
+d
+
+    characterShoots() {
+        
+            let isMouseClickLeft = this.controls.mouseClickLeft ? this.IMAGES_PROJECTILE : false;
+            let mouseClickRight = (this.mouseClickRight) ? this.IMAGES_THROWBOMB : false;
+            
+
+        
     }
-    if (this.controls.foward) {
-        this.x += 10;
-    }
+
+
 }
 
 
-animate() {
-    // 1. Welches Set an Bildern benutzen wir?
-    let isMoving = this.controls.up || this.controls.back || this.controls.down || this.controls.foward;
-    let images = isMoving ? this.IMAGES_WALK : this.IMAGES_IDLE;
 
-    // 2. Zähler hochzählen und zurücksetzen, wenn er am Ende angekommen ist
-    this.currentImage++;
-    if (this.currentImage >= images.length) {
-        this.currentImage = 0;
-    }
-
-    // 3. Bild setzen
-    let path = images[this.currentImage];
-    this.img = this.imagesCache[path];
-}
-
-}
-
-
-
-
-
-
-
-   
