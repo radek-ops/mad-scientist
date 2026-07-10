@@ -2,6 +2,9 @@ class moveableCharacters {
     x;
     y;
     img;
+    shootImg;    
+    gunImg;
+    throwBombImg;
     characterImg;
     width;
     height;
