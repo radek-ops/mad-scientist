@@ -27,7 +27,6 @@ class Character extends moveableCharacters {
         this.saveImages(this.IMAGES_THROWBOMB);
         this.addMoveImages();
         this.moveCharacter();
-        this.characterShoots();
         this.img = this.imagesCache[this.IMAGES_IDLE[0]];
     }
 
@@ -74,7 +73,7 @@ class Character extends moveableCharacters {
         setInterval(() => {
             this.movement();
             this.animate();
-            
+
         }, 60);
     }
 
@@ -109,15 +108,12 @@ class Character extends moveableCharacters {
     }
 
 
-d
 
-    characterShoots() {
-        
-            let isMouseClickLeft = this.controls.mouseClickLeft ? this.IMAGES_PROJECTILE : false;
-            let mouseClickRight = (this.mouseClickRight) ? this.IMAGES_THROWBOMB : false;
-            
+    shootAnimate() {
 
-        
+        let isMouseLeftClicked = this.controls.mouseClickLeft;
+        let isMouseRightClicked = this.controls.mouseClickRight;
+
     }
 
 
