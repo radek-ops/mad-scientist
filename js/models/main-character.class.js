@@ -11,6 +11,9 @@ class Character extends moveableCharacters {
     currentProjectilekImages = 0;
     currentThrowBombkImages = 0;
     controls;
+    shootImg;
+    gunImg;
+    throwBombImg;
 
 
     constructor(controls) {
@@ -20,16 +23,19 @@ class Character extends moveableCharacters {
         this.y = 240;
         this.width = 475;
         this.height = 475;
+        this.shootImg;
+        this.gunImg;
+        this.throwBombImg;
         this.addMoveImages();
         this.addShootFXImages();
         this.addLaserGunImages();
+        this.addThrowBombImages();
         this.saveImages(this.IMAGES_IDLE);
         this.img = this.imagesCache[this.IMAGES_IDLE[0]];
         this.saveImages(this.IMAGES_WALK);
         this.saveImages(this.IMAGES_SHOOTFX1);
         this.saveImages(this.IMAGES_LASER_GUN);
         this.saveImages(this.IMAGES_THROWBOMB);
-
         this.moveCharacter();
     }
 
@@ -60,7 +66,7 @@ class Character extends moveableCharacters {
     addThrowBombImages() {
         for (let i = 0; i < 19; i++) {
             let imgNumber = i < 10 ? '0' + i : i;
-            this.IMAGES_THROWBOMB.push(`img/PNG/Main_Characters/Gun01/Throw bomb/Throw bomb_${imgNumber}.png`);
+            this.IMAGES_THROWBOMB.push(`./img/PNG/Main_Characters/Gun01/Throw bomb/Throw bomb_${imgNumber}.png`);
 
         }
     }
@@ -77,7 +83,8 @@ class Character extends moveableCharacters {
         setInterval(() => {
             this.movement();
             this.walkAnimate();
-            this.shootAnimate();
+            this.shootFxAnimate();
+            this.projectilAnimate();
             this.throwBombAnimate();
 
         }, 60);
@@ -113,56 +120,70 @@ class Character extends moveableCharacters {
     }
 
 
-    shootAnimate() {
+    shootFxAnimate() {
         let isMouseLeftClicked = this.controls.mouseClickLeft;
         let shootFxImages = [];
-        let gunImages = [];
-        if (this.isMouseLeftClicked) {
+
+        if (isMouseLeftClicked) {
             shootFxImages = this.IMAGES_SHOOTFX1;
-            gunImages = this.IMAGES_LASER_GUN;
 
             this.currentShootFXImages++;
-            if (this.currentShootFXImages == this.IMAGES_SHOOTFX1.length) {
+            if (this.currentShootFXImages == shootFxImages.length) {
                 this.currentShootFXImages = 0;
             }
-
-            this.currentProjectilekImages++;
-            if (this.currentProjectilekImages == this.IMAGES_LASER_GUN.length) {
-                this.currentProjectilekImages = 0;
-            }
+            let imgPath = shootFxImages[this.currentShootFXImages];
+            this.shootImg = this.imagesCache[imgPath];
 
         } else {
-            false;
+            this.shootImg = null;
+            this.currentShootFXImages = 0;
+            
         }
-        let path = shootFxImages[this.currentShootFXImages];
-        this.shootImg = this.imagesCache[path];
-
-        let imgPath = gunImages[this.currentProjectilekImages];
-        this.gunImg = this.imagesCache[imgPath];
 
     }
+
+
+
+    projectilAnimate() {
+        let isMouseLeftClicked = this.controls.mouseClickLeft;
+        let gunImages = [];
+        if (isMouseLeftClicked) {
+            gunImages = this.IMAGES_LASER_GUN;
+
+            this.currentProjectilekImages++;
+            if (this.currentProjectilekImages == gunImages.length) {
+                this.currentProjectilekImages = 0;
+            }
+            let imgPath = gunImages[this.currentProjectilekImages];
+            this.gunImg = this.imagesCache[imgPath];
+
+        } else {
+            this.gunImg = null;
+            this.currentProjectilekImages = 0;
+        }
+    }
+
 
 
     throwBombAnimate() {
         let isMouseRightClicked = this.controls.mouseClickRight;
-  let bombImages = [];
-        if (this.isMouseRightClicked) {
+        let bombImages = [];
+        if (isMouseRightClicked) {
             bombImages = this.IMAGES_THROWBOMB;
 
             this.currentThrowBombkImages++;
-            if (this.currentThrowBombkImages >= this.bombImages.length) {
+            if (this.currentThrowBombkImages == bombImages.length) {
                 this.currentThrowBombkImages = 0;
             }
+
+            let imgPath = bombImages[this.currentThrowBombkImages];
+            this.throwBombImg = this.imagesCache[imgPath];
         } else {
-            false;
+            this.throwBombImg = null;
+            this.currentThrowBombkImages = 0;
         }
 
-        let imgPath = bombImages[this.currentProjectilekImages];
-        this.throwBombImg = this.imagesCache[imgPath];
-
-        
     }
-
 
 
 

@@ -20,7 +20,6 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-
         this.ctx.drawImage(
             this.background.img,
             this.background.x,
@@ -35,18 +34,52 @@ class World {
                 enemy.y,
                 enemy.width,
                 enemy.height)
-
         });
 
 
         this.ctx.drawImage(
+
             this.mainCharacter.img,
             this.mainCharacter.x,
             this.mainCharacter.y,
             this.mainCharacter.width,
-            this.mainCharacter.height
+            this.mainCharacter.height,
         );
 
+        if (this.mainCharacter.shootImg) {
+
+            this.ctx.drawImage(
+                this.mainCharacter.shootImg,
+                this.mainCharacter.x,
+                this.mainCharacter.y,
+                this.mainCharacter.width,
+                this.mainCharacter.height
+            );
+        }
+
+
+        if (this.mainCharacter.gunImg) {
+
+            this.ctx.drawImage(
+                this.mainCharacter.gunImg,
+                this.mainCharacter.x,
+                this.mainCharacter.y,
+                this.mainCharacter.width,
+                this.mainCharacter.height
+            );
+        }
+
+
+        if (this.mainCharacter.throwBombImg) {
+
+            this.ctx.drawImage(
+                this.mainCharacter.throwBombImg,
+                this.mainCharacter.x,
+                this.mainCharacter.y,
+                this.mainCharacter.width,
+                this.mainCharacter.height
+            );
+        }
 
         let self = this;
         requestAnimationFrame(function () {
