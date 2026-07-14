@@ -26,10 +26,11 @@ class Character extends moveableCharacters {
         this.shootImg;
         this.gunImg;
         this.throwBombImg;
-        this.addMoveImages();
-        this.addShootFXImages();
-        this.addLaserGunImages();
-        this.addThrowBombImages();
+        this.addImages(this.IMAGES_IDLE, 14);
+        this.addImages(this.IMAGES_WALK,  14);
+        this.addImages(this.IMAGES_SHOOTFX1, 4);
+        this.addImages(this.IMAGES_LASER_GUN,  5);
+        this.addImages(this.IMAGES_THROWBOMB, 20);
         this.saveImages(this.IMAGES_IDLE);
         this.img = this.imagesCache[this.IMAGES_IDLE[0]];
         this.saveImages(this.IMAGES_WALK);
@@ -39,37 +40,39 @@ class Character extends moveableCharacters {
         this.moveCharacter();
     }
 
-
-    addMoveImages() {
-        for (let i = 0; i < count; i++) {
-            let imgNumber = i < 10 ? '0' + i : i;
-            this.IMAGES_IDLE.push(`./img/PNG/Main_Characters/Gun01/Idle/Idle_${imgNumber}.png`);
-            this.IMAGES_WALK.push(`./img/PNG/Main_Characters/Gun01/Walk/Walk_${imgNumber}.png`);
+    addImages(arrayName, imgNumber) {
+        for (let i = 0; i < imgNumber; i++) {
+            let formatNumber = i < 10 ? '0' + i : i;
+            this.IMAGES_IDLE.push(`./img/PNG/Main_Characters/Gun01/Idle/Idle_${formatNumber}.png`);
+            this.IMAGES_WALK.push(`./img/PNG/Main_Characters/Gun01/Walk/Walk_${formatNumber}.png`);
+            this.IMAGES_SHOOTFX1.push(`./img/PNG/Main_Characters/Gun01/ShootFX1/ShootFX1_${formatNumber}.png`);
+            this.IMAGES_LASER_GUN.push(`./img/PNG/Projectile/Laser/skeleton-animation_${formatNumber}.png`);
+            this.IMAGES_THROWBOMB.push(`./img/PNG/Main_Characters/Gun01/ThrowBomb/ThrowBomb_${formatNumber}.png`);
         }
     }
 
-    addShootFXImages() {
-        for (let i = 0; i < 3; i++) {
-            let imgNumber = i < 3 ? '0' + i : i;
-            this.IMAGES_SHOOTFX1.push(`./img/PNG/Main_Characters/Gun01/ShootFX1/ShootFX1_${imgNumber}.png`);
-        }
-    }
+    // addShootFXImages() {
+    //     for (let i = 0; i < 3; i++) {
+    //         let imgNumber = i < 3 ? '0' + i : i;
 
-    addLaserGunImages() {
-        for (let i = 0; i < 4; i++) {
-            let imgNumber = i < 4 ? '0' + i : i;
-            this.IMAGES_LASER_GUN.push(`./img/PNG/Projectile/Laser/skeleton-animation_${imgNumber}.png`);
+    //     }
+    // }
 
-        }
-    }
+    // addLaserGunImages() {
+    //     for (let i = 0; i < 4; i++) {
+    //         let imgNumber = i < 4 ? '0' + i : i;
+    //         this.IMAGES_LASER_GUN.push(`./img/PNG/Projectile/Laser/skeleton-animation_${imgNumber}.png`);
 
-    addThrowBombImages() {
-        for (let i = 0; i < 19; i++) {
-            let imgNumber = i < 10 ? '0' + i : i;
-            this.IMAGES_THROWBOMB.push(`./img/PNG/Main_Characters/Gun01/Throw bomb/Throw bomb_${imgNumber}.png`);
+    //     }
+    // }
 
-        }
-    }
+    // addThrowBombImages() {
+    //     for (let i = 0; i < 19; i++) {
+    //         let imgNumber = i < 10 ? '0' + i : i;
+    //         this.IMAGES_THROWBOMB.push(`./img/PNG/Main_Characters/Gun01/ThrowBomb/ThrowBomb_${imgNumber}.png`);
+
+    //     }
+    // }
 
     movement() {
         if (this.controls.up && this.y > 190) {
