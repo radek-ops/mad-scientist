@@ -1,4 +1,4 @@
-class Enemy extends moveableCharacters {
+class Enemy extends Moveables {
     IMAGES_IDLE = [];
     IMAGES_WALK = [];
     imagesCache = {};

@@ -1,14 +1,14 @@
-class moveableCharacters {
+class Moveables {
     x;
     y;
     img;
-    shootImg;    
+    shootFxImg;
     gunImg;
     throwBombImg;
     characterImg;
     width;
     height;
-         
+
 
     loadImages(path) {
         this.img = new Image();
@@ -16,13 +16,13 @@ class moveableCharacters {
     }
 
 
-    saveImages(characterImages) {
-        characterImages.forEach((imgPath) => {
+    saveImages(images) {
+        images.forEach((imgPath) => {
             let img = new Image();
             img.src = imgPath;
             this.imagesCache[imgPath] = img;
         });
     }
-    
+
 }
 

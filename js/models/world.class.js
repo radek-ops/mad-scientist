@@ -2,15 +2,16 @@ class World {
     ctx;
     canvas;
     controls;
-    attacks;
+    guns;
     mainCharacter;
-    background = new Backdrop();
+    background = new Background();
     enemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
 
 
     constructor(canvas) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
+        this.guns = new Guns();
         this.controls = new Controls();
         this.mainCharacter = new Character(this.controls);
         this.draw();
@@ -36,20 +37,10 @@ class World {
                 enemy.height)
         });
 
-
-        this.ctx.drawImage(
-
-            this.mainCharacter.img,
-            this.mainCharacter.x,
-            this.mainCharacter.y,
-            this.mainCharacter.width,
-            this.mainCharacter.height,
-        );
-
-        if (this.mainCharacter.shootImg) {
-
+        
+        if (this.mainCharacter.img) {
             this.ctx.drawImage(
-                this.mainCharacter.shootImg,
+                this.mainCharacter.img,
                 this.mainCharacter.x,
                 this.mainCharacter.y,
                 this.mainCharacter.width,
@@ -58,14 +49,25 @@ class World {
         }
 
 
-        if (this.mainCharacter.gunImg) {
+        if (this.mainCharacter.shootFxImg) {
 
             this.ctx.drawImage(
-                this.mainCharacter.gunImg,
+                this.mainCharacter.shootFxImg,
                 this.mainCharacter.x,
                 this.mainCharacter.y,
                 this.mainCharacter.width,
                 this.mainCharacter.height
+            );
+        }
+
+
+        if (this.projectilsImg) {
+
+            this.ctx.drawImage(
+                this.projectilsImg.x,
+                this.projectilsImg.y,
+                this.projectilsImg.width,
+                this.projectilsImg.height
             );
         }
 
