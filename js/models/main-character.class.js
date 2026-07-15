@@ -3,10 +3,12 @@ class Character extends Moveables {
     IMAGES_IDLE = [];
     IMAGES_WALK = [];
     IMAGES_SHOOTFX1 = [];
+    IMAGES_THROWBOMB = [];
     img;
     controls;
-    shootFxImg;
     imagesCache = {};
+    currentThrowBombkImages = 0;
+    currentShootFXImages = 0
 
 
 
@@ -19,10 +21,12 @@ class Character extends Moveables {
         this.height = 475;
         this.addMoveImages();
         this.addShootFXImages();
+        this.addThrowBombImages();
         this.saveImages(this.IMAGES_IDLE);
         this.img = this.imagesCache[this.IMAGES_IDLE[0]];
         this.saveImages(this.IMAGES_WALK);
         this.saveImages(this.IMAGES_SHOOTFX1);
+        this.saveImages(this.IMAGES_THROWBOMB);
         this.moveCharacter();
     }
 
@@ -42,7 +46,20 @@ class Character extends Moveables {
         }
     }
 
+    addThrowBombImages() {
+        for (let i = 0; i < 20; i++) {
+            let imgNumber = i < 10 ? '0' + i : i;
+            this.IMAGES_THROWBOMB.push(`./img/PNG/Main_Characters/Gun01/ThrowBomb/ThrowBomb_${imgNumber}.png`);
 
+        }
+    }
+
+    moveCharacter() {
+        setInterval(() => {
+            this.movement();
+            this.walkAnimate();
+        }, 1000 / 60);
+    }
 
     movement() {
         if (this.controls.up && this.y > 190) {
@@ -58,20 +75,18 @@ class Character extends Moveables {
             this.x += 10;
         }
     }
-    moveCharacter() {
-        setInterval(() => {
-            this.movement();
-            this.walkAnimate();
-        }, 1000 / 60);
-    }
 
     walkAnimate() {
         let isShooting = this.controls.mouseClickLeft;
+        let isThrowBomb = this.controls.mouseClickRight;
         if (isShooting) {
             this.shootFxAnimate();
+        } else if (isThrowBomb) {
+            this.throwBombAnimate();
         } else {
-            this.shootFxImg = null;
+
             this.currentShootFXImages = 0;
+            this.currentThrowBombkImages = 0;
             let isMoving = this.controls.up || this.controls.back || this.controls.down || this.controls.foward;
             let images = isMoving ? this.IMAGES_WALK : this.IMAGES_IDLE;
             this.walkAnimateUpdate(images);
@@ -86,17 +101,27 @@ class Character extends Moveables {
     }
 
     shootFxAnimate() {
-        let isShooting = this.controls.mouseClickLeft;
-        let images = [];
-        if (isShooting) {
-            images = this.IMAGES_SHOOTFX1;
-            this.currentShootFXImages++;
-            if (this.currentShootFXImages == images.length) {
-                this.currentShootFXImages = 0;
-            }
-            let imgPath = images[this.currentShootFXImages];
-            this.shootFxImg = this.imagesCache[imgPath];
-        } 
+        let imgPath = this.IMAGES_SHOOTFX1[this.currentShootFXImages];
+        this.img = this.imagesCache[imgPath];
+
+        this.currentShootFXImages++;
+        if (this.currentShootFXImages == this.IMAGES_SHOOTFX1.length) {
+            this.currentShootFXImages = 0;
+        }
+        
+
+
+    }
+
+    throwBombAnimate() {
+        let imgPath = this.IMAGES_THROWBOMB[this.currentThrowBombkImages];
+        this.img = this.imagesCache[imgPath];
+
+        this.currentThrowBombkImages++;
+        if (this.currentThrowBombkImages == this.IMAGES_THROWBOMB.length) {
+            this.currentThrowBombkImages = 0;
+        }
+        
     }
 
 
