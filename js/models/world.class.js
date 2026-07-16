@@ -22,8 +22,8 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        this.gunsProjectils.x = this.mainCharacter.x + 200;
-        this.gunsProjectils.y = this.mainCharacter.y + 160;
+        this.gunsProjectils.x = this.mainCharacter.x + 350;
+        this.gunsProjectils.y = this.mainCharacter.y + 240
 
         this.ctx.drawImage(
             this.background.img,
@@ -50,7 +50,7 @@ class World {
                 this.mainCharacter.height
             );
         
-        
+            try {
             this.ctx.drawImage(
 
                 this.gunsProjectils.img,
@@ -59,7 +59,15 @@ class World {
                 this.gunsProjectils.width,
                 this.gunsProjectils.height
             );
+            } catch (error) {
         
+        console.warn("STOPP! Hier ist der Fehler beim Zeichnen:");
+                
+        console.log("Inhalt von img:", this.gunsProjectils.img);
+               
+        console.error(error);
+    }
+
 
         let self = this;
         requestAnimationFrame(function () {
