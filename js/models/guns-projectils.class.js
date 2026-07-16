@@ -6,7 +6,8 @@ class GunsProjectils extends Moveables {
     controls;
     currentProjectileImages = 0;
     mageCache = {};
-
+    EMPTY_IMG = new Image();
+   
 
 
 
@@ -15,13 +16,13 @@ class GunsProjectils extends Moveables {
         this.controls = controls;
         this.x = -70;
         this.y = 240;
-
-        this.width = 200
+        this.img = this.EMPTY_IMG;
+        this.width = 150;
         this.height = 100;
-        this.projectilImg;
         this.addLaserGunImages();
         this.saveImages(this.LASER);
         this.useProjectil();
+
 
     }
 
@@ -42,18 +43,19 @@ class GunsProjectils extends Moveables {
 
 
     projectilAnimate() {
-        let isShooting = this.controls.mouseClickLeft;
-        if (isShooting) {
-            this.currentProjectilekImages++;
-            if (this.currentProjectileImages == this.LASER.length) {
+        
+        if (this.controls.mouseClickLeft) {
+            this.currentProjectileImages++;
+            if (this.currentProjectileImages >= this.LASER.length) {
                 this.currentProjectileImages = 0;
             }
             let imgPath = this.LASER[this.currentProjectileImages];
             this.img = this.imageCache[imgPath];
+
         } else {
             this.currentProjectileImages = 0;
-            this.img = null;d
-           
+            this.img = this.EMPTY_IMG;
+
         }
     }
 

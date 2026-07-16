@@ -29,6 +29,7 @@ class Character extends Moveables {
         this.img = this.imageCache[this.IMAGES_IDLE[0]];
         this.moveCharacter();
     }
+    
 
 
     addMoveImages() {
@@ -61,7 +62,7 @@ class Character extends Moveables {
             this.movement();
             this.animate();
 
-        },1000 / 60);
+        }, 1000 / 60);
     }
 
     movement() {
@@ -80,60 +81,72 @@ class Character extends Moveables {
     }
 
     animate() {
-    // 1. Prioritäten festlegen
-    if (this.controls.mouseClickLeft) {
-        this.shootFxAnimate();
-    } else if (this.controls.mouseClickRight) {
-        this.throwBombAnimate();
-    } else {
-        this.walkAnimate(); 
+
+        if (this.controls.mouseClickLeft) {
+            this.shootFxAnimate();
+        } else if (this.controls.mouseClickRight) {
+            this.controls.mouseClickRight = false;
+            this.currentThrowBombkImages = 0;
+            this.throwBombAnimate();
+        } else if (this.currentThrowBombkImages > 0) {
+            this.throwBombAnimate();
+        } else {
+            this.walkAnimate();
+        }
+    }
+
+
+
+
+    walkAnimate() {
+        this.frameCounter++;
+        if (this.frameCounter % 3 !== 0) return;
+        let isMoving = this.controls.up || this.controls.back || this.controls.down || this.controls.foward;
+        let images = isMoving ? this.IMAGES_WALK : this.IMAGES_IDLE;
+
+        this.currentWalkImages++;
+        if (this.currentWalkImages >= images.length) {
+            this.currentWalkImages = 0;
+        }
+        let imgPath = images[this.currentWalkImages];
+        this.img = this.imageCache[imgPath];
+
+    }
+
+
+
+    shootFxAnimate() {
+        this.frameCounter++;
+        if (this.frameCounter % 2 !== 0) return;
+        let imgPath = this.IMAGES_SHOOTFX1[this.currentShootFXImages];
+        this.img = this.imageCache[imgPath];
+        this.currentShootFXImages++;
+        if (this.currentShootFXImages >= this.IMAGES_SHOOTFX1.length) {
+            this.currentShootFXImages = 0;
+            this.walkAnimate();
+        }
+    }
+
+
+
+    
+
+
+
+
+    throwBombAnimate() {
+
+        let imgPath = this.IMAGES_THROWBOMB[this.currentThrowBombkImages];
+        this.img = this.imageCache[imgPath];
+        this.currentThrowBombkImages++;
+        if (this.currentThrowBombkImages >= this.IMAGES_THROWBOMB.length) {
+            this.currentThrowBombkImages = 0;
+            this.walkAnimate();
+        }
     }
 }
 
 
-walkAnimate() {
-    this.frameCounter++;
-    if (this.frameCounter % 3 !== 0) return;
-    let isMoving = this.controls.up || this.controls.back || this.controls.down || this.controls.foward;
-    let images = isMoving ? this.IMAGES_WALK : this.IMAGES_IDLE;
-    
-    this.currentWalkImages++;
-    if (this.currentWalkImages >= images.length) {
-        this.currentWalkImages = 0;
-        return null;
-    }
-    
-    let imgPath = images[this.currentWalkImages];
-    this.img = this.imageCache[imgPath];
-    return null;
-    
-}
-
-
-
-shootFxAnimate() {
-
-    let imgPath = this.IMAGES_SHOOTFX1[this.currentShootFXImages];
-    this.img = this.imageCache[imgPath];
-    this.currentShootFXImages++;
-    if (this.currentShootFXImages >= this.IMAGES_SHOOTFX1.length) {
-        this.currentShootFXImages = 0;
-    } 
-}
-
-
-throwBombAnimate() {
-    let imgPath = this.IMAGES_THROWBOMB[this.currentThrowBombkImages];
-    this.img = this.imageCache[imgPath];
-
-    this.currentThrowBombkImages++;
-    if (this.currentThrowBombkImages >= this.IMAGES_THROWBOMB.length) {
-        this.currentThrowBombkImages = 0;
-    }else{
-        this.imgd;
-    }
-
-}
 
 
 
@@ -155,8 +168,4 @@ throwBombAnimate() {
 
 
 
-
-
-
-}
 
