@@ -29,7 +29,7 @@ class Character extends Moveables {
         this.img = this.imageCache[this.IMAGES_IDLE[0]];
         this.moveCharacter();
     }
-    
+
 
 
     addMoveImages() {
@@ -126,12 +126,6 @@ class Character extends Moveables {
             this.walkAnimate();
         }
     }
-
-
-
-    
-
-
 
 
     throwBombAnimate() {
