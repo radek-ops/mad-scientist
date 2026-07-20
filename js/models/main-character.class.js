@@ -4,11 +4,26 @@ class Character extends Moveables {
     IMAGES_WALK = [];
     IMAGES_SHOOTFX1 = [];
     IMAGES_THROWBOMB = [];
+    IMAGES_JUMP = [];
     controls;
     currentThrowBombkImages = 0;
-    currentShootFXImages = 0
-    currentWalkImages = 0
+    currentShootFXImages = 0;
+    currentWalkImages = 0;
+    currentJumpImages = 0;
     frameCounter = 0;
+    speedY = 0;
+    acceleration = 1;
+
+
+    applyGravity() {
+        setInterval(() => {
+            if (this.y < 240)
+                this.y -= this.speedY;
+            this.speedY -= this.acceleration;
+
+        }, 1000 / 25);
+    }
+
 
 
     constructor(controls) {
@@ -22,14 +37,21 @@ class Character extends Moveables {
         this.addShootFXImages();
         this.addThrowBombImages();
         this.saveImages(this.IMAGES_IDLE);
-
+        this.applyGravity();
         this.saveImages(this.IMAGES_WALK);
         this.saveImages(this.IMAGES_SHOOTFX1);
         this.saveImages(this.IMAGES_THROWBOMB);
+        this.saveImages(this.IMAGES_JUMP);
         this.img = this.imageCache[this.IMAGES_IDLE[0]];
         this.moveCharacter();
+        // this.playWalkingSound();
+        this.applyGravity();
     }
 
+    WALKING_SOUND = new Audio('../sounds/01_Main_Theme_Rate.mp3');
+    playWalkingSound() {
+        this.WALKING_SOUND.play();
+    }
 
 
     addMoveImages() {
@@ -51,10 +73,15 @@ class Character extends Moveables {
         for (let i = 0; i < 20; i++) {
             let imgNumber = i < 10 ? '0' + i : i;
             this.IMAGES_THROWBOMB.push(`./img/PNG/Main_Characters/Gun01/ThrowBomb/ThrowBomb_${imgNumber}.png`);
-
         }
     }
 
+    addJumpImages() {
+        for (let i = 0; i < 9; i++) {
+            let imgNumber = '0' + i;
+            this.IMAGES_JUMP.push(`./img\PNG\Main_Characters\Gun01\Jump\Jump_${imgNumber}.png`);
+        }
+    }
 
 
     moveCharacter() {
@@ -90,12 +117,14 @@ class Character extends Moveables {
             this.throwBombAnimate();
         } else if (this.currentThrowBombkImages > 0) {
             this.throwBombAnimate();
-        } else {
+        }
+        else if (this.controls.space) {
+            this.jumpAnimate();
+        }
+        else {
             this.walkAnimate();
         }
     }
-
-
 
 
     walkAnimate() {
@@ -103,7 +132,6 @@ class Character extends Moveables {
         if (this.frameCounter % 3 !== 0) return;
         let isMoving = this.controls.up || this.controls.back || this.controls.down || this.controls.foward;
         let images = isMoving ? this.IMAGES_WALK : this.IMAGES_IDLE;
-
         this.currentWalkImages++;
         if (this.currentWalkImages >= images.length) {
             this.currentWalkImages = 0;
@@ -112,7 +140,6 @@ class Character extends Moveables {
         this.img = this.imageCache[imgPath];
 
     }
-
 
 
     shootFxAnimate() {
@@ -129,7 +156,6 @@ class Character extends Moveables {
 
 
     throwBombAnimate() {
-
         let imgPath = this.IMAGES_THROWBOMB[this.currentThrowBombkImages];
         this.img = this.imageCache[imgPath];
         this.currentThrowBombkImages++;
@@ -138,7 +164,51 @@ class Character extends Moveables {
             this.walkAnimate();
         }
     }
+
+
+    applyGravity() {
+        setInterval(() => {
+            if (this.isAboveGround() || this.speedY > 0) {
+                this.y -= this.speedY;
+                this.speedY -= this.acceleration;
+            } else {
+                this.speedY = 0;
+                this.y = 240;
+            }
+        }, 1000 / 25);
+    }
+
+    isAboveGround() {
+        return this.y > 240;
+
+    }
+
+
+    jumpAnimate() {
+        this.speedY = 20;
+
+        this.currentJumpImages++;
+        if (this.currentJumpImages >= this.IMAGES_JUMP.length) {
+            this.currentJumpImages = 0;
+            this.controls.space = false;
+        } else {
+            this.walkAnimate();
+
+        }
+
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
