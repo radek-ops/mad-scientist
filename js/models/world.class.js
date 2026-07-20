@@ -6,15 +6,17 @@ class World {
     controls;
     mainCharacter;
     gunsProjectils;
-
+    IMAGES_BACKGROUND = [];
 
 
     constructor(canvas) {
+
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.controls = new Controls();
         this.mainCharacter = new Character(this.controls);
         this.gunsProjectils = new GunsProjectils(this.controls);
+        this.addBackgroundImages();
         this.draw();
     }
 
@@ -22,57 +24,57 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        this.gunsProjectils.x = this.mainCharacter.x + 350;
-        this.gunsProjectils.y = this.mainCharacter.y + 240
+        let drawX = this.mainCharacter.x;
+        let drawY = this.mainCharacter.y - (240 - this.mainCharacter.jumpY);
 
-        this.ctx.drawImage(
-            this.background.img,
-            this.background.x,
-            this.background.y,
-            this.background.width,
-            this.background.height);
+        this.gunsProjectils.x = drawX + 350;
+        this.gunsProjectils.y = drawY + 240;
 
-        this.enemies.forEach(enemy => {
-            this.ctx.drawImage(
-                enemy.img,
-                enemy.x,
-                enemy.y,
-                enemy.width,
-                enemy.height)
+        this.addObjectsToMap(this.IMAGES_BACKGROUND);
+        this.addObjectToMap(this.enemies);
+        this.addObjectToMap(this.gunsProjectils);
+
+
+
+        addObjectToMap(objects)
+        objects.forEach(obj => {
+            this.addToMap(obj);
         });
 
-       
-            this.ctx.drawImage(
-                this.mainCharacter.img,
-                this.mainCharacter.x,
-                this.mainCharacter.y,
-                this.mainCharacter.width,
-                this.mainCharacter.height
-            );
-        
-            try {
-            this.ctx.drawImage(
+        addToMap(value)
+        this.ctx.drawImage(
+            value.img,
+            value.x,
+            value.y,
+            value.width,
+            value.height);
 
-                this.gunsProjectils.img,
-                this.gunsProjectils.x,
-                this.gunsProjectils.y,
-                this.gunsProjectils.width,
-                this.gunsProjectils.height
-            );
-            } catch (error) {
-        
-        console.warn("STOPP! Hier ist der Fehler beim Zeichnen:");
-                
-        console.log("Inhalt von img:", this.gunsProjectils.img);
-               
-        console.error(error);
-    }
+
+        this.ctx.drawImage(
+            this.mainCharacter.img,
+            drawX,
+            drawY,
+            this.mainCharacter.width,
+            this.mainCharacter.height
+        );
+
+
 
 
         let self = this;
         requestAnimationFrame(function () {
             self.draw();
         });
+
+    }
+
+
+   addBackgroundImages() {
+        for (let i = 0; i < 5; i++) {
+            let imgNumber = '0' + i;
+            let nextBackground = 719 * i;
+            this.IMAGES_BACKGROUND.push(new Background(`./img/PNG/Backgrounds/${imgNumber}.png`, nextBackground));
+        }
 
     }
 

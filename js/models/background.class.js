@@ -1,16 +1,21 @@
 class Background extends Moveables{
+     
+    
 
     
-     constructor(){
+     constructor(bgImgPath, x){
        super();
-       this.loadImages('./img/PNG/Backgrounds/1.png');
-       this.x = 0;
+       this.loadImages(bgImgPath);
+       this.x = x;
        this.y = 0;
        this.width = 1280;
-       this.height = 720; 
-       
+       this.height = 719; 
+      
 
      }
+
+
+    
 
 
 }

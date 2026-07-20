@@ -31,21 +31,23 @@ class Character extends Moveables {
         this.controls = controls;
         this.x = -70;
         this.y = 240;
+        this.jumpY = 240;
         this.width = 475;
         this.height = 475;
         this.addMoveImages();
         this.addShootFXImages();
         this.addThrowBombImages();
+        this.addJumpImages();
         this.saveImages(this.IMAGES_IDLE);
-        this.applyGravity();
         this.saveImages(this.IMAGES_WALK);
         this.saveImages(this.IMAGES_SHOOTFX1);
         this.saveImages(this.IMAGES_THROWBOMB);
         this.saveImages(this.IMAGES_JUMP);
         this.img = this.imageCache[this.IMAGES_IDLE[0]];
         this.moveCharacter();
-        // this.playWalkingSound();
         this.applyGravity();
+        // this.playWalkingSound();
+
     }
 
     WALKING_SOUND = new Audio('../sounds/01_Main_Theme_Rate.mp3');
@@ -79,7 +81,7 @@ class Character extends Moveables {
     addJumpImages() {
         for (let i = 0; i < 9; i++) {
             let imgNumber = '0' + i;
-            this.IMAGES_JUMP.push(`./img\PNG\Main_Characters\Gun01\Jump\Jump_${imgNumber}.png`);
+            this.IMAGES_JUMP.push(`./img/PNG/Main_Characters/Gun01/Jump/Jump_${imgNumber}.png`);
         }
     }
 
@@ -88,6 +90,7 @@ class Character extends Moveables {
         setInterval(() => {
             this.movement();
             this.animate();
+
 
         }, 1000 / 60);
     }
@@ -119,7 +122,8 @@ class Character extends Moveables {
             this.throwBombAnimate();
         }
         else if (this.controls.space) {
-            this.jumpAnimate();
+            this.jump();
+            this.controls.space = false;
         }
         else {
             this.walkAnimate();
@@ -169,34 +173,39 @@ class Character extends Moveables {
     applyGravity() {
         setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) {
-                this.y -= this.speedY;
+                this.jumpY -= this.speedY;
                 this.speedY -= this.acceleration;
+
             } else {
                 this.speedY = 0;
-                this.y = 240;
+                this.jumpY = 240;
             }
-        }, 1000 / 25);
+        }, 1000 / 60);
     }
 
     isAboveGround() {
-        return this.y > 240;
+        return this.jumpY < 240;
+    }
 
+    jump() {
+        if (!this.isAboveGround()) {
+            this.speedY = 23;
+        }
+        this.jumpAnimate();
     }
 
 
     jumpAnimate() {
-        this.speedY = 20;
-
+        let imgPath = this.IMAGES_JUMP[this.currentJumpImages];
+        this.img = this.imageCache[imgPath];
         this.currentJumpImages++;
         if (this.currentJumpImages >= this.IMAGES_JUMP.length) {
             this.currentJumpImages = 0;
-            this.controls.space = false;
-        } else {
-            this.walkAnimate();
-
         }
-
     }
+
+
+
 }
 
 
