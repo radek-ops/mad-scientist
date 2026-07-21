@@ -15,21 +15,10 @@ class Character extends Moveables {
     acceleration = 1;
 
 
-    applyGravity() {
-        setInterval(() => {
-            if (this.y < 240)
-                this.y -= this.speedY;
-            this.speedY -= this.acceleration;
-
-        }, 1000 / 25);
-    }
-
-
-
     constructor(controls) {
         super();
         this.controls = controls;
-        this.x = -70;
+        this.x = 0;
         this.y = 240;
         this.jumpY = 240;
         this.width = 475;
@@ -100,12 +89,12 @@ class Character extends Moveables {
             this.y -= 10;
         }
         if (this.controls.down && this.y < 270) {
-            this.y += 10;
+            this.y += 10;dd
         }
-        if (this.controls.back) {
+        if (this.controls.back && this.x > 0 ) {
             this.x -= 10;
         }
-        if (this.controls.foward) {
+        if (this.controls.foward  && this.x < 4350) {
             this.x += 10;
         }
     }
@@ -203,8 +192,6 @@ class Character extends Moveables {
             this.currentJumpImages = 0;
         }
     }
-
-
 
 }
 
