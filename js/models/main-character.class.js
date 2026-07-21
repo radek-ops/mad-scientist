@@ -77,7 +77,7 @@ class Character extends Moveables {
 
     moveCharacter() {
         setInterval(() => {
-            this.movement();
+           
             this.animate();
 
 
@@ -85,11 +85,15 @@ class Character extends Moveables {
     }
 
     movement() {
+         if (this.isAboveGround()) {
+       
+        this.jumpAnimate();
+    } 
         if (this.controls.up && this.y > 190) {
             this.y -= 10;
         }
         if (this.controls.down && this.y < 270) {
-            this.y += 10;dd
+            this.y += 10;
         }
         if (this.controls.back && this.x > 0 ) {
             this.x -= 10;
@@ -177,21 +181,27 @@ class Character extends Moveables {
     }
 
     jump() {
-        if (!this.isAboveGround()) {
-            this.speedY = 23;
-        }
-        this.jumpAnimate();
+    if (!this.isAboveGround()) {
+        this.speedY = 16;  
+        this.currentJumpImages = 0;
     }
+}
 
+jumpAnimate() {
+    this.frameCounter++;
+  
+    
 
-    jumpAnimate() {
-        let imgPath = this.IMAGES_JUMP[this.currentJumpImages];
-        this.img = this.imageCache[imgPath];
+    let imgPath = this.IMAGES_JUMP[this.currentJumpImages];
+    this.img = this.imageCache[imgPath];
+
+   
+    if (this.currentJumpImages < this.IMAGES_JUMP.length - 1) {
         this.currentJumpImages++;
-        if (this.currentJumpImages >= this.IMAGES_JUMP.length) {
-            this.currentJumpImages = 0;
-        }
     }
+    
+}
+    
 
 }
 

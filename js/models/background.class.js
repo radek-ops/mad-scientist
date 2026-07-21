@@ -8,7 +8,7 @@ class Background extends Moveables {
     this.loadImages(bgImgPath);
     this.x = x;
     this.y = 0;
-    this.width = 1920;
+    this.width = 1280;
     this.height = 720;
 
   }

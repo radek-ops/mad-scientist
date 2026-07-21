@@ -2,9 +2,10 @@ class World {
     ctx;
     canvas;
     IMAGES_BACKGROUND = [];
-    enemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
+
     controls;
     mainCharacter;
+    enemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
     gunsProjectils;
     camera_x = 0;
 
@@ -22,6 +23,11 @@ class World {
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.mainCharacter.movement();
+
+        let targetX = -this.mainCharacter.x + 100;
+
+        this.camera_x = Math.min(0, targetX);
         this.ctx.translate(this.camera_x, 0);
 
         let drawX = this.mainCharacter.x;
@@ -74,7 +80,7 @@ class World {
 
     addBackgroundImages() {
         for (let i = 0; i < 3; i++) {
-            let nextBackground = 1439 * i;
+            let nextBackground = 1279 * i;
             this.IMAGES_BACKGROUND.push(new Background(`./img/PNG/Backgrounds/${i}.png`, nextBackground));
         }
 
