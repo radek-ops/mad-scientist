@@ -8,7 +8,7 @@ class World {
     gunsProjectils;
     IMAGES_BACKGROUND = [];
     cameraX = 0;
-    worldWidth = 3 * 1280; // 3 Hintergründe × 1280px
+    worldWidth = 3 * 1280; 
 
 
     constructor(canvas) {
@@ -51,15 +51,15 @@ class World {
         this.gunsProjectils.y = drawY + 240;
         this.gunsProjectils.direction = this.mainCharacter.direction;
 
-        // Kollisionsprüfung wenn Laser sichtbar
+       
         if (this.controls.mouseClickLeft) {
             this.checkLaserCollisions();
         }
 
-        // Character-Enemy Kollision prüfen
+       
         this.checkCharacterCollisions();
 
-        // Tote Enemies nach Death-Animation entfernen
+       
         this.enemies = this.enemies.filter(e => !e.deathComplete);
 
         this.addObjectToMap(this.IMAGES_BACKGROUND);
@@ -108,7 +108,7 @@ class World {
 
 
     checkLaserCollisions() {
-        // Kleine Laserspitze (10x10px) an der Mündung
+       
         let laserTipX;
         if (this.gunsProjectils.direction === 1) {
             laserTipX = this.gunsProjectils.x + this.gunsProjectils.width - 10;
@@ -118,15 +118,15 @@ class World {
         let laserTip = {
             x: laserTipX,
             y: this.gunsProjectils.y + this.gunsProjectils.height / 2 - 5,
-            w: 10,
-            h: 10
+            w: 1,
+            h: 1
         };
 
         for (let i = 0; i < this.enemies.length; i++) {
             let enemy = this.enemies[i];
             if (enemy.isDead) continue;
 
-            // Enemy-Hitbox (zentriert, 20% des Bildes)
+           
             let enemyBox = {
                 x: enemy.x + enemy.width * 0.4,
                 y: enemy.y + enemy.height * 0.4,
@@ -134,7 +134,7 @@ class World {
                 h: enemy.height * 0.2
             };
 
-            // AABB-Collision: Laserspitze trifft Enemy-Mitte
+            
             if (
                 laserTip.x + laserTip.w > enemyBox.x &&
                 laserTip.x < enemyBox.x + enemyBox.w &&
@@ -142,7 +142,7 @@ class World {
                 laserTip.y < enemyBox.y + enemyBox.h
             ) {
                 enemy.die();
-                break; // Nur EIN Enemy pro Laser-Schuss
+                break; 
             }
         }
     }
@@ -151,7 +151,7 @@ class World {
         this.enemies.forEach(enemy => {
             if (enemy.isDead || enemy.isAttacking) return;
             
-            // Character-Hitbox (zentriert, 40%)
+           
             let charBox = {
                 x: this.mainCharacter.x + this.mainCharacter.width * 0.3,
                 y: this.mainCharacter.y + this.mainCharacter.height * 0.3,
@@ -159,7 +159,7 @@ class World {
                 h: this.mainCharacter.height * 0.4
             };
             
-            // Enemy-Hitbox (zentriert, 40%)
+           
             let enemyBox = {
                 x: enemy.x + enemy.width * 0.3,
                 y: enemy.y + enemy.height * 0.3,

@@ -214,7 +214,7 @@ class Character extends Moveables {
 
     jump() {
         if (!this.isAboveGround()) {
-            this.speedY = 23;
+            this.speedY = 18;
             this.currentJumpImages = 0;
         }
         this.jumpAnimate();

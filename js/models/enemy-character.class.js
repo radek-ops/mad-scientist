@@ -3,6 +3,7 @@ class Enemy extends Moveables {
     IMAGES_WALK = [];
     IMAGES_DEATH = [];
     IMAGES_HIT = [];
+    IMAGES_ELECTRIC = [];
     frameCounter = 0;
     currentImage = 0;
     isDead = false;
@@ -11,6 +12,9 @@ class Enemy extends Moveables {
     isAttacking = false;
     hitAnimationIndex = 0;
     hitInterval;
+    isElectric = false;
+    electricAnimationIndex = 0;
+    electricInterval;
 
     constructor() {
         super();
@@ -19,10 +23,12 @@ class Enemy extends Moveables {
         this.addIdleEnemyImages();
         this.addDeathImages();
         this.addHitImages();
+        this.addElectricImages();
         this.saveImages(this.IMAGES_IDLE);
         this.saveImages(this.IMAGES_WALK);
         this.saveImages(this.IMAGES_DEATH);
         this.saveImages(this.IMAGES_HIT);
+        this.saveImages(this.IMAGES_ELECTRIC);
         this.img = this.imageCache[this.IMAGES_IDLE[0]];
         this.startIdleAnimate();
         this.startWalkAnimate();
@@ -51,12 +57,19 @@ class Enemy extends Moveables {
         }
     }
 
+    addElectricImages() {
+        for (let i = 0; i < 3; i++) {
+            this.IMAGES_ELECTRIC.push(`./img/PNG/Enemy_Characters/Enemy_Character01/Get Electric/Get Electric_${i}.png`);
+        }
+    }
+
     startIdleAnimate() {
         this.x = 550 + Math.random() * 500;
         this.y = 275 + Math.random() * 60;
         setInterval(() => {
             if (this.isDead) return;
             if (this.isAttacking) return;
+            if (this.isElectric) return;
             let path = this.IMAGES_IDLE[this.currentImage];
             this.img = this.imageCache[path];
             this.currentImage++;
@@ -71,6 +84,7 @@ class Enemy extends Moveables {
         setInterval(() => {
             if (this.isDead) return;
             if (this.isAttacking) return;
+            if (this.isElectric) return;
             let path = this.IMAGES_WALK[this.currentImage];
             this.img = this.imageCache[path];
             this.currentImage++;
@@ -85,12 +99,33 @@ class Enemy extends Moveables {
         setInterval(() => {
             if (this.isDead) return;
             if (this.isAttacking) return;
+            if (this.isElectric) return;
             this.x -= 1.5;
         }, 1000 / 60);
 
     }
 
+    // Wird aufgerufen wenn Laser trifft
     die() {
+        if (this.isDead) return;
+        this.isElectric = true;
+        this.electricAnimationIndex = 0;
+
+        if (this.electricInterval) clearInterval(this.electricInterval);
+        this.electricInterval = setInterval(() => {
+            if (this.electricAnimationIndex < this.IMAGES_ELECTRIC.length) {
+                this.img = this.imageCache[this.IMAGES_ELECTRIC[this.electricAnimationIndex]];
+                this.electricAnimationIndex++;
+            } else {
+                clearInterval(this.electricInterval);
+                this.isElectric = false;
+                // Jetzt erst sterben
+                this.startDeathAnimation();
+            }
+        }, 60);
+    }
+
+    startDeathAnimation() {
         this.isDead = true;
         this.deathAnimationIndex = 0;
         if (this.deathInterval) clearInterval(this.deathInterval);
