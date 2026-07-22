@@ -105,15 +105,31 @@ class World {
 
 
     checkLaserCollisions() {
+        // Verkleinerte Kollisions-Box für Laser (zentriert, 40% Breite, 30% Höhe)
+        let laserBox = {
+            x: this.gunsProjectils.x + this.gunsProjectils.width * 0.3,
+            y: this.gunsProjectils.y + this.gunsProjectils.height * 0.35,
+            w: this.gunsProjectils.width * 0.4,
+            h: this.gunsProjectils.height * 0.3
+        };
+
         this.enemies.forEach(enemy => {
             if (enemy.isDead) return;
             
-            // AABB-Collision: Überschneiden sich Laser und Enemy?
+            // Verkleinerte Kollisions-Box für Enemy (zentriert, 40% Breite, 30% Höhe)
+            let enemyBox = {
+                x: enemy.x + enemy.width * 0.3,
+                y: enemy.y + enemy.height * 0.35,
+                w: enemy.width * 0.4,
+                h: enemy.height * 0.3
+            };
+
+            // AABB-Collision zwischen den verkleinerten Boxen
             if (
-                this.gunsProjectils.x + this.gunsProjectils.width > enemy.x &&
-                this.gunsProjectils.x < enemy.x + enemy.width &&
-                this.gunsProjectils.y + this.gunsProjectils.height > enemy.y &&
-                this.gunsProjectils.y < enemy.y + enemy.height
+                laserBox.x + laserBox.w > enemyBox.x &&
+                laserBox.x < enemyBox.x + enemyBox.w &&
+                laserBox.y + laserBox.h > enemyBox.y &&
+                laserBox.y < enemyBox.y + enemyBox.h
             ) {
                 enemy.die();
             }
