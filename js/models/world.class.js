@@ -122,11 +122,11 @@ class World {
             h: 10
         };
 
-        this.enemies.forEach(enemy => {
-            if (enemy.isDead) return;
-            
-            // Enemy-Hitbox (zentriert, 20% des Bildes)
+        for (let i = 0; i < this.enemies.length; i++) {
+            let enemy = this.enemies[i];
+            if (enemy.isDead) continue;
 
+            // Enemy-Hitbox (zentriert, 20% des Bildes)
             let enemyBox = {
                 x: enemy.x + enemy.width * 0.4,
                 y: enemy.y + enemy.height * 0.4,
@@ -142,8 +142,9 @@ class World {
                 laserTip.y < enemyBox.y + enemyBox.h
             ) {
                 enemy.die();
+                break; // Nur EIN Enemy pro Laser-Schuss
             }
-        });
+        }
     }
 
     checkCharacterCollisions() {
