@@ -132,6 +132,7 @@ class Character extends Moveables {
     }
 
     animate() {
+        if (this.isHit) return; // GetHit-Animation läuft, nichts überschreiben
 
         if (this.controls.mouseClickLeft) {
             this.shootFxAnimate();
