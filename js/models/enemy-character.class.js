@@ -2,11 +2,15 @@ class Enemy extends Moveables {
     IMAGES_IDLE = [];
     IMAGES_WALK = [];
     IMAGES_DEATH = [];
+    IMAGES_HIT = [];
     frameCounter = 0;
     currentImage = 0;
     isDead = false;
     deathAnimationIndex = 0;
     deathInterval;
+    isAttacking = false;
+    hitAnimationIndex = 0;
+    hitInterval;
 
     constructor() {
         super();
@@ -14,9 +18,11 @@ class Enemy extends Moveables {
         this.height = 375;
         this.addIdleEnemyImages();
         this.addDeathImages();
+        this.addHitImages();
         this.saveImages(this.IMAGES_IDLE);
         this.saveImages(this.IMAGES_WALK);
         this.saveImages(this.IMAGES_DEATH);
+        this.saveImages(this.IMAGES_HIT);
         this.img = this.imageCache[this.IMAGES_IDLE[0]];
         this.startIdleAnimate();
         this.startWalkAnimate();
@@ -38,11 +44,19 @@ class Enemy extends Moveables {
         }
     }
 
+    addHitImages() {
+        for (let i = 0; i <= 13; i++) {
+            let number = i < 10 ? '0' + i : i;
+            this.IMAGES_HIT.push(`./img/PNG/Enemy_Characters/Enemy_Character01/Hit/Hit_${number}.png`);
+        }
+    }
+
     startIdleAnimate() {
         this.x = 550 + Math.random() * 500;
         this.y = 275 + Math.random() * 60;
         setInterval(() => {
             if (this.isDead) return;
+            if (this.isAttacking) return;
             let path = this.IMAGES_IDLE[this.currentImage];
             this.img = this.imageCache[path];
             this.currentImage++;
@@ -56,6 +70,7 @@ class Enemy extends Moveables {
     startWalkAnimate() {
         setInterval(() => {
             if (this.isDead) return;
+            if (this.isAttacking) return;
             let path = this.IMAGES_WALK[this.currentImage];
             this.img = this.imageCache[path];
             this.currentImage++;
@@ -69,6 +84,7 @@ class Enemy extends Moveables {
     startMoveAnimate() {
         setInterval(() => {
             if (this.isDead) return;
+            if (this.isAttacking) return;
             this.x -= 1.5;
         }, 1000 / 60);
 
@@ -85,6 +101,22 @@ class Enemy extends Moveables {
             } else {
                 clearInterval(this.deathInterval);
                 this.deathComplete = true;
+            }
+        }, 60);
+    }
+
+    attack() {
+        if (this.isDead) return;
+        this.isAttacking = true;
+        this.hitAnimationIndex = 0;
+        if (this.hitInterval) clearInterval(this.hitInterval);
+        this.hitInterval = setInterval(() => {
+            if (this.hitAnimationIndex < this.IMAGES_HIT.length) {
+                this.img = this.imageCache[this.IMAGES_HIT[this.hitAnimationIndex]];
+                this.hitAnimationIndex++;
+            } else {
+                clearInterval(this.hitInterval);
+                this.isAttacking = false;
             }
         }, 60);
     }

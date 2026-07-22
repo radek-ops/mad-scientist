@@ -2,7 +2,7 @@ class World {
     ctx;
     canvas;
     background = new Background();
-    enemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
+    enemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy(), new Enemy(), new Enemy(), new Enemy()];
     controls;
     mainCharacter;
     gunsProjectils;
@@ -55,6 +55,9 @@ class World {
         if (this.controls.mouseClickLeft) {
             this.checkLaserCollisions();
         }
+
+        // Character-Enemy Kollision prüfen
+        this.checkCharacterCollisions();
 
         // Tote Enemies nach Death-Animation entfernen
         this.enemies = this.enemies.filter(e => !e.deathComplete);
@@ -136,6 +139,38 @@ class World {
                 laserTip.y < enemyBox.y + enemyBox.h
             ) {
                 enemy.die();
+            }
+        });
+    }
+
+    checkCharacterCollisions() {
+        this.enemies.forEach(enemy => {
+            if (enemy.isDead || enemy.isAttacking) return;
+            
+            // Character-Hitbox (zentriert, 40%)
+            let charBox = {
+                x: this.mainCharacter.x + this.mainCharacter.width * 0.3,
+                y: this.mainCharacter.y + this.mainCharacter.height * 0.3,
+                w: this.mainCharacter.width * 0.4,
+                h: this.mainCharacter.height * 0.4
+            };
+            
+            // Enemy-Hitbox (zentriert, 40%)
+            let enemyBox = {
+                x: enemy.x + enemy.width * 0.3,
+                y: enemy.y + enemy.height * 0.3,
+                w: enemy.width * 0.4,
+                h: enemy.height * 0.4
+            };
+            
+            if (
+                charBox.x + charBox.w > enemyBox.x &&
+                charBox.x < enemyBox.x + enemyBox.w &&
+                charBox.y + charBox.h > enemyBox.y &&
+                charBox.y < enemyBox.y + enemyBox.h
+            ) {
+                enemy.attack();
+                this.mainCharacter.getHit();
             }
         });
     }

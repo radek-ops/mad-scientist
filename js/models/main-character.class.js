@@ -5,6 +5,7 @@ class Character extends Moveables {
     IMAGES_SHOOTFX1 = [];
     IMAGES_THROWBOMB = [];
     IMAGES_JUMP = [];
+    IMAGES_GETHIT = [];
     controls;
     currentThrowBombkImages = 0;
     currentShootFXImages = 0;
@@ -14,6 +15,9 @@ class Character extends Moveables {
     speedY = 0;
     acceleration = 1;
     direction = 1; // 1 = rechts, -1 = links
+    isHit = false;
+    hitAnimationIndex = 0;
+    hitInterval;
 
 
 
@@ -31,11 +35,13 @@ class Character extends Moveables {
         this.addShootFXImages();
         this.addThrowBombImages();
         this.addJumpImages();
+        this.addGetHitImages();
         this.saveImages(this.IMAGES_IDLE);
         this.saveImages(this.IMAGES_WALK);
         this.saveImages(this.IMAGES_SHOOTFX1);
         this.saveImages(this.IMAGES_THROWBOMB);
         this.saveImages(this.IMAGES_JUMP);
+        this.saveImages(this.IMAGES_GETHIT);
         this.img = this.imageCache[this.IMAGES_IDLE[0]];
         this.moveCharacter();
         this.applyGravity();
@@ -78,6 +84,28 @@ class Character extends Moveables {
         }
     }
 
+    addGetHitImages() {
+        for (let i = 0; i < 10; i++) {
+            let imgNumber = i < 10 ? '0' + i : i;
+            this.IMAGES_GETHIT.push(`./img/PNG/Main_Characters/Gun01/GetHit/GetHit_${imgNumber}.png`);
+        }
+    }
+
+    getHit() {
+        if (this.isHit) return;
+        this.isHit = true;
+        this.hitAnimationIndex = 0;
+        if (this.hitInterval) clearInterval(this.hitInterval);
+        this.hitInterval = setInterval(() => {
+            if (this.hitAnimationIndex < this.IMAGES_GETHIT.length) {
+                this.img = this.imageCache[this.IMAGES_GETHIT[this.hitAnimationIndex]];
+                this.hitAnimationIndex++;
+            } else {
+                clearInterval(this.hitInterval);
+                this.isHit = false;
+            }
+        }, 60);
+    }
 
     moveCharacter() {
         setInterval(() => {
