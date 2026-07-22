@@ -105,31 +105,35 @@ class World {
 
 
     checkLaserCollisions() {
-        // Kollisions-Box für Laser (zentriert, 70% Breite, 60% Höhe)
-        let laserBox = {
-            x: this.gunsProjectils.x + this.gunsProjectils.width * 0.15,
-            y: this.gunsProjectils.y + this.gunsProjectils.height * 0.2,
-            w: this.gunsProjectils.width * 0.7,
-            h: this.gunsProjectils.height * 0.6
+        // Kleine Laserspitze (10x10px) an der Mündung
+        let laserTipX = this.gunsProjectils.direction === 1 
+            ? this.gunsProjectils.x + this.gunsProjectils.width - 10
+            : this.gunsProjectils.x;
+        let laserTip = {
+            x: laserTipX,
+            y: this.gunsProjectils.y + this.gunsProjectils.height / 2 - 5,
+            w: 10,
+            h: 10
         };
 
         this.enemies.forEach(enemy => {
             if (enemy.isDead) return;
             
-            // Kollisions-Box für Enemy (zentriert, 60% Breite, 50% Höhe)
+            // Enemy-Hitbox (zentriert, 20% des Bildes)
+
             let enemyBox = {
-                x: enemy.x + enemy.width * 0.2,
-                y: enemy.y + enemy.height * 0.25,
-                w: enemy.width * 0.6,
-                h: enemy.height * 0.5
+                x: enemy.x + enemy.width * 0.4,
+                y: enemy.y + enemy.height * 0.4,
+                w: enemy.width * 0.2,
+                h: enemy.height * 0.2
             };
 
-            // AABB-Collision zwischen den verkleinerten Boxen
+            // AABB-Collision: Laserspitze trifft Enemy-Mitte
             if (
-                laserBox.x + laserBox.w > enemyBox.x &&
-                laserBox.x < enemyBox.x + enemyBox.w &&
-                laserBox.y + laserBox.h > enemyBox.y &&
-                laserBox.y < enemyBox.y + enemyBox.h
+                laserTip.x + laserTip.w > enemyBox.x &&
+                laserTip.x < enemyBox.x + enemyBox.w &&
+                laserTip.y + laserTip.h > enemyBox.y &&
+                laserTip.y < enemyBox.y + enemyBox.h
             ) {
                 enemy.die();
             }
