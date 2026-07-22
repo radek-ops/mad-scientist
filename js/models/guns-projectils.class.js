@@ -9,9 +9,6 @@ class GunsProjectils extends Moveables {
     EMPTY_IMG = new Image();
     direction = 1;
 
-
-
-
     constructor(controls) {
         super();
         this.controls = controls;
@@ -25,43 +22,33 @@ class GunsProjectils extends Moveables {
         this.useProjectil();
     }
 
-    SHOOT_SOUND = new Audio('../sounds/Shoot51.wav');
-    playShootSound() {
-        this.SHOOT_SOUND.play();
-    }
-
-
+    // Laser-Bilder laden
     addLaserGunImages() {
         for (let i = 0; i < 5; i++) {
             let imgNumber = '0' + i;
             this.LASER.push(`./img/PNG/Projectile/Laser/skeleton-animation_${imgNumber}.png`);
-
         }
     }
 
+    // Animation starten
     useProjectil() {
         setInterval(() => {
             this.projectilAnimate();
         }, 1000 / 60);
     }
 
-
+    // Laser-Animation abspielen
     projectilAnimate() {
         if (this.controls.mouseClickLeft) {
             this.currentProjectileImages++;
             if (this.currentProjectileImages >= this.LASER.length) {
                 this.currentProjectileImages = 0;
-                //  this.playShootSound();
             }
             let imgPath = this.LASER[this.currentProjectileImages];
             this.img = this.imageCache[imgPath];
-
         } else {
             this.currentProjectileImages = 0;
             this.img = this.EMPTY_IMG;
-
         }
     }
-
-
 }
