@@ -13,6 +13,7 @@ class Character extends Moveables {
     frameCounter = 0;
     speedY = 0;
     acceleration = 1;
+    direction = 1; // 1 = rechts, -1 = links
 
 
 
@@ -94,9 +95,11 @@ class Character extends Moveables {
         }
         if (this.controls.back) {
             this.x -= 10;
+            this.direction = -1;
         }
         if (this.controls.foward) {
             this.x += 10;
+            this.direction = 1;
         }
     }
 

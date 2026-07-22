@@ -42,8 +42,14 @@ class World {
         let tempY = this.mainCharacter.y;
         this.mainCharacter.y = drawY;
 
-        this.gunsProjectils.x = this.mainCharacter.x + 350;
+        // Laser-Position je nach Richtung
+        if (this.mainCharacter.direction === 1) {
+            this.gunsProjectils.x = this.mainCharacter.x + 350;
+        } else {
+            this.gunsProjectils.x = this.mainCharacter.x - 150;
+        }
         this.gunsProjectils.y = drawY + 240;
+        this.gunsProjectils.direction = this.mainCharacter.direction;
 
         this.addObjectToMap(this.IMAGES_BACKGROUND);
         this.addObjectToMap(this.enemies);
@@ -66,12 +72,20 @@ class World {
 
 
     addToMap(value) {
-        this.ctx.drawImage(
-            value.img,
-            value.x,
-            value.y,
-            value.width,
-            value.height);
+        if (value.direction === -1) {
+            this.ctx.save();
+            this.ctx.translate(value.x + value.width, value.y);
+            this.ctx.scale(-1, 1);
+            this.ctx.drawImage(value.img, 0, 0, value.width, value.height);
+            this.ctx.restore();
+        } else {
+            this.ctx.drawImage(
+                value.img,
+                value.x,
+                value.y,
+                value.width,
+                value.height);
+        }
     }
 
 
