@@ -2,7 +2,7 @@ class World {
     ctx;
     canvas;
     background = new Background();
-    enemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy(), new Enemy(), new Enemy(), new Enemy()];
+    enemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy(), new Enemy(), new Enemy(), new Enemy(), new Enemy(), new Enemy()];
     controls;
     mainCharacter;
     gunsProjectils;
