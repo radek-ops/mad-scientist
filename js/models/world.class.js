@@ -109,9 +109,12 @@ class World {
 
     checkLaserCollisions() {
         // Kleine Laserspitze (10x10px) an der Mündung
-        let laserTipX = this.gunsProjectils.direction === 1 
-            ? this.gunsProjectils.x + this.gunsProjectils.width - 10
-            : this.gunsProjectils.x;
+        let laserTipX;
+        if (this.gunsProjectils.direction === 1) {
+            laserTipX = this.gunsProjectils.x + this.gunsProjectils.width - 10;
+        } else {
+            laserTipX = this.gunsProjectils.x;
+        }
         let laserTip = {
             x: laserTipX,
             y: this.gunsProjectils.y + this.gunsProjectils.height / 2 - 5,
