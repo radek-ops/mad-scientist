@@ -22,7 +22,6 @@ class GunsProjectils extends Moveables {
         this.useProjectil();
     }
 
-    // Laser-Bilder laden
     addLaserGunImages() {
         for (let i = 0; i < 5; i++) {
             let imgNumber = '0' + i;
@@ -30,14 +29,12 @@ class GunsProjectils extends Moveables {
         }
     }
 
-    // Animation starten
     useProjectil() {
         setInterval(() => {
             this.projectilAnimate();
         }, 1000 / 60);
     }
 
-    // Laser-Animation abspielen
     projectilAnimate() {
         if (this.controls.mouseClickLeft) {
             this.currentProjectileImages++;

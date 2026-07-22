@@ -105,7 +105,6 @@ class Enemy extends Moveables {
 
     }
 
-    
     die() {
         if (this.isDead) return;
         this.isElectric = true;
@@ -119,7 +118,6 @@ class Enemy extends Moveables {
             } else {
                 clearInterval(this.electricInterval);
                 this.isElectric = false;
-                // Jetzt erst sterben
                 this.startDeathAnimation();
             }
         }, 60);

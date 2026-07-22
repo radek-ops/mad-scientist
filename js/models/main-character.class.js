@@ -14,14 +14,10 @@ class Character extends Moveables {
     frameCounter = 0;
     speedY = 0;
     acceleration = 1;
-    direction = 1; // 1 = rechts, -1 = links
+    direction = 1;
     isHit = false;
     hitAnimationIndex = 0;
     hitInterval;
-
-
-
-
 
     constructor(controls) {
         super();
@@ -45,15 +41,7 @@ class Character extends Moveables {
         this.img = this.imageCache[this.IMAGES_IDLE[0]];
         this.moveCharacter();
         this.applyGravity();
-        // this.playWalkingSound();
-
     }
-
-    WALKING_SOUND = new Audio('../sounds/01_Main_Theme_Rate.mp3');
-    playWalkingSound() {
-        this.WALKING_SOUND.play();
-    }
-
 
     addMoveImages() {
         for (let i = 0; i < 14; i++) {
@@ -132,7 +120,7 @@ class Character extends Moveables {
     }
 
     animate() {
-        if (this.isHit) return; // GetHit-Animation läuft, nichts überschreiben
+        if (this.isHit) return;
 
         if (this.controls.mouseClickLeft) {
             this.shootFxAnimate();
@@ -142,34 +130,35 @@ class Character extends Moveables {
             this.throwBombAnimate();
         } else if (this.currentThrowBombkImages > 0) {
             this.throwBombAnimate();
-        }
-        else if (this.controls.space) {
+        } else if (this.controls.space) {
             this.jump();
             this.controls.space = false;
-        }
-        else if (this.isAboveGround() || this.speedY > 0) {
+        } else if (this.isAboveGround() || this.speedY > 0) {
             this.jumpAnimate();
-        }
-        else {
+        } else {
             this.walkAnimate();
         }
     }
 
-
     walkAnimate() {
         this.frameCounter++;
         if (this.frameCounter % 3 !== 0) return;
+
         let isMoving = this.controls.up || this.controls.back || this.controls.down || this.controls.foward;
-        let images = isMoving ? this.IMAGES_WALK : this.IMAGES_IDLE;
+        let images;
+        if (isMoving) {
+            images = this.IMAGES_WALK;
+        } else {
+            images = this.IMAGES_IDLE;
+        }
+
         this.currentWalkImages++;
         if (this.currentWalkImages >= images.length) {
             this.currentWalkImages = 0;
         }
         let imgPath = images[this.currentWalkImages];
         this.img = this.imageCache[imgPath];
-
     }
-
 
     shootFxAnimate() {
         this.frameCounter++;
@@ -183,7 +172,6 @@ class Character extends Moveables {
         }
     }
 
-
     throwBombAnimate() {
         let imgPath = this.IMAGES_THROWBOMB[this.currentThrowBombkImages];
         this.img = this.imageCache[imgPath];
@@ -194,13 +182,11 @@ class Character extends Moveables {
         }
     }
 
-
     applyGravity() {
         setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) {
                 this.jumpY -= this.speedY;
                 this.speedY -= this.acceleration;
-
             } else {
                 this.speedY = 0;
                 this.jumpY = 240;
@@ -220,7 +206,6 @@ class Character extends Moveables {
         this.jumpAnimate();
     }
 
-
     jumpAnimate() {
         if (this.currentJumpImages >= this.IMAGES_JUMP.length) {
             return;
@@ -229,42 +214,4 @@ class Character extends Moveables {
         this.img = this.imageCache[imgPath];
         this.currentJumpImages++;
     }
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

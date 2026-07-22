@@ -31,7 +31,6 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Character bleibt im level
         if (this.mainCharacter.x < 0) {
             this.mainCharacter.x = 0;
         }
@@ -39,7 +38,6 @@ class World {
             this.mainCharacter.x = this.worldWidth - this.mainCharacter.width;
         }
 
-        // Kamera folgt character
         let targetCameraX = this.mainCharacter.x - this.canvas.width / 2;
         if (targetCameraX < 0) {
             targetCameraX = 0;
@@ -52,14 +50,11 @@ class World {
         this.ctx.save();
         this.ctx.translate(-this.cameraX, 0);
 
-        // JumpY für Sprung-Position
         let drawY = this.mainCharacter.y - (240 - this.mainCharacter.jumpY);
 
-        // Temporär Y setzen für Zeichnung
         let tempY = this.mainCharacter.y;
         this.mainCharacter.y = drawY;
 
-        // Waffe positionieren
         if (this.mainCharacter.direction === 1) {
             this.gunsProjectils.x = this.mainCharacter.x + 350;
         } else {
@@ -68,16 +63,13 @@ class World {
         this.gunsProjectils.y = drawY + 240;
         this.gunsProjectils.direction = this.mainCharacter.direction;
 
-        // Kollisionen prüfen
         if (this.controls.mouseClickLeft) {
             this.checkLaserCollisions();
         }
         this.checkCharacterCollisions();
 
-        // Tote enemies entfernen
         this.removeDeadEnemies();
 
-        // Alles zeichnen
         this.addObjectToMap(this.IMAGES_BACKGROUND);
         this.addObjectToMap(this.enemies);
         this.addToMap(this.gunsProjectils);
@@ -87,7 +79,6 @@ class World {
 
         this.ctx.restore();
 
-        // Nächster Frame
         let self = this;
         requestAnimationFrame(function () {
             self.draw();
@@ -107,7 +98,6 @@ class World {
 
     addToMap(value) {
         if (value.direction === -1) {
-            // Gespiegelt zeichnen
             this.ctx.save();
             this.ctx.translate(value.x + value.width, value.y);
             this.ctx.scale(-1, 1);
@@ -132,7 +122,6 @@ class World {
     }
 
     checkLaserCollisions() {
-        // Position der Laserspitze berechnen
         let laserTipX;
         if (this.gunsProjectils.direction === 1) {
             laserTipX = this.gunsProjectils.x + this.gunsProjectils.width - 10;
@@ -147,14 +136,12 @@ class World {
             h: 1
         };
 
-        // Gegen alle enemies prüfen
         for (let i = 0; i < this.enemies.length; i++) {
             let enemy = this.enemies[i];
             if (enemy.isDead) {
                 continue;
             }
 
-            // Enemy-Hitbox (kleiner als das Bild)
             let enemyBox = {
                 x: enemy.x + enemy.width * 0.4,
                 y: enemy.y + enemy.height * 0.4,
@@ -162,7 +149,6 @@ class World {
                 h: enemy.height * 0.2
             };
 
-            // Prüfen ob Laserspitze die Hitbox trifft
             if (
                 laserTip.x + laserTip.w > enemyBox.x &&
                 laserTip.x < enemyBox.x + enemyBox.w &&
@@ -170,7 +156,7 @@ class World {
                 laserTip.y < enemyBox.y + enemyBox.h
             ) {
                 enemy.die();
-                break; // Nur ein Enemy pro Schuss
+                break;
             }
         }
     }
@@ -182,7 +168,6 @@ class World {
                 continue;
             }
 
-            // Character-Hitbox
             let charBox = {
                 x: this.mainCharacter.x + this.mainCharacter.width * 0.3,
                 y: this.mainCharacter.y + this.mainCharacter.height * 0.3,
@@ -190,7 +175,6 @@ class World {
                 h: this.mainCharacter.height * 0.4
             };
 
-            // Enemy-Hitbox
             let enemyBox = {
                 x: enemy.x + enemy.width * 0.3,
                 y: enemy.y + enemy.height * 0.3,
@@ -198,7 +182,6 @@ class World {
                 h: enemy.height * 0.4
             };
 
-            // Prüfen ob sich die Boxen überschneiden
             if (
                 charBox.x + charBox.w > enemyBox.x &&
                 charBox.x < enemyBox.x + enemyBox.w &&
