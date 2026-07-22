@@ -105,7 +105,7 @@ class Enemy extends Moveables {
 
     }
 
-    // Wird aufgerufen wenn Laser trifft
+    
     die() {
         if (this.isDead) return;
         this.isElectric = true;
