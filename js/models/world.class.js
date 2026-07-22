@@ -63,8 +63,7 @@ class World {
     }
 
     updateCamera() {
-        let mittelpunkt = this.canvas.width / 2;
-        let offset = this.mainCharacter.x - mittelpunkt;
+        let offset = this.mainCharacter.x - 200;
         this.cameraX = offset;
         if (this.cameraX < 0) {
             this.cameraX = 0;
