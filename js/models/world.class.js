@@ -25,28 +25,28 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
-        // Character in der Welt begrenzen
+        
         this.mainCharacter.x = Math.max(0, Math.min(this.mainCharacter.x, this.worldWidth - this.mainCharacter.width));
         
-        // Kamera berechnen - Character in der Bildmitte halten
+       
         let targetCameraX = this.mainCharacter.x - this.canvas.width / 2;
         this.cameraX = Math.max(0, Math.min(targetCameraX, this.worldWidth - this.canvas.width));
 
         this.ctx.save();
         this.ctx.translate(-this.cameraX, 0);
 
-        // Y-Position mit Sprung-Höhe berechnen
+        
         let drawY = this.mainCharacter.y - (240 - this.mainCharacter.jumpY);
         
-        // Temporär Y setzen fürs Zeichnen (Sprung!)
+       
         let tempY = this.mainCharacter.y;
         this.mainCharacter.y = drawY;
 
-        // Laser-Position je nach Richtung
+       
         if (this.mainCharacter.direction === 1) {
             this.gunsProjectils.x = this.mainCharacter.x + 350;
         } else {
-            this.gunsProjectils.x = this.mainCharacter.x - 150;
+            this.gunsProjectils.x = this.mainCharacter.x - 30;
         }
         this.gunsProjectils.y = drawY + 240;
         this.gunsProjectils.direction = this.mainCharacter.direction;
@@ -55,8 +55,7 @@ class World {
         this.addObjectToMap(this.enemies);
         this.addToMap(this.gunsProjectils);
         this.addToMap(this.mainCharacter);
-        
-        // Y zurücksetzen für movement()-Logik
+      
         this.mainCharacter.y = tempY;
 
         this.ctx.restore();
