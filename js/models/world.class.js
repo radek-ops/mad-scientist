@@ -211,13 +211,26 @@ class World {
 
     addBackgroundImages() {
         for (let i = 0; i < 3; i++) {
-            let imgNumber = i;
-            let nextBackground = 1280 * i;
+            let x = 1280 * i;
             let bg = new Background(
-                `./img/PNG/Backgrounds/${imgNumber}.png`,
-                nextBackground
+                `./img/PNG/Backgrounds/${i}.png`,
+                x
             );
             this.IMAGES_BACKGROUND.push(bg);
+            let topImg = new Background(
+                `./img/PNG/Backgrounds2/0${i * 2}.png`,
+                x
+            );
+            topImg.y = 0;
+            topImg.height = [151, 103, 215][i];
+            this.IMAGES_BACKGROUND.push(topImg);
+            let bottomImg = new Background(
+                `./img/PNG/Backgrounds2/0${i * 2 + 1}.png`,
+                x
+            );
+            bottomImg.height = [98, 787, 204][i];
+            bottomImg.y = 720 - bottomImg.height;
+            this.IMAGES_BACKGROUND.push(bottomImg);
         }
     }
 }
