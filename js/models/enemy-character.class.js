@@ -40,7 +40,7 @@ class Enemy extends Moveables {
 
     startIdleAnimate() {
         this.x = 550 + Math.random() * 500;
-        this.y = 190 + Math.random() * 80;
+        this.y = 275 + Math.random() * 60;
         setInterval(() => {
             if (this.isDead) return;
             let path = this.IMAGES_IDLE[this.currentImage];
