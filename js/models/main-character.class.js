@@ -15,6 +15,9 @@ class Character extends Moveables {
     acceleration = 1;
 
 
+
+
+
     constructor(controls) {
         super();
         this.controls = controls;
@@ -77,28 +80,22 @@ class Character extends Moveables {
 
     moveCharacter() {
         setInterval(() => {
-           
+            this.movement();
             this.animate();
-
-
         }, 1000 / 60);
     }
 
     movement() {
-         if (this.isAboveGround()) {
-       
-        this.jumpAnimate();
-    } 
         if (this.controls.up && this.y > 190) {
             this.y -= 10;
         }
         if (this.controls.down && this.y < 270) {
             this.y += 10;
         }
-        if (this.controls.back && this.x > 0 ) {
+        if (this.controls.back) {
             this.x -= 10;
         }
-        if (this.controls.foward  && this.x < 4350) {
+        if (this.controls.foward) {
             this.x += 10;
         }
     }
@@ -117,6 +114,9 @@ class Character extends Moveables {
         else if (this.controls.space) {
             this.jump();
             this.controls.space = false;
+        }
+        else if (this.isAboveGround() || this.speedY > 0) {
+            this.jumpAnimate();
         }
         else {
             this.walkAnimate();
@@ -181,27 +181,24 @@ class Character extends Moveables {
     }
 
     jump() {
-    if (!this.isAboveGround()) {
-        this.speedY = 16;  
-        this.currentJumpImages = 0;
+        if (!this.isAboveGround()) {
+            this.speedY = 23;
+            this.currentJumpImages = 0;
+        }
+        this.jumpAnimate();
     }
-}
 
-jumpAnimate() {
-    this.frameCounter++;
-  
-    
 
-    let imgPath = this.IMAGES_JUMP[this.currentJumpImages];
-    this.img = this.imageCache[imgPath];
-
-   
-    if (this.currentJumpImages < this.IMAGES_JUMP.length - 1) {
+    jumpAnimate() {
+        if (this.currentJumpImages >= this.IMAGES_JUMP.length) {
+            return;
+        }
+        let imgPath = this.IMAGES_JUMP[this.currentJumpImages];
+        this.img = this.imageCache[imgPath];
         this.currentJumpImages++;
     }
-    
-}
-    
+
+
 
 }
 
