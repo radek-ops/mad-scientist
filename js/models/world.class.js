@@ -63,7 +63,7 @@ class World {
     }
 
     updateCamera() {
-        let offset = this.mainCharacter.x - 200;
+        let offset = this.mainCharacter.x - 100;
         this.cameraX = offset;
         if (this.cameraX < 0) {
             this.cameraX = 0;
