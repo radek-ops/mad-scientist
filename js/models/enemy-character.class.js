@@ -1,17 +1,23 @@
 class Enemy extends Moveables {
     IMAGES_IDLE = [];
     IMAGES_WALK = [];
+    IMAGES_DEATH = [];
     frameCounter = 0;
     currentImage = 0;
+    isDead = false;
+    deathAnimationIndex = 0;
+    deathInterval;
 
     constructor() {
         super();
         this.width = 375;
         this.height = 375;
         this.addIdleEnemyImages();
+        this.addDeathImages();
         this.saveImages(this.IMAGES_IDLE);
-        this.img = this.imageCache[this.IMAGES_IDLE[0]];
         this.saveImages(this.IMAGES_WALK);
+        this.saveImages(this.IMAGES_DEATH);
+        this.img = this.imageCache[this.IMAGES_IDLE[0]];
         this.startIdleAnimate();
         this.startWalkAnimate();
 
@@ -25,11 +31,18 @@ class Enemy extends Moveables {
         }
     }
 
+    addDeathImages() {
+        for (let i = 0; i < 24; i++) {
+            let number = i < 10 ? '0' + i : i;
+            this.IMAGES_DEATH.push(`./img/PNG/Enemy_Characters/Enemy_Character01/Death/Death_${number}.png`);
+        }
+    }
+
     startIdleAnimate() {
         this.x = 550 + Math.random() * 500;
         this.y = 275 + Math.random() * 60;
         setInterval(() => {
-
+            if (this.isDead) return;
             let path = this.IMAGES_IDLE[this.currentImage];
             this.img = this.imageCache[path];
             this.currentImage++;
@@ -41,8 +54,8 @@ class Enemy extends Moveables {
     }
 
     startWalkAnimate() {
-
         setInterval(() => {
+            if (this.isDead) return;
             let path = this.IMAGES_WALK[this.currentImage];
             this.img = this.imageCache[path];
             this.currentImage++;
@@ -55,9 +68,25 @@ class Enemy extends Moveables {
 
     startMoveAnimate() {
         setInterval(() => {
+            if (this.isDead) return;
             this.x -= 1.5;
         }, 1000 / 60);
 
+    }
+
+    die() {
+        this.isDead = true;
+        this.deathAnimationIndex = 0;
+        if (this.deathInterval) clearInterval(this.deathInterval);
+        this.deathInterval = setInterval(() => {
+            if (this.deathAnimationIndex < this.IMAGES_DEATH.length) {
+                this.img = this.imageCache[this.IMAGES_DEATH[this.deathAnimationIndex]];
+                this.deathAnimationIndex++;
+            } else {
+                clearInterval(this.deathInterval);
+                this.deathComplete = true;
+            }
+        }, 60);
     }
 
 

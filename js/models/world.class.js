@@ -51,11 +51,19 @@ class World {
         this.gunsProjectils.y = drawY + 240;
         this.gunsProjectils.direction = this.mainCharacter.direction;
 
+        // Kollisionsprüfung wenn Laser sichtbar
+        if (this.controls.mouseClickLeft) {
+            this.checkLaserCollisions();
+        }
+
+        // Tote Enemies nach Death-Animation entfernen
+        this.enemies = this.enemies.filter(e => !e.deathComplete);
+
         this.addObjectToMap(this.IMAGES_BACKGROUND);
         this.addObjectToMap(this.enemies);
         this.addToMap(this.gunsProjectils);
         this.addToMap(this.mainCharacter);
-      
+       
         this.mainCharacter.y = tempY;
 
         this.ctx.restore();
@@ -95,6 +103,22 @@ class World {
 
     }
 
+
+    checkLaserCollisions() {
+        this.enemies.forEach(enemy => {
+            if (enemy.isDead) return;
+            
+            // AABB-Collision: Überschneiden sich Laser und Enemy?
+            if (
+                this.gunsProjectils.x + this.gunsProjectils.width > enemy.x &&
+                this.gunsProjectils.x < enemy.x + enemy.width &&
+                this.gunsProjectils.y + this.gunsProjectils.height > enemy.y &&
+                this.gunsProjectils.y < enemy.y + enemy.height
+            ) {
+                enemy.die();
+            }
+        });
+    }
 
     addBackgroundImages() {
         for (let i = 0; i < 3; i++) {
