@@ -30,31 +30,53 @@ class World {
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.keepCharacterInLevel();
+        this.updateCamera();
+        this.ctx.save();
+        this.ctx.translate(-this.cameraX, 0);
+        let drawY = this.calculateDrawY();
+        let tempY = this.mainCharacter.y;
+        this.mainCharacter.y = drawY;
+        this.positionWeapon(drawY);
+        this.checkCollisions();
+        this.removeDeadEnemies();
+        this.renderAll();
+        this.mainCharacter.y = tempY;
+        this.ctx.restore();
+        this.nextFrame();
+    }
 
+    nextFrame() {
+        let self = this;
+        requestAnimationFrame(function () {
+            self.draw();
+        });
+    }
+
+    keepCharacterInLevel() {
         if (this.mainCharacter.x < 0) {
             this.mainCharacter.x = 0;
         }
         if (this.mainCharacter.x > this.worldWidth - this.mainCharacter.width) {
             this.mainCharacter.x = this.worldWidth - this.mainCharacter.width;
         }
+    }
 
-        let targetCameraX = this.mainCharacter.x - this.canvas.width / 2;
-        if (targetCameraX < 0) {
-            targetCameraX = 0;
+    updateCamera() {
+        this.cameraX = this.mainCharacter.x;
+        if (this.cameraX < 0) {
+            this.cameraX = 0;
         }
-        if (targetCameraX > this.worldWidth - this.canvas.width) {
-            targetCameraX = this.worldWidth - this.canvas.width;
+        if (this.cameraX > this.worldWidth - this.canvas.width) {
+            this.cameraX = this.worldWidth - this.canvas.width;
         }
-        this.cameraX = targetCameraX;
+    }
 
-        this.ctx.save();
-        this.ctx.translate(-this.cameraX, 0);
+    calculateDrawY() {
+        return this.mainCharacter.y - (240 - this.mainCharacter.jumpY);
+    }
 
-        let drawY = this.mainCharacter.y - (240 - this.mainCharacter.jumpY);
-
-        let tempY = this.mainCharacter.y;
-        this.mainCharacter.y = drawY;
-
+    positionWeapon(drawY) {
         if (this.mainCharacter.direction === 1) {
             this.gunsProjectils.x = this.mainCharacter.x + 350;
         } else {
@@ -62,27 +84,20 @@ class World {
         }
         this.gunsProjectils.y = drawY + 240;
         this.gunsProjectils.direction = this.mainCharacter.direction;
+    }
 
+    checkCollisions() {
         if (this.controls.mouseClickLeft) {
             this.checkLaserCollisions();
         }
         this.checkCharacterCollisions();
+    }
 
-        this.removeDeadEnemies();
-
+    renderAll() {
         this.addObjectToMap(this.IMAGES_BACKGROUND);
         this.addObjectToMap(this.enemies);
         this.addToMap(this.gunsProjectils);
         this.addToMap(this.mainCharacter);
-
-        this.mainCharacter.y = tempY;
-
-        this.ctx.restore();
-
-        let self = this;
-        requestAnimationFrame(function () {
-            self.draw();
-        });
     }
 
     removeDeadEnemies() {
@@ -122,39 +137,14 @@ class World {
     }
 
     checkLaserCollisions() {
-        let laserTipX;
-        if (this.gunsProjectils.direction === 1) {
-            laserTipX = this.gunsProjectils.x + this.gunsProjectils.width - 10;
-        } else {
-            laserTipX = this.gunsProjectils.x;
-        }
-
-        let laserTip = {
-            x: laserTipX,
-            y: this.gunsProjectils.y + this.gunsProjectils.height / 2 - 5,
-            w: 1,
-            h: 1
-        };
-
+        let laserTip = this.createLaserTip();
         for (let i = 0; i < this.enemies.length; i++) {
             let enemy = this.enemies[i];
             if (enemy.isDead) {
                 continue;
             }
-
-            let enemyBox = {
-                x: enemy.x + enemy.width * 0.4,
-                y: enemy.y + enemy.height * 0.4,
-                w: enemy.width * 0.2,
-                h: enemy.height * 0.2
-            };
-
-            if (
-                laserTip.x + laserTip.w > enemyBox.x &&
-                laserTip.x < enemyBox.x + enemyBox.w &&
-                laserTip.y + laserTip.h > enemyBox.y &&
-                laserTip.y < enemyBox.y + enemyBox.h
-            ) {
+            let enemyBox = this.createEnemyHitbox(enemy);
+            if (this.isColliding(laserTip, enemyBox)) {
                 enemy.die();
                 break;
             }
@@ -167,31 +157,55 @@ class World {
             if (enemy.isDead || enemy.isAttacking) {
                 continue;
             }
-
-            let charBox = {
-                x: this.mainCharacter.x + this.mainCharacter.width * 0.3,
-                y: this.mainCharacter.y + this.mainCharacter.height * 0.3,
-                w: this.mainCharacter.width * 0.4,
-                h: this.mainCharacter.height * 0.4
-            };
-
-            let enemyBox = {
-                x: enemy.x + enemy.width * 0.3,
-                y: enemy.y + enemy.height * 0.3,
-                w: enemy.width * 0.4,
-                h: enemy.height * 0.4
-            };
-
-            if (
-                charBox.x + charBox.w > enemyBox.x &&
-                charBox.x < enemyBox.x + enemyBox.w &&
-                charBox.y + charBox.h > enemyBox.y &&
-                charBox.y < enemyBox.y + enemyBox.h
-            ) {
+            let charBox = this.createCharacterHitbox();
+            let enemyBox = this.createEnemyHitbox(enemy);
+            if (this.isColliding(charBox, enemyBox)) {
                 enemy.attack();
                 this.mainCharacter.getHit();
             }
         }
+    }
+
+    createLaserTip() {
+        let laserTipX;
+        if (this.gunsProjectils.direction === 1) {
+            laserTipX = this.gunsProjectils.x + this.gunsProjectils.width - 10;
+        } else {
+            laserTipX = this.gunsProjectils.x;
+        }
+        return {
+            x: laserTipX,
+            y: this.gunsProjectils.y + this.gunsProjectils.height / 2 - 5,
+            w: 1,
+            h: 1
+        };
+    }
+
+    createCharacterHitbox() {
+        return {
+            x: this.mainCharacter.x + this.mainCharacter.width * 0.3,
+            y: this.mainCharacter.y + this.mainCharacter.height * 0.3,
+            w: this.mainCharacter.width * 0.4,
+            h: this.mainCharacter.height * 0.4
+        };
+    }
+
+    createEnemyHitbox(enemy) {
+        return {
+            x: enemy.x + enemy.width * 0.4,
+            y: enemy.y + enemy.height * 0.4,
+            w: enemy.width * 0.2,
+            h: enemy.height * 0.2
+        };
+    }
+
+    isColliding(box1, box2) {
+        return (
+            box1.x + box1.w > box2.x &&
+            box1.x < box2.x + box2.w &&
+            box1.y + box1.h > box2.y &&
+            box1.y < box2.y + box2.h
+        );
     }
 
     addBackgroundImages() {

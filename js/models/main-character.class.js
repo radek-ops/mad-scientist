@@ -27,6 +27,12 @@ class Character extends Moveables {
         this.jumpY = 240;
         this.width = 475;
         this.height = 475;
+        this.loadAllImages();
+        this.moveCharacter();
+        this.applyGravity();
+    }
+
+    loadAllImages() {
         this.addMoveImages();
         this.addShootFXImages();
         this.addThrowBombImages();
@@ -39,8 +45,6 @@ class Character extends Moveables {
         this.saveImages(this.IMAGES_JUMP);
         this.saveImages(this.IMAGES_GETHIT);
         this.img = this.imageCache[this.IMAGES_IDLE[0]];
-        this.moveCharacter();
-        this.applyGravity();
     }
 
     addMoveImages() {
@@ -121,18 +125,14 @@ class Character extends Moveables {
 
     animate() {
         if (this.isHit) return;
-
         if (this.controls.mouseClickLeft) {
             this.shootFxAnimate();
         } else if (this.controls.mouseClickRight) {
-            this.controls.mouseClickRight = false;
-            this.currentThrowBombkImages = 0;
-            this.throwBombAnimate();
+            this.startThrowBomb();
         } else if (this.currentThrowBombkImages > 0) {
             this.throwBombAnimate();
         } else if (this.controls.space) {
-            this.jump();
-            this.controls.space = false;
+            this.handleJump();
         } else if (this.isAboveGround() || this.speedY > 0) {
             this.jumpAnimate();
         } else {
@@ -140,10 +140,20 @@ class Character extends Moveables {
         }
     }
 
+    startThrowBomb() {
+        this.controls.mouseClickRight = false;
+        this.currentThrowBombkImages = 0;
+        this.throwBombAnimate();
+    }
+
+    handleJump() {
+        this.jump();
+        this.controls.space = false;
+    }
+
     walkAnimate() {
         this.frameCounter++;
         if (this.frameCounter % 3 !== 0) return;
-
         let isMoving = this.controls.up || this.controls.back || this.controls.down || this.controls.foward;
         let images;
         if (isMoving) {
@@ -151,7 +161,6 @@ class Character extends Moveables {
         } else {
             images = this.IMAGES_IDLE;
         }
-
         this.currentWalkImages++;
         if (this.currentWalkImages >= images.length) {
             this.currentWalkImages = 0;

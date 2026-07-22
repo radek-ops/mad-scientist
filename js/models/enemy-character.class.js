@@ -20,6 +20,13 @@ class Enemy extends Moveables {
         super();
         this.width = 375;
         this.height = 375;
+        this.addAllImages();
+        this.img = this.imageCache[this.IMAGES_IDLE[0]];
+        this.startIdleAnimate();
+        this.startWalkAnimate();
+    }
+
+    addAllImages() {
         this.addIdleEnemyImages();
         this.addDeathImages();
         this.addHitImages();
@@ -29,10 +36,6 @@ class Enemy extends Moveables {
         this.saveImages(this.IMAGES_DEATH);
         this.saveImages(this.IMAGES_HIT);
         this.saveImages(this.IMAGES_ELECTRIC);
-        this.img = this.imageCache[this.IMAGES_IDLE[0]];
-        this.startIdleAnimate();
-        this.startWalkAnimate();
-
     }
 
     addIdleEnemyImages() {
@@ -77,7 +80,6 @@ class Enemy extends Moveables {
                 this.currentImage = 0;
             }
         }, 60);
-
     }
 
     startWalkAnimate() {
@@ -102,14 +104,12 @@ class Enemy extends Moveables {
             if (this.isElectric) return;
             this.x -= 1.5;
         }, 1000 / 60);
-
     }
 
     die() {
         if (this.isDead) return;
         this.isElectric = true;
         this.electricAnimationIndex = 0;
-
         if (this.electricInterval) clearInterval(this.electricInterval);
         this.electricInterval = setInterval(() => {
             if (this.electricAnimationIndex < this.IMAGES_ELECTRIC.length) {
@@ -153,8 +153,4 @@ class Enemy extends Moveables {
             }
         }, 60);
     }
-
-
-
-
 }
