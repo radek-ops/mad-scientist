@@ -5,7 +5,7 @@ class GunsProjectils extends Moveables {
     height;
     controls;
     currentProjectileImages = 0;
-    mageCache = {};
+//    mageCache = {};
     EMPTY_IMG = new Image();
     direction = 1;
 

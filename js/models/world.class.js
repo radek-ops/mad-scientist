@@ -1,7 +1,6 @@
 class World {
     ctx;
     canvas;
-    background = new Background();
     enemies = [];
     controls;
     mainCharacter;
@@ -113,7 +112,19 @@ class World {
     }
 
     addToMap(value) {
-        if (value.direction === -1) {
+        if (value.rotation) {
+            this.ctx.save();
+            this.ctx.translate(value.x + value.width / 2, value.y + value.height / 2);
+            this.ctx.rotate((value.rotation * Math.PI) / 180);
+            this.ctx.drawImage(
+                value.img,
+                -value.width / 2,
+                -value.height / 2,
+                value.width,
+                value.height
+            );
+            this.ctx.restore();
+        } else if (value.direction === -1) {
             this.ctx.save();
             this.ctx.translate(value.x + value.width, value.y);
             this.ctx.scale(-1, 1);
@@ -222,14 +233,19 @@ class World {
                 x
             );
             topImg.y = 0;
+            topImg.width = 1282;
             topImg.height = [151, 103, 215][i];
             this.IMAGES_BACKGROUND.push(topImg);
             let bottomImg = new Background(
                 `./img/PNG/Backgrounds2/0${i * 2 + 1}.png`,
                 x
             );
+            bottomImg.width = 1282;
             bottomImg.height = [98, 787, 204][i];
             bottomImg.y = 720 - bottomImg.height;
+            if (i === 2) {
+                bottomImg.rotation = 180;
+            }
             this.IMAGES_BACKGROUND.push(bottomImg);
         }
     }
