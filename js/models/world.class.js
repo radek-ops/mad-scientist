@@ -24,9 +24,8 @@ class World {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.gunsProjectils.x = this.mainCharacter.x + 350;
-        this.gunsProjectils.y = this.mainCharacter.y + 240;
+        this.gunsProjectils.y = this.calcJumpPos() + 240;
         
-        this.mainCharacter.y = this.calcJumpPos();   
         this.addObjectToMap(this.IMAGES_BACKGROUND);
         this.addObjectToMap(this.enemies);
         this.addToMap(this.gunsProjectils);
@@ -62,7 +61,7 @@ class World {
     }
 
     addToMap(value) {
-        let drawY = value.calcJumpY ? value.calcJumpY() : value.y;
+        let drawY = (value === this.mainCharacter) ? this.calcJumpPos() : value.y;
         this.ctx.drawImage(
             value.img,
             value.x,
