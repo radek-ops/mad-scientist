@@ -234,6 +234,15 @@ canvas {
     z-index: 1;
 }
 
+.start-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(16px, 3vw, 40px);
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
 .start-title {
     margin-bottom: 24px;
 }
@@ -241,7 +250,6 @@ canvas {
 .start-char {
     width: clamp(120px, 20vw, 200px);
     height: auto;
-    margin-bottom: 30px;
     filter: drop-shadow(0 0 20px rgba(68, 189, 249, 0.5));
 }
 
@@ -260,7 +268,6 @@ canvas {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     cursor: pointer;
     transition: transform 0.2s, opacity 0.3s;
-    margin-bottom: 10px;
 }
 
 .start-button:hover {
