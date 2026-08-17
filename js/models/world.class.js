@@ -7,6 +7,9 @@ class World {
     gunsProjectils;
     IMAGES_BACKGROUND = [];
     map_scroll_x = 0;
+    statusBar;
+    potions;
+
 
 
     constructor(canvas) {
@@ -14,6 +17,8 @@ class World {
         this.canvas = canvas;
         this.addBackgroundImages();
         this.addBackgroundlayer();
+        this.statusBar = new StatusBar();
+        this.potions = [new Potion(), new Potion(), new Potion()];
         this.controls = new Controls();
         this.gunsProjectils = new GunsProjectils(this.controls);
         this.mainCharacter = new Character(this.controls, this.gunsProjectils);
@@ -27,6 +32,7 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.map_scroll_x, 0);
+
         let gunOffsetY = this.mainCharacter.isAboveGround() ? 130 : 290;
         this.gunsProjectils.otherDirection = this.mainCharacter.otherDirection;
         if (this.gunsProjectils.otherDirection) {
@@ -36,14 +42,22 @@ class World {
             this.gunsProjectils.x = this.mainCharacter.x + 400;
             this.gunsProjectils.y = this.calcJumpPos() + gunOffsetY;
         }
-
         this.addObjectToMap(this.IMAGES_BACKGROUND);
         this.addObjectToMap(this.enemies);
+
+
+        this.ctx.translate(-this.map_scroll_x, 0);
+        this.addToMap(this.statusBar);
+        this.addObjectToMap(this.potions);
+        this.ctx.translate(this.map_scroll_x, 0);
+
+
         this.addToMap(this.mainCharacter);
         this.addToMap(this.finalBoss);
         this.addToMap(this.gunsProjectils);
-        this.ctx.translate(-this.map_scroll_x, 0);
 
+
+        this.ctx.translate(-this.map_scroll_x, 0);
 
         let self = this;
         requestAnimationFrame(function () {
@@ -52,21 +66,6 @@ class World {
 
     }
 
-
-    calcJumpPos() {
-        if (this.mainCharacter.isAboveGround()) {
-            return this.mainCharacter.y - (240 - this.mainCharacter.jumpY);
-        } else {
-            return this.mainCharacter.y;
-        }
-    }
-
-
-    addObjectToMap(objects) {
-        objects.forEach(obj => {
-            this.addToMap(obj);
-        });
-    }
 
     addToMap(value) {
         if (value.otherDirection) {
@@ -89,6 +88,25 @@ class World {
         }
 
     }
+
+
+
+    calcJumpPos() {
+        if (this.mainCharacter.isAboveGround()) {
+            return this.mainCharacter.y - (240 - this.mainCharacter.jumpY);
+        } else {
+            return this.mainCharacter.y;
+        }
+    }
+
+
+    addObjectToMap(objects) {
+        objects.forEach(obj => {
+            this.addToMap(obj);
+        });
+    }
+
+
 
     addBackgroundImages() {
         for (let i = 0; i < 3; i++) {

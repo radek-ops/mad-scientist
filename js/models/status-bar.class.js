@@ -1,38 +1,40 @@
-class StatusBar {
-
+class StatusBar extends Moveables {
+    PRO_BAR = [];
 
 
     constructor() {
         super();
-
-        this.x = 0;
-        this.y =0;
-
+        this.addProBar();
+        this.x = 40;
+        this.y = 50;
+        this.width = 400;
+        this.height = 125;
+        this.loadImages(this.PRO_BAR[0]);
 
     }
 
 
-   for (let i = 0; i < array.length; i++) {
-    const element = array[i];
-    
-   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    addProBar() {
+        for (let i = 0; i < 1; i++) {
+            this.PRO_BAR.push('./img/PNG/User_Interfaces/ProfileBar.png');
+        }
+    }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

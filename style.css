@@ -76,7 +76,6 @@ main::before {
 }
 
 
-
 .main-content {
     display: flex;
     flex-direction: column;
@@ -89,7 +88,6 @@ main::before {
 
 
 }
-
 
 canvas {
     max-width: 95vw;
