@@ -13,6 +13,7 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    margin: 0;
 }
 
 .mad {
@@ -39,6 +40,7 @@ h1 {
     -webkit-text-fill-color: transparent;
     -webkit-text-stroke: 3px #046eba;
     filter: drop-shadow(2px 4px 0px #1a4c70);
+    margin-bottom: -50px;
 }
 
 .btn-impressum {
@@ -54,13 +56,14 @@ h1 {
     font-family: "blablaHawk";
     font-size: 22px;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-    margin-top: 12px;
+    margin-top: 30px;
     cursor: pointer;
-    transition: opacity 0.3s;
+    transition: transform 0.2s, opacity 0.3s;
 }
 
 .btn-impressum:hover {
     opacity: 0.85;
+    transform: scale(1.05);
 }
 
 main {
@@ -95,7 +98,8 @@ main::before {
     max-width: 1920px;
     height: 100dvh;
     position: relative;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
+    
 }
 
 canvas {

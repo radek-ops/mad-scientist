@@ -56,11 +56,13 @@ h1 {
     text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
     margin-top: 12px;
     cursor: pointer;
-    transition: opacity 0.3s;
+    transition: transform 0.2s, opacity 0.3s;
 }
 
 .btn-impressum:hover {
     opacity: 0.85;
+    transform: scale(1.05);
+}
 }
 
 .imp-link {
