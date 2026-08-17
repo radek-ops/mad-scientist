@@ -1,0 +1,61 @@
+class World {
+    ctx;
+    canvas;
+    background = new Backdrop();
+    mainCharacter = new Character();
+    enemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
+    
+
+
+    constructor(canvas) {
+        this.ctx = canvas.getContext('2d');
+        this.canvas = canvas;
+        this.draw();
+    }
+
+
+    draw() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+
+        this.ctx.drawImage(
+            this.background.img,
+            this.background.x,
+            this.background.y,
+            this.background.width,
+            this.background.height);
+
+
+        this.ctx.drawImage(
+            this.mainCharacter.characterImg,
+            this.mainCharacter.x,
+            this.mainCharacter.y,
+            this.mainCharacter.width,
+            this.mainCharacter.height);
+
+
+        this.enemies.forEach(enemy => {
+            this.ctx.drawImage(
+                enemy.img,
+                enemy.x,
+                enemy.y,
+                enemy.width,
+                enemy.height)
+
+        });
+
+
+        //Draw() wird wider aufgerufen 
+        let self = this;
+        requestAnimationFrame(function () {
+            self.draw();
+        });
+
+
+
+    }
+
+
+
+}
+
