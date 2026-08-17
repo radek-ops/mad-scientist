@@ -20,6 +20,7 @@ class Sound {
         this.load('menuSelect', 'sounds/menu_select.mp3');
         this.load('mainTheme', 'sounds/01_Main_Theme_Rate.mp3');
         this.load('gameOver', 'sounds/02_Ending.mp3');
+        this.load('win', 'sounds/02_Ending.mp3');
         this.setVolume('lazer', 0.5);
     }
 

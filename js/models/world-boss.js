@@ -58,6 +58,8 @@
             let done = this.finalBoss.destroy();
             if (done) {
                 clearInterval(destroyInterval);
+                this.sound.stopMusic();
+                this.sound.play('win');
                 document.getElementById('winOverlay').classList.add('show');
             }
         }, 60);
