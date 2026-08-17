@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mad Scientist</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script defer src="./js/models/controls.class.js"></script>
+    <script defer src="./js/models/moveables.class.js"></script>
+    <script defer src="./js/models/final-boss.class.js"></script>
+    <script defer src="./js/models/guns-projectils.class.js"></script>
+    <script defer src="./js/models/main-character.class.js"></script>
+    <script defer src="./js/models/enemy-character.class.js"></script>
+     <script defer src="./js/models/potions.class.js"></script>
+    <script defer src="./js/models/status-bar.class.js"></script>
+     <script defer src="./js/models/hp-bar.class.js"></script>
+    <script defer src="./js/models/background.class.js"></script>
+    <script defer src="./js/models/world.class.js"></script>
+    <script defer src="./js/game.js"></script>
+
+</head>
+
+<body onload="init()">
+    <div class="landscape-warning">
+        <div class="warning-message">
+            <h1>Please rotate your device</h1>
+            <p>🔄 Landscape mode required</p>
+        </div>
+    </div>
+    <main>
+
+        <div class="main-content">
+            <h1>
+                <span class="mad">MAD</span>
+                <span class="scientist">SCIENTIST</span>
+            </h1>
+            <canvas id="canvas" width="1919" height="720"></canvas>
+            <a href="./impressum.html" class="btn-impressum">Impressum</a>
+        </div>
+    </main>
+</body>
+
+</html>
