@@ -3,6 +3,8 @@ class Controls {
     back = false;
     down = false;
     foward = false;
+    
+    space = false;
 
     mouseClickLeft = false;
     mouseClickRight = false;
@@ -36,12 +38,18 @@ class Controls {
 
         window.addEventListener('mouseup', (event) => {
             (event.button === 0) ? this.mouseClickLeft = false : false;
-            (event.button === 2) ? this.mouseClickRight = false : false;  
+            (event.button === 2) ? this.mouseClickRight = false : false;
+        });
+        window.addEventListener('keydown', (event) => {
+            (event.code === 'Space') ? this.space = true : false;
         });
 
+         window.addEventListener('keyup', (event) => {
+            (event.code === 'Space') ? this.space = false : false;
+        });
+
+
     }
-
-
 
 
 

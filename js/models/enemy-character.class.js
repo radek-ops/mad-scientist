@@ -12,8 +12,6 @@ class Enemy extends Moveables {
         this.saveImages(this.IMAGES_IDLE);
         this.img = this.imageCache[this.IMAGES_IDLE[0]];
         this.saveImages(this.IMAGES_WALK);
-        this.width = 375;
-        this.height = 375;
         this.startIdleAnimate();
         this.startWalkAnimate();
 
