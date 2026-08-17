@@ -5,6 +5,9 @@ class Moveables {
     width;
     height;
     imageCache = {};
+  
+    currentIdleImages = 0;
+    currentWalkImages = 0;
 
 
     loadImages(imgPath) {
@@ -21,6 +24,11 @@ class Moveables {
         });
     }
 
+     startAnimation() {
+        setInterval(() => {
+            this.startAnimationUpdate();
+        }, 1000 / 60);
+    }
          
 
 }

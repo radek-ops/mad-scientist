@@ -2,29 +2,22 @@ class Enemy extends Moveables {
     IMAGES_WALK = [];
     IMAGES_IDLE = [];
     controls;
+    speed = 0;
+    isActivated = false;
     frameCounter = 0;
-    currentImage = 0;
+
 
     constructor(controls) {
         super();
         this.controls = controls;
-        this.width = 375;
-        this.height = 375;
-        this.startEnemyMove();
+        this.width = 425;
+        this.height = 425;
+        this.addEnemyImages()
         this.saveImages(this.IMAGES_IDLE);
-        this.img = this.imageCache[this.IMAGES_IDLE[0]];
         this.saveImages(this.IMAGES_WALK);
-        this.idleAnimate();
-        this.walkAnimate();
+        this.img = this.imageCache[this.IMAGES_IDLE[0]];
+        this.startAnimation();
     }
-
-
-    startEnemyMove() {
-        if (this.controls.up || this.controls.back || this.controls.down || this.controls.foward || this.controls.space) {
-            this.addEnemyImages();
-        }
-    }
-
 
     addEnemyImages() {
         let isMoving = this.controls.up || this.controls.back || this.controls.down || this.controls.foward;
@@ -35,47 +28,39 @@ class Enemy extends Moveables {
         this.addEnemyImagesUpdate(walkEnemyNum, idleEnemyNum);
     }
 
-
     addEnemyImagesUpdate(walkEnemyNum, idleEnemyNum) {
         for (let i = 0; i <= 13; i++) {
             let number = i < 10 ? '0' + i : i;
             this.IMAGES_WALK.push(`./img/PNG/Enemy_Characters/Enemy_Character${walkEnemyNum}/Walk/Walk_${number}.png`);
             this.IMAGES_IDLE.push(`./img/PNG/Enemy_Characters/Enemy_Character${idleEnemyNum}/Idle/Idle_${number}.png`);
         }
-        walkEnemyNum === '09' ? this.x = 900 + Math.random() * 500 : this.x = 900 + Math.random() * 500;
-        walkEnemyNum === '09' ? this.y = 50 + Math.random() * 60 : this.y = 280 + Math.random() * 60;
+        if (walkEnemyNum === '09') {
+            this.x = 900 + Math.random() * 500;
+            this.y = -10 + Math.random() * 60;
+            this.speed = 4;
+        } else {
+            this.x = 900 + Math.random() * 500;
+            this.y = 240 + Math.random() * 60;
+            this.speed = 2;
+        }
     }
 
 
-    idleAnimate() {
-        setInterval(() => {
-            let path = this.IMAGES_IDLE[this.currentImage];
-            this.currentImage++;
-            if (this.currentImage == this.IMAGES_IDLE.length) {
-                this.currentImage = 0;
-            }
+    startAnimationUpdate() {
+        this.frameCounter++;
+        if (this.frameCounter % 2 !== 0) return;
+        let isMoving = this.controls.up || this.controls.back || this.controls.down || this.controls.foward || this.controls.space;
+        isMoving ? this.isActivated = true : false;
+        if (this.isActivated) {
+            let path = this.IMAGES_WALK[this.currentWalkImages];
+            this.currentWalkImages = (this.currentWalkImages + 1) % this.IMAGES_WALK.length;
             this.img = this.imageCache[path];
-        }, 60);
+            this.x -= this.speed;
+        } else {
+            let path = this.IMAGES_IDLE[this.currentIdleImages];
+            this.currentIdleImages = (this.currentIdleImages + 1) % this.IMAGES_IDLE.length;
+            this.img = this.imageCache[path]
+        }
     }
 
-
-    walkAnimate() {
-        setInterval(() => {
-            let path = this.IMAGES_WALK[this.currentImage];
-            this.img = this.imageCache[path];
-            this.currentImage++;
-            if (this.currentImage == this.IMAGES_WALK.length) {
-                this.currentImage = 0;
-            }
-        }, 60);
-        this.MoveAnimate();
-    }
-
-
-    MoveAnimate() {
-        setInterval(() => {
-            this.x -= 1.5;
-        }, 1000 / 60);
-
-    }
 }

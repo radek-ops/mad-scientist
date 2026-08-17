@@ -3,9 +3,10 @@ class World {
     canvas;
     enemies;
     mainCharacter;
-    gunsProjectils;
+    finalBoss;
+    // gunsProjectils; =  new GunsProjectils();
     IMAGES_BACKGROUND = [];
-    camera_x = 0;
+    map_scroll_x = 0;
 
 
     constructor(canvas) {
@@ -18,36 +19,31 @@ class World {
         this.mainCharacter.world = this;
         this.enemies = [new Enemy(this.controls), new Enemy(this.controls), new Enemy(this.controls), new Enemy(this.controls), new Enemy(this.controls)];
         this.gunsProjectils = new GunsProjectils(this.controls);
-        this.ctx.imageSmoothingEnabled = false;
-
+        this.finalBoss = new FinalBoss();
         this.draw();
     }
 
 
-
-
-
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        this.ctx.translate(this.camera_x, 0);
-
-
+        this.ctx.translate(this.map_scroll_x, 0);
         if (this.gunsProjectils.otherDirection = this.mainCharacter.otherDirection) {
-            this.gunsProjectils.x = this.mainCharacter.x - 30;
-            this.gunsProjectils.y = this.calcJumpPos() -240;
+
+            this.gunsProjectils.x = this.mainCharacter.x - 10;
+            this.gunsProjectils.y = this.calcJumpPos() + 290;
+
         } else {
-            this.gunsProjectils.x = this.mainCharacter.x + 350;
-            this.gunsProjectils.y = this.calcJumpPos() + 240;
+            this.gunsProjectils.x = this.mainCharacter.x + 400;
+            this.gunsProjectils.y = this.calcJumpPos() + 290;
         }
-
-
 
         this.addObjectToMap(this.IMAGES_BACKGROUND);
         this.addObjectToMap(this.enemies);
-        this.addToMap(this.gunsProjectils);
         this.addToMap(this.mainCharacter);
-        this.ctx.translate(-this.camera_x, 0);
+        this.addToMap(this.finalBoss);
+        this.addToMap(this.gunsProjectils);
+
+        this.ctx.translate(-this.map_scroll_x, 0);
 
 
         let self = this;
@@ -98,7 +94,7 @@ class World {
     addBackgroundImages() {
         for (let i = 0; i < 3; i++) {
             let imgNumber = i;
-            let x = 1280 * i;
+            let x = 1278 * i;
             this.IMAGES_BACKGROUND.push(new Background(`./img/PNG/Backgrounds/layerLevel1/${imgNumber}.png`, x));
         }
     }
@@ -106,9 +102,9 @@ class World {
     addBackgroundlayer() {
         for (let i = 0; i < 3; i++) {
             let imgNumber = i;
-            let x = 1280 * i;
-            this.IMAGES_BACKGROUND.push(new Background(`./img/PNG/Backgrounds/layerTop/${imgNumber}.png`, x, 0, 1282, 120));
-            this.IMAGES_BACKGROUND.push(new Background(`./img/PNG/Backgrounds/layerBottom/${imgNumber}.png`, x, 600, 1282, 120));
+            let x = 1278 * i;
+            this.IMAGES_BACKGROUND.push(new Background(`./img/PNG/Backgrounds/layerTop/${imgNumber}.png`, x, 0, 1920, 180));
+            this.IMAGES_BACKGROUND.push(new Background(`./img/PNG/Backgrounds/layerBottom/${imgNumber}.png`, x, 600, 1920, 120));
             console.log(this.IMAGES_BACKGROUND);
 
         }
