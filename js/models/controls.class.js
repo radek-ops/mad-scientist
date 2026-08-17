@@ -17,6 +17,10 @@ class Controls {
         });
 
         window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                window.location.href = './controls-game.html';
+                return;
+            }
             (event.key === 'w') ? this.up = true : false;
             (event.key === 'a') ? this.back = true : false;
             (event.key === 's') ? this.down = true : false;
