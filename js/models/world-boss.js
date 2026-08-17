@@ -4,10 +4,10 @@
      * @returns {boolean} True when the laser hits the boss
      */
     laserHitsBoss() {
-        let laserLeft = this.gunsProjectils.x + 10;
-        let laserRight = this.gunsProjectils.x + 10 + (this.gunsProjectils.width - 20);
-        let laserTop = this.gunsProjectils.y + 10;
-        let laserBottom = this.gunsProjectils.y + 10 + (this.gunsProjectils.height - 20);
+        let laserLeft = this.gunsProjectiles.x + 10;
+        let laserRight = this.gunsProjectiles.x + 10 + (this.gunsProjectiles.width - 20);
+        let laserTop = this.gunsProjectiles.y + 10;
+        let laserBottom = this.gunsProjectiles.y + 10 + (this.gunsProjectiles.height - 20);
         let bossLeft = this.finalBoss.x + 650;
         let bossRight = this.finalBoss.x + 650 + (this.finalBoss.width - 1300);
         let bossTop = this.finalBoss.y + 1150;
@@ -24,6 +24,8 @@
      */
     damageBoss(amount) {
         this.bossHpBar.loseHP(amount);
+        this.sound.play('bossHit');
+
         if (this.bossHpBar.currentHP <= 0) {
             this.finalBoss.isDead = true;
             document.getElementById('winOverlay').classList.add('show');

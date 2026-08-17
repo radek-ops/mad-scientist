@@ -8,7 +8,7 @@ class Character extends Moveables {
     IMAGES_GETHIT = [];
     IMAGES_DEATH = [];
     controls;
-    currentThrowBombkImages = 0;
+    currentThrowBombImages = 0;
     currentShootFXImages = 0;
     currentJumpImages = 0;
     currentGetHitImages = 0;
@@ -20,7 +20,7 @@ class Character extends Moveables {
     speedY = 0;
     acceleration = 1;
     otherDirection = false;
-    gunsProjectils;
+    gunsProjectiles;
     x = 0;
     y = 300;
     width = 375;
@@ -30,12 +30,12 @@ class Character extends Moveables {
     /**
      * Creates the character, loads images and starts movement.
      * @param {Controls} controls - The keyboard and mouse controls
-     * @param {GunsProjectils} gunsProjectils - The gun of the character
+     * @param {GunsProjectiles} gunsProjectiles - The gun of the character
      */
-    constructor(controls, gunsProjectils) {
+    constructor(controls, gunsProjectiles) {
         super();
         this.controls = controls;
-        this.gunsProjectils = gunsProjectils;
+        this.gunsProjectiles = gunsProjectiles;
         this.jumpY = 240;
         this.loadAllImages();
         this.moveCharacter();
@@ -168,7 +168,7 @@ class Character extends Moveables {
             this.x -= 10;
             this.otherDirection = true;
         }
-        else if (this.controls.foward && this.x < 3300) {
+        else if (this.controls.forward && this.x < 3300) {
             this.x += 10;
             this.otherDirection = false;
         }
@@ -195,8 +195,6 @@ class Character extends Moveables {
 
     }
 
-
-
     /**
      * Chooses the right animation based on the input.
      */
@@ -207,10 +205,10 @@ class Character extends Moveables {
         if (this.controls.mouseClickLeft) {
             this.walkAnimate();
             this.shootFxAnimate();
-            this.gunsProjectils.projectilAnimate();
+            this.gunsProjectiles.projectileAnimate();
         } else if (this.controls.mouseClickRight && !this.isAboveGround()) {
             this.startThrowBomb();
-        } else if (this.currentThrowBombkImages > 0) {
+        } else if (this.currentThrowBombImages > 0) {
             this.throwBombAnimate();
         } else {
             this.walkAnimate();
@@ -223,7 +221,7 @@ class Character extends Moveables {
      */
     startThrowBomb() {
         this.controls.mouseClickRight = false;
-        this.currentThrowBombkImages = 0;
+        this.currentThrowBombImages = 0;
         this.throwBombAnimate();
         this.world.throwBomb();
     }
@@ -235,7 +233,7 @@ class Character extends Moveables {
     walkAnimate() {
         this.walkFrameCounter++;
         if (this.walkFrameCounter % 3 !== 0) return;
-        let isMoving = this.controls.up || this.controls.back || this.controls.down || this.controls.foward;
+        let isMoving = this.controls.up || this.controls.back || this.controls.down || this.controls.forward;
 
         let images;
         if (isMoving) {
@@ -269,11 +267,11 @@ class Character extends Moveables {
      * Plays the throw-bomb animation.
      */
     throwBombAnimate() {
-        let imgPath = this.IMAGES_THROWBOMB[this.currentThrowBombkImages];
+        let imgPath = this.IMAGES_THROWBOMB[this.currentThrowBombImages];
         this.img = this.imageCache[imgPath];
-        this.currentThrowBombkImages++;
-        if (this.currentThrowBombkImages >= this.IMAGES_THROWBOMB.length) {
-            this.currentThrowBombkImages = 0;
+        this.currentThrowBombImages++;
+        if (this.currentThrowBombImages >= this.IMAGES_THROWBOMB.length) {
+            this.currentThrowBombImages = 0;
         }
     }
 
@@ -323,6 +321,7 @@ class Character extends Moveables {
             this.speedY = 18 ;
             this.currentJumpImages = 0;
             this.controls.space = false;
+            this.world.sound.play('jump');
         }
         if (this.isAboveGround()) {
             this.jumpAnimate();
@@ -377,8 +376,5 @@ class Character extends Moveables {
         }
         return false;
     }
-
-
-
 
 }

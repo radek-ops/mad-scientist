@@ -1,8 +1,5 @@
 class Background extends Moveables {
 
-
-
-
   /**
    * Creates a background image.
    * @param {string} imgPath - The image path

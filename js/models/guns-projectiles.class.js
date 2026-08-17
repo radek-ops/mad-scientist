@@ -1,4 +1,4 @@
-class GunsProjectils extends Moveables {
+class GunsProjectiles extends Moveables {
 
     LASER = [];
     width;
@@ -22,16 +22,7 @@ class GunsProjectils extends Moveables {
         this.height = 100;
         this.addLaserGunImages();
         this.saveImages(this.LASER);
-        this.useProjectil();
-    }
-
-
-    SHOOT_SOUND = new Audio('../sounds/Shoot51.wav');
-    /**
-     * Plays the shoot sound.
-     */
-    playShootSound() {
-        this.SHOOT_SOUND.play();
+        this.useProjectile();
     }
 
 
@@ -64,23 +55,21 @@ class GunsProjectils extends Moveables {
     /**
      * Starts the projectile animation loop.
      */
-    useProjectil() {
+    useProjectile() {
         setInterval(() => {
-            this.projectilAnimate();
+            this.projectileAnimate();
         }, 1000 / 60);
     }
-
 
     /**
      * Plays the laser animation when shooting.
      */
-    projectilAnimate() {
+    projectileAnimate() {
         if (this.controls.mouseClickLeft) {
             let imgPath = this.LASER[this.currentProjectileImages];
             this.currentProjectileImages++;
             if (this.currentProjectileImages >= this.LASER.length) {
                 this.currentProjectileImages = 0;
-                //  this.playShootSound();
             }
             this.img = this.imageCache[imgPath];
 

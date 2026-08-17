@@ -5,7 +5,6 @@ class Moveables {
     width;
     height;
     imageCache = {};
-  
     currentIdleImages = 0;
     currentWalkImages = 0;
 
@@ -32,15 +31,14 @@ class Moveables {
         });
     }
 
-     /**
-     * Starts the animation loop at 60 frames per second.
-     */
+    /**
+    * Starts the animation loop at 60 frames per second.
+    */
     startAnimation() {
         setInterval(() => {
             this.startAnimationUpdate();
         }, 1000 / 60);
     }
-         
 
 }
 

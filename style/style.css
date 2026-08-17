@@ -104,9 +104,6 @@ body {
     gap: 12px;
 }
 
-
-
-
 .start-button {
     display: inline-flex;
     align-items: center;
@@ -130,7 +127,6 @@ body {
 }
 
 @media (max-width: 767px) {
-
 
 .btn-impressum-start {
    

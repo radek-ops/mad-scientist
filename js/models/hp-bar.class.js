@@ -17,7 +17,6 @@ class HPBar extends Moveables {
         this.height = 18;
     }
 
-
     /**
      * Sets the current and maximum health.
      * @param {number} currentHP - The current health
@@ -27,7 +26,6 @@ class HPBar extends Moveables {
         this.currentHP = currentHP;
         this.maxHP = maxHP || this.maxHP;
     }
-
 
     /**
      * Returns the color based on the health amount.
@@ -39,7 +37,6 @@ class HPBar extends Moveables {
         if (percent > 0.25) return '#cccc00';
         if (percent < 0.15) return '#cc0000';
     }
-
 
     /**
      * Draws the health bar.

@@ -44,6 +44,15 @@ class Enemy extends Moveables {
         this.addEnemyDeathImages09();
         this.addEnemyHitImages01();
         this.addEnemyHitImages07();
+        this.saveAllImeges();
+        this.img = this.imageCache[this.IMAGES_IDLE[0]];
+        this.startAnimation();
+    }
+
+    /**
+     * Loads all enemy images into the cache.
+     */
+    saveAllImeges() {
         this.saveImages(this.IMAGES_IDLE);
         this.saveImages(this.IMAGES_WALK);
         this.saveImages(this.GET_HIT);
@@ -54,8 +63,8 @@ class Enemy extends Moveables {
         this.saveImages(this.DEATH_09);
         this.saveImages(this.HIT_01);
         this.saveImages(this.HIT_07);
-        this.img = this.imageCache[this.IMAGES_IDLE[0]];
-        this.startAnimation();
+
+
     }
 
     /**
@@ -71,7 +80,6 @@ class Enemy extends Moveables {
         ctx.rect(this.x + 111, this.y + 148, this.width - 226, this.height - 226);
         ctx.stroke();
     }
-
 
     /**
      * Chooses a random enemy type.
@@ -107,7 +115,6 @@ class Enemy extends Moveables {
         }
     }
 
-
     /**
      * Plays the walk or idle animation and moves the enemy.
      */
@@ -115,7 +122,7 @@ class Enemy extends Moveables {
         if (this.isHit || this.isAttacking) return;
         this.frameCounter++;
         if (this.frameCounter % 4 !== 0) return;
-        let isMoving = this.controls.up || this.controls.back || this.controls.down || this.controls.foward || this.controls.space;
+        let isMoving = this.controls.up || this.controls.back || this.controls.down || this.controls.forward || this.controls.space;
         isMoving ? this.isActivated = true : false;
         if (this.isActivated) {
             let path = this.IMAGES_WALK[this.currentWalkImages];
@@ -249,9 +256,9 @@ class Enemy extends Moveables {
         return false;
     }
 
-     /**
-     * Loads the death images for enemy type 01.
-     */
+    /**
+    * Loads the death images for enemy type 01.
+    */
     addEnemyDeathImages01() {
         for (let i = 0; i <= 23; i++) {
             let number = i < 10 ? '0' + i : i;
@@ -259,9 +266,9 @@ class Enemy extends Moveables {
         }
     }
 
-     /**
-     * Plays the get-hit animation for enemy type 01.
-     */
+    /**
+    * Plays the get-hit animation for enemy type 01.
+    */
     enemy01GetHit() {
         let imgPath = this.GET_HIT[this.currentGetHitImages01];
         let img = this.imageCache[imgPath];
@@ -349,7 +356,5 @@ class Enemy extends Moveables {
         }
         return false;
     }
-
-
 
 }

@@ -10,6 +10,8 @@
             if (this.characterTouchesObject(bomb)) {
                 bomb.collect(this.collectedBombCount);
                 this.collectedBombCount++;
+                this.sound.play('key');
+
             }
         });
     },
@@ -25,6 +27,8 @@
             if (this.characterTouchesObject(potion)) {
                 potion.collect(this.collectedPotionCount);
                 this.collectedPotionCount++;
+                this.sound.play('key');
+
             }
         });
     },
@@ -63,6 +67,7 @@
         }
         this.consumePotion();
         this.hpbar.currentHP = this.hpbar.maxHP;
+
     },
 
     /**
@@ -128,6 +133,8 @@
                 return;
             }
             bomb.hasDamaged = true;
+            this.sound.play('explosion');
+
             this.enemies.forEach((enemy) => {
                 if (enemy.isDead || enemy.isHit) {
                     return;
@@ -189,6 +196,7 @@
      */
     killEnemyWithBomb(enemy) {
         enemy.isHit = true;
+        this.sound.play('enemyDeath');
         let deathInterval = setInterval(() => {
             let done;
             if (enemy.enemyType === '01') {
@@ -201,6 +209,7 @@
             if (done) {
                 clearInterval(deathInterval);
                 enemy.isDead = true;
+
             }
         }, 60);
     },

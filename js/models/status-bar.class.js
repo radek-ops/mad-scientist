@@ -1,8 +1,6 @@
 class StatusBar extends Moveables {
     PRO_BAR = [];
 
-
-
     /**
      * Creates the status bar.
      */
@@ -16,7 +14,6 @@ class StatusBar extends Moveables {
         this.loadImages(this.PRO_BAR[0]);
 
     }
-
 
     /**
      * Loads the status bar image.

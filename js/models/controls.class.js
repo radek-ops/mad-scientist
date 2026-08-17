@@ -2,11 +2,9 @@ class Controls {
     up = false;
     back = false;
     down = false;
-    foward = false;
-
+    forward = false;
     space = false;
     usePotion = false;
-
     mouseClickLeft = false;
     mouseClickRight = false;
 
@@ -28,14 +26,14 @@ class Controls {
             (event.key === 'w') ? this.up = true : false;
             (event.key === 'a') ? this.back = true : false;
             (event.key === 's') ? this.down = true : false;
-            (event.key === 'd') ? this.foward = true : false;
+            (event.key === 'd') ? this.forward = true : false;
         });
 
         window.addEventListener('keyup', (event) => {
             (event.key === 'w') ? this.up = false : false;
             (event.key === 'a') ? this.back = false : false;
             (event.key === 's') ? this.down = false : false;
-            (event.key === 'd') ? this.foward = false : false;
+            (event.key === 'd') ? this.forward = false : false;
         });
 
 

@@ -55,13 +55,5 @@ class FinalBoss extends Moveables {
         this.img = this.imageCache[path]
     }
 
-
-
-
-
-
-
-
-
 }
 

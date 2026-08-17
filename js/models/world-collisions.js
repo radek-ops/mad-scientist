@@ -12,12 +12,14 @@
                 if (isStomping && !enemy.isHit) {
                     enemy.isHit = true;
                     enemy.enemy01GetHit();
+                    this.sound.play('enemyDeath');
                     setTimeout(() => {
                         let deathInterval = setInterval(() => {
                             let done = enemy.enemy01Death();
                             if (done) {
                                 clearInterval(deathInterval);
                                 enemy.isDead = true;
+
                             }
                         }, 60);
                     }, 500);
@@ -91,10 +93,14 @@
      */
     killCharacter() {
         this.mainCharacter.isDead = true;
+        this.sound.stopMusic();
+        this.sound.play('playerDeath');
+
         let deathInterval = setInterval(() => {
             let done = this.mainCharacter.characterDeath();
             if (done) {
                 clearInterval(deathInterval);
+                this.sound.play('gameOver');
                 document.getElementById('gameOverOverlay').classList.add('show');
             }
         }, 60);
@@ -105,6 +111,7 @@
      */
     playCharacterGetHit() {
         this.mainCharacter.isHit = true;
+        this.sound.play('hit');
         let getHitInterval = setInterval(() => {
             let done = this.mainCharacter.characterGetHit();
             if (done) {
@@ -213,6 +220,7 @@
      */
     laserKillEnemy(enemy, type) {
         enemy.isHit = true;
+        this.sound.play('enemyDeath');
         let electricInterval = setInterval(() => {
             let done = type === '07' ? enemy.enemy07GetElectric() : enemy.enemy09GetElectric();
             if (done) {
@@ -235,6 +243,7 @@
             if (done) {
                 clearInterval(deathInterval);
                 enemy.isDead = true;
+
             }
         }, 60);
     },
@@ -245,10 +254,10 @@
      * @returns {boolean} True when the laser hits the enemy
      */
     laserHitEnemy(enemy) {
-        let laserLeft = this.gunsProjectils.x + 10;
-        let laserRight = this.gunsProjectils.x + 10 + (this.gunsProjectils.width - 20);
-        let laserTop = this.gunsProjectils.y + 10;
-        let laserBottom = this.gunsProjectils.y + 10 + (this.gunsProjectils.height - 20);
+        let laserLeft = this.gunsProjectiles.x + 10;
+        let laserRight = this.gunsProjectiles.x + 10 + (this.gunsProjectiles.width - 20);
+        let laserTop = this.gunsProjectiles.y + 10;
+        let laserBottom = this.gunsProjectiles.y + 10 + (this.gunsProjectiles.height - 20);
         let enemyLeft = enemy.x + 111;
         let enemyRight = enemy.x + 111 + (enemy.width - 226);
         let enemyTop = enemy.y + 148;
@@ -258,4 +267,20 @@
             laserLeft < enemyRight &&
             laserTop < enemyBottom;
     },
+    /**
+     * Plays the laser sound while shooting, with a cooldown.
+     */
+    checkLaserSound() {
+        if (!this.controls.mouseClickLeft) {
+            return;
+        }
+        if (this.laserSoundCooldown > 0) {
+            this.laserSoundCooldown--;
+            return;
+        }
+        this.sound.play('lazer');
+        this.laserSoundCooldown = 30;
+    },
+
+
 });

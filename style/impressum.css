@@ -68,8 +68,6 @@
     text-decoration: underline;
 }
 
-
-
 .imp-h2 {
     font-family: "blablaHawk";
     background: linear-gradient(to bottom, #44bdf9 0%, #1771cd 100%);
@@ -98,7 +96,6 @@
     line-height: 1.6;
     margin: 6px 0;
 }
-
 
 @media (max-width: 600px) {
     .impressum-container {

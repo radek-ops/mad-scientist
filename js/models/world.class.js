@@ -4,12 +4,14 @@
     enemies;
     mainCharacter;
     finalBoss;
-    gunsProjectils;
+    gunsProjectiles;
     IMAGES_BACKGROUND = [];
     map_scroll_x = 0;
     statusBar;
     hpbar;
     bossHpBar;
+    sound;
+
     potions;
     bombs;
     thrownBombs;
@@ -20,6 +22,8 @@
     controls;
     headBumpCooldown;
     bossLaserCooldown;
+    laserSoundCooldown;
+
     drawY;
 
     /**
@@ -41,8 +45,10 @@
         this.hasSpawnedBossEnemies = false;
         this.headBumpCooldown = 0;
         this.bossLaserCooldown = 0;
+        this.laserSoundCooldown = 0;
+
         this.addBackgroundImages();
-        this.addBackgroundlayer();
+        this.addBackgroundLayer();
         this.initBars();
         this.initPotions();
         this.initBombs();
@@ -56,6 +62,8 @@
         this.statusBar = new StatusBar();
         this.hpbar = new HPBar();
         this.bossHpBar = new BossHPBar();
+        this.sound = new Sound();
+        this.sound.playMusic('mainTheme');
     }
 
     /**
@@ -91,8 +99,8 @@
      */
     initEntities() {
         this.controls = new Controls();
-        this.gunsProjectils = new GunsProjectils(this.controls);
-        this.mainCharacter = new Character(this.controls, this.gunsProjectils);
+        this.gunsProjectiles = new GunsProjectiles(this.controls);
+        this.mainCharacter = new Character(this.controls, this.gunsProjectiles);
         this.mainCharacter.world = this;
         this.initEnemies();
         this.finalBoss = new FinalBoss();
@@ -150,13 +158,13 @@
      */
     updateGunPosition() {
         let gunOffsetY = this.mainCharacter.isAboveGround() ? 70 : 180;
-        this.gunsProjectils.otherDirection = this.mainCharacter.otherDirection;
-        if (this.gunsProjectils.otherDirection) {
-            this.gunsProjectils.x = this.mainCharacter.x - 10;
-            this.gunsProjectils.y = this.calcJumpPos() + gunOffsetY;
+        this.gunsProjectiles.otherDirection = this.mainCharacter.otherDirection;
+        if (this.gunsProjectiles.otherDirection) {
+            this.gunsProjectiles.x = this.mainCharacter.x - 10;
+            this.gunsProjectiles.y = this.calcJumpPos() + gunOffsetY;
         } else {
-            this.gunsProjectils.x = this.mainCharacter.x + 280;
-            this.gunsProjectils.y = this.calcJumpPos() + gunOffsetY;
+            this.gunsProjectiles.x = this.mainCharacter.x + 280;
+            this.gunsProjectiles.y = this.calcJumpPos() + gunOffsetY;
         }
     }
 
@@ -194,6 +202,8 @@
         this.checkLaserEnemyCollision07();
         this.checkLaserEnemyCollision09();
         this.checkLaserHitsBoss();
+        this.checkLaserSound();
+
         this.checkBombCollection();
         this.checkPotionCollection();
         this.usePotion();
@@ -220,7 +230,7 @@
     drawEntities() {
         this.addToMap(this.mainCharacter);
         this.addToMap(this.finalBoss);
-        this.addToMap(this.gunsProjectils);
+        this.addToMap(this.gunsProjectiles);
         this.ctx.translate(-this.map_scroll_x, 0);
     }
 
@@ -288,7 +298,7 @@
     /**
      * Loads the top and bottom background layers.
      */
-    addBackgroundlayer() {
+    addBackgroundLayer() {
         for (let i = 0; i < 3; i++) {
             let x = 1278 * i;
             this.IMAGES_BACKGROUND.push(new Background(`./img/PNG/Backgrounds/layerTop/${i}.png`, x, 0, 1920, 180));
