@@ -1,4 +1,4 @@
-class Backdrop extends movableCharacters{
+class Backdrop extends moveableCharacters{
 
     
      constructor(){
