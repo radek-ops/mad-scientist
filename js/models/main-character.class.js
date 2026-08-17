@@ -96,6 +96,7 @@ class Character extends Moveables {
             this.x += 10;
             this.otherDirection = false;
         }
+        this.world.camera_x = -this.x;
     }
 
 

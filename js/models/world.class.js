@@ -1,29 +1,37 @@
 class World {
     ctx;
     canvas;
-    enemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
+    enemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy(), new Enemy()];
     controls;
     mainCharacter;
     gunsProjectils;
     IMAGES_BACKGROUND = [];
+    camera_x = 0;
 
 
     constructor(canvas) {
-
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.addBackgroundImages();
         this.addBackgroundlayer();
         this.controls = new Controls();
         this.mainCharacter = new Character(this.controls);
+        this.mainCharacter.world = this;
         this.gunsProjectils = new GunsProjectils(this.controls);
         this.ctx.imageSmoothingEnabled = false;
-
+       
         this.draw();
     }
 
 
+    
+
+
     draw() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.ctx.translate(this.camera_x, 0);
+
 
         if (this.gunsProjectils.otherDirection = this.mainCharacter.otherDirection) {
             this.gunsProjectils.x = this.mainCharacter.x - 30;
@@ -34,11 +42,12 @@ class World {
         }
 
 
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
         this.addObjectToMap(this.IMAGES_BACKGROUND);
         this.addObjectToMap(this.enemies);
         this.addToMap(this.gunsProjectils);
         this.addToMap(this.mainCharacter);
+        this.ctx.translate(-this.camera_x, 0);
 
 
         let self = this;
