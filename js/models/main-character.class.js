@@ -13,7 +13,7 @@ class Character extends Moveables {
     frameCounter = 0;
     speedY = 0;
     acceleration = 1;
-
+    otherDirection = false;
 
 
     constructor(controls) {
@@ -30,7 +30,6 @@ class Character extends Moveables {
 
     }
 
-
     loadAllImages() {
         this.addMoveImages();
         this.addShootFXImages();
@@ -44,7 +43,6 @@ class Character extends Moveables {
         this.img = this.imageCache[this.IMAGES_IDLE[0]];
     }
 
-
     addMoveImages() {
         for (let i = 0; i < 14; i++) {
             let imgNumber = i < 10 ? '0' + i : i;
@@ -53,14 +51,12 @@ class Character extends Moveables {
         }
     }
 
-
     addShootFXImages() {
         for (let i = 0; i < 4; i++) {
             let imgNumber = '0' + i;
             this.IMAGES_SHOOTFX1.push(`./img/PNG/Main_Characters/Gun01/ShootFX1/ShootFX1_${imgNumber}.png`);
         }
     }
-
 
     addThrowBombImages() {
         for (let i = 0; i < 20; i++) {
@@ -69,7 +65,6 @@ class Character extends Moveables {
         }
     }
 
-
     addJumpImages() {
         for (let i = 0; i < 9; i++) {
             let imgNumber = '0' + i;
@@ -77,7 +72,6 @@ class Character extends Moveables {
         }
     }
 
-    
     moveCharacter() {
         setInterval(() => {
             this.movement();
@@ -90,47 +84,42 @@ class Character extends Moveables {
         if (this.controls.up && this.y > 190) {
             this.y -= 10;
         }
-        else if (this.controls.down && this.y < 270) {
+        if (this.controls.down && this.y < 270) {
             this.y += 10;
         }
-        else if (this.controls.back) {
+
+        if (this.controls.back) {
             this.x -= 10;
-            this.direction = -1;
+            this.otherDirection = true;
         }
         else if (this.controls.foward) {
             this.x += 10;
-            this.direction = 1;
+            this.otherDirection = false;
         }
     }
 
 
     animate() {
-
         if (this.controls.mouseClickLeft) {
             this.shootFxAnimate();
         } else if (this.controls.mouseClickRight) {
             this.startThrowBomb();
         } else if (this.currentThrowBombkImages > 0) {
             this.throwBombAnimate();
-        } else if (this.controls.space) {
+        } else if (this.controls.space || this.isAboveGround()) {
             this.jump();
-        } else if (this.isAboveGround() || this.speedY > 0) {
-            this.jumpAnimate();
         } else {
             this.walkAnimate();
         }
     }
-    
+
+
 
     startThrowBomb() {
         this.controls.mouseClickRight = false;
         this.currentThrowBombkImages = 0;
         this.throwBombAnimate();
     }
-
-
-
-
 
     walkAnimate() {
         this.frameCounter++;
@@ -150,7 +139,6 @@ class Character extends Moveables {
         this.img = this.imageCache[imgPath];
     }
 
-
     shootFxAnimate() {
         this.frameCounter++;
         if (this.frameCounter % 2 !== 0) return;
@@ -159,10 +147,9 @@ class Character extends Moveables {
         this.currentShootFXImages++;
         if (this.currentShootFXImages >= this.IMAGES_SHOOTFX1.length) {
             this.currentShootFXImages = 0;
-            this.walkAnimate();
+
         }
     }
-
 
     throwBombAnimate() {
         let imgPath = this.IMAGES_THROWBOMB[this.currentThrowBombkImages];
@@ -170,10 +157,9 @@ class Character extends Moveables {
         this.currentThrowBombkImages++;
         if (this.currentThrowBombkImages >= this.IMAGES_THROWBOMB.length) {
             this.currentThrowBombkImages = 0;
-            this.walkAnimate();
+
         }
     }
-
 
     applyGravity() {
         setInterval(() => {
@@ -187,34 +173,33 @@ class Character extends Moveables {
         }, 1000 / 60);
     }
 
-
     isAboveGround() {
         return this.jumpY < 240;
     }
-
 
     calcJumpY() {
         return this.y - (240 - this.jumpY);
     }
 
-
     jump() {
         if (!this.isAboveGround()) {
-            this.speedY = 18;
+            this.speedY = 15;
             this.currentJumpImages = 0;
-            this.controls.space = false;
-
+           
+ 
         }
+         this.controls.space = false;
         this.jumpAnimate();
     }
 
-
     jumpAnimate() {
-        if (this.currentJumpImages >= this.IMAGES_JUMP.length) {
-            return;
+        if (this.currentJumpImages < this.IMAGES_JUMP.length) {
+            let imgPath = this.IMAGES_JUMP[this.currentJumpImages];
+            this.img = this.imageCache[imgPath];
+            this.currentJumpImages++;
+             this.controls.space = false; 
         }
-        let imgPath = this.IMAGES_JUMP[this.currentJumpImages];
-        this.img = this.imageCache[imgPath];
-        this.currentJumpImages++;
+        
     }
+
 }

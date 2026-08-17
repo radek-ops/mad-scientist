@@ -3,7 +3,7 @@ class Controls {
     back = false;
     down = false;
     foward = false;
-    
+
     space = false;
 
     mouseClickLeft = false;
@@ -41,18 +41,19 @@ class Controls {
             (event.button === 2) ? this.mouseClickRight = false : false;
         });
         window.addEventListener('keydown', (event) => {
+            if (event.repeat) return;
             (event.code === 'Space') ? this.space = true : false;
         });
 
-         window.addEventListener('keyup', (event) => {
+        window.addEventListener('keyup', (event) => {
             (event.code === 'Space') ? this.space = false : false;
         });
 
 
     }
 
- 
- 
+
+
 
 
 
