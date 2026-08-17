@@ -1,0 +1,78 @@
+.impressum-main {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url('../img/PNG/User_Interfaces/LandingScreen.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    padding: 80px 16px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.impressum-main::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 0;
+}
+
+.impressum-container {
+    width: clamp(280px, 90%, 800px);
+    padding: clamp(16px, 3vw, 40px);
+    background-color: rgba(0, 0, 0, 0.9);
+    border-radius: 16px;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+}
+
+.impressum-title {
+    margin-bottom: 40px;
+}
+
+.imp-h2 {
+    font-family: "blablaHawk";
+    background: linear-gradient(to bottom, #44bdf9 0%, #1771cd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 2px #0a2d4d;
+    font-size: clamp(22px, 5vw, 36px);
+    margin-bottom: clamp(20px, 4vw, 40px);
+}
+
+.imp-h3 {
+    font-family: "blablaHawk";
+    background: linear-gradient(to bottom, #cdd94c 10%, #58b729 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 1px #046eba;
+    font-size: clamp(18px, 3.5vw, 24px);
+    margin-top: clamp(16px, 3vw, 32px);
+    margin-bottom: clamp(8px, 1.5vw, 12px);
+}
+
+.impressum-container p {
+    color: rgba(255, 255, 255, 0.9);
+    font-family: Arial, sans-serif;
+    font-size: clamp(13px, 2vw, 16px);
+    line-height: 1.6;
+    margin: 6px 0;
+}
+
+@media (max-width: 600px) {
+    .impressum-container {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 400px) {
+    .impressum-container {
+        border-radius: 12px;
+    }
+}

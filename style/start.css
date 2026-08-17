@@ -1,0 +1,91 @@
+.start-main {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url('../img/PNG/User_Interfaces/LandingScreen.png');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.start-main::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 0;
+}
+
+.start-container {
+    width: clamp(320px, 90%, 1000px);
+    padding: clamp(24px, 4vw, 60px);
+    background-image: url('../img/PNG/Backgrounds/layerLevel2/0.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: 16px;
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.2), 0 0 80px rgba(68, 189, 249, 0.15);
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.start-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    border-radius: 16px;
+    z-index: 0;
+}
+
+.start-container > * {
+    position: relative;
+    z-index: 1;
+}
+
+.start-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(16px, 3vw, 40px);
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.start-title {
+    margin-bottom: 24px;
+}
+
+.start-char {
+    width: clamp(300px, 40vw, 500px);
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba(68, 189, 249, 0.5));
+}
+
+.start-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    padding: 0 50px;
+    font-family: "blablaHawk";
+    font-size: clamp(20px, 3vw, 28px);
+    color: #fff;
+    text-decoration: none;
+    background: url('../img/PNG/User_Interfaces/Btn3.png') no-repeat center;
+    background-size: 100% 100%;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.3s;
+}
+
+.start-button:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}

@@ -1,0 +1,81 @@
+main {
+    width: 100%;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../img/PNG/User_Interfaces/LandingScreen.png');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+main::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 0;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1920px;
+    height: 100dvh;
+    position: relative;
+    margin-bottom: 100px;
+}
+
+canvas {
+    max-width: 95vw;
+    max-height: 100vh;
+    filter: brightness(1.2);
+    border-radius: 16px;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.3),
+        0 0 60px rgba(255, 255, 255, 0.2);
+}
+
+/* Landscape Warning */
+
+.landscape-warning {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.warning-message {
+    text-align: center;
+    color: #fff;
+}
+
+.warning-message h1 {
+    font-family: "blablaHawk";
+    font-size: 36px;
+    background: linear-gradient(to bottom, #44bdf9 0%, #1771cd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 2px #0a2d4d;
+    margin-bottom: 16px;
+}
+
+.warning-message p {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 818px) and (orientation: portrait) {
+    .landscape-warning {
+        display: flex;
+    }
+}
