@@ -11,12 +11,17 @@ class Potion extends Moveables {
         super();
         this.addPotions();
         this.saveImages(this.POTIONS);
-        let index = Potion.counter;
-        this.img = this.imageCache[this.POTIONS[index]];
-        this.x = this.xPositions[index];
+        this.initPotion();
         this.y = 110;
         this.width = 45;
         this.height = 45;
+    }
+
+
+    initPotion() {
+        let index = Potion.counter;
+        this.img = this.imageCache[this.POTIONS[index]];
+        this.x = this.xPositions[index];
         Potion.counter++;
     }
 
@@ -29,8 +34,6 @@ class Potion extends Moveables {
 
 
 }
-
-
 
 
 
