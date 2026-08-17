@@ -4,7 +4,7 @@ class World {
     enemies;
     mainCharacter;
     finalBoss;
-    // gunsProjectils; =  new GunsProjectils();
+    gunsProjectils;
     IMAGES_BACKGROUND = [];
     map_scroll_x = 0;
 
@@ -15,10 +15,10 @@ class World {
         this.addBackgroundImages();
         this.addBackgroundlayer();
         this.controls = new Controls();
-        this.mainCharacter = new Character(this.controls);
+        this.gunsProjectils = new GunsProjectils(this.controls);
+        this.mainCharacter = new Character(this.controls, this.gunsProjectils);
         this.mainCharacter.world = this;
         this.enemies = [new Enemy(this.controls), new Enemy(this.controls), new Enemy(this.controls), new Enemy(this.controls), new Enemy(this.controls)];
-        this.gunsProjectils = new GunsProjectils(this.controls);
         this.finalBoss = new FinalBoss();
         this.draw();
     }
@@ -27,14 +27,14 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.map_scroll_x, 0);
-        if (this.gunsProjectils.otherDirection = this.mainCharacter.otherDirection) {
-
+        let gunOffsetY = this.mainCharacter.isAboveGround() ? 130 : 290;
+        this.gunsProjectils.otherDirection = this.mainCharacter.otherDirection;
+        if (this.gunsProjectils.otherDirection) {
             this.gunsProjectils.x = this.mainCharacter.x - 10;
-            this.gunsProjectils.y = this.calcJumpPos() + 290;
-
+            this.gunsProjectils.y = this.calcJumpPos() + gunOffsetY;
         } else {
             this.gunsProjectils.x = this.mainCharacter.x + 400;
-            this.gunsProjectils.y = this.calcJumpPos() + 290;
+            this.gunsProjectils.y = this.calcJumpPos() + gunOffsetY;
         }
 
         this.addObjectToMap(this.IMAGES_BACKGROUND);
@@ -42,7 +42,6 @@ class World {
         this.addToMap(this.mainCharacter);
         this.addToMap(this.finalBoss);
         this.addToMap(this.gunsProjectils);
-
         this.ctx.translate(-this.map_scroll_x, 0);
 
 
@@ -105,7 +104,6 @@ class World {
             let x = 1278 * i;
             this.IMAGES_BACKGROUND.push(new Background(`./img/PNG/Backgrounds/layerTop/${imgNumber}.png`, x, 0, 1920, 180));
             this.IMAGES_BACKGROUND.push(new Background(`./img/PNG/Backgrounds/layerBottom/${imgNumber}.png`, x, 600, 1920, 120));
-            console.log(this.IMAGES_BACKGROUND);
 
         }
     }

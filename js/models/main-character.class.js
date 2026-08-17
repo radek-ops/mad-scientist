@@ -9,14 +9,17 @@ class Character extends Moveables {
     currentThrowBombkImages = 0;
     currentShootFXImages = 0;
     currentJumpImages = 0;
-    frameCounter = 0;
+    walkFrameCounter = 0;
+    shootFxframeCounter = 0;
     speedY = 0;
     acceleration = 1;
     otherDirection = false;
+    gunsProjectils;
 
-    constructor(controls) {
+    constructor(controls, gunsProjectils) {
         super();
         this.controls = controls;
+        this.gunsProjectils = gunsProjectils;
         this.x = 0;
         this.y = 180;
         this.jumpY = 240;
@@ -25,6 +28,7 @@ class Character extends Moveables {
         this.loadAllImages();
         this.moveCharacter();
         this.applyGravity();
+
     }
 
     loadAllImages() {
@@ -73,6 +77,7 @@ class Character extends Moveables {
         setInterval(() => {
             this.movement();
             this.animate();
+            this.jump();
         }, 1000 / 60);
     }
 
@@ -88,7 +93,7 @@ class Character extends Moveables {
             this.x -= 10;
             this.otherDirection = true;
         }
-        else if (this.controls.foward && this.x < 3840 -this.width ) {
+        else if (this.controls.foward && this.x < 3840 - this.width) {
             this.x += 10;
             this.otherDirection = false;
         }
@@ -106,17 +111,18 @@ class Character extends Moveables {
 
     animate() {
         if (this.controls.mouseClickLeft) {
+            this.walkAnimate();
             this.shootFxAnimate();
-        } else if (this.controls.mouseClickRight) {
+            this.gunsProjectils.projectilAnimate();
+        } else if (this.controls.mouseClickRight && !this.isAboveGround()) {
             this.startThrowBomb();
         } else if (this.currentThrowBombkImages > 0) {
             this.throwBombAnimate();
-        } else if (this.controls.space || this.isAboveGround()) {
-            this.jump();
         } else {
             this.walkAnimate();
         }
     }
+
 
     startThrowBomb() {
         this.controls.mouseClickRight = false;
@@ -124,9 +130,10 @@ class Character extends Moveables {
         this.throwBombAnimate();
     }
 
+    
     walkAnimate() {
-        this.frameCounter++;
-        if (this.frameCounter % 3 !== 0) return;
+        this.walkFrameCounter++;
+        if (this.walkFrameCounter % 3 !== 0) return;
         let isMoving = this.controls.up || this.controls.back || this.controls.down || this.controls.foward;
 
         let images;
@@ -144,8 +151,8 @@ class Character extends Moveables {
     }
 
     shootFxAnimate() {
-        this.frameCounter++;
-        if (this.frameCounter % 2 !== 0) return;
+        this.shootFxframeCounter++;
+        if (this.shootFxframeCounter % 2 !== 0) return;
         let imgPath = this.IMAGES_SHOOTFX1[this.currentShootFXImages];
         this.img = this.imageCache[imgPath];
         this.currentShootFXImages++;
@@ -179,27 +186,24 @@ class Character extends Moveables {
         return this.jumpY < 240;
     }
 
-    calcJumpY() {
-        return this.y - (240 - this.jumpY);
-    }
-
     jump() {
-        if (!this.isAboveGround()) {
-            this.speedY = 20;
+        if (this.controls.space && !this.isAboveGround()) {
+            this.speedY = 16;
             this.currentJumpImages = 0;
+            this.controls.space = false;
         }
-        this.controls.space = false;
-        this.jumpAnimate();
+        if (this.isAboveGround()) {
+            this.jumpAnimate();
+        }
     }
 
     jumpAnimate() {
         if (this.currentJumpImages < this.IMAGES_JUMP.length) {
-            let imgPath = this.IMAGES_JUMP[this.currentJumpImages];
-            this.img = this.imageCache[imgPath];
             this.currentJumpImages++;
-            this.controls.space = false;
         }
-
+        let index = Math.min(this.currentJumpImages, this.IMAGES_JUMP.length - 1);
+        let imgPath = this.IMAGES_JUMP[index];
+        this.img = this.imageCache[imgPath];
     }
 
 }

@@ -16,7 +16,7 @@ class FinalBoss extends Moveables {
     }
 
 
-    addFinalBossImages(walkEnemyNum, idleEnemyNum) {
+    addFinalBossImages() {
         for (let i = 0; i <= 6; i++) {
             let number = i;
             this.IMAGES_IDLE.push(`./img/PNG/Enemy_Characters/Enemy_Character10/Idle/Idle_${number}.png`);

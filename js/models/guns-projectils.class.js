@@ -14,7 +14,7 @@ class GunsProjectils extends Moveables {
         super();
         this.controls = controls;
         this.x = 0;
-        this.y = 0;
+        this.y = 290;
         this.img = this.EMPTY_IMG;
         this.width = 150;
         this.height = 100;

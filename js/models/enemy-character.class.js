@@ -20,7 +20,6 @@ class Enemy extends Moveables {
     }
 
     addEnemyImages() {
-        let isMoving = this.controls.up || this.controls.back || this.controls.down || this.controls.foward;
         let availableEnemy = ['01', '07', '09'];
         let randomIndex = Math.floor(Math.random() * availableEnemy.length);
         let walkEnemyNum = availableEnemy[randomIndex];
