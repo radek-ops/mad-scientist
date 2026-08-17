@@ -122,7 +122,7 @@ h1 {
     align-items: flex-end;
     justify-content: space-between;
     gap: clamp(16px, 3vw, 200px);
-   
+
 }
 
 .start-title {
@@ -147,7 +147,7 @@ h1 {
 .start-button {
     display: inline-flex;
     align-items: center;
-    justify-content: center; 
+    justify-content: center;
     height: 60px;
     padding: 0 50px;
     font-family: "blablaHawk";
@@ -159,7 +159,6 @@ h1 {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     cursor: pointer;
     transition: transform 0.2s, opacity 0.3s;
-     margin-bottom: 70px;
 }
 
 .start-button:hover {
