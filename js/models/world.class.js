@@ -1,8 +1,7 @@
 class World {
     ctx;
     canvas;
-    enemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy(), new Enemy()];
-    controls;
+    enemies;
     mainCharacter;
     gunsProjectils;
     IMAGES_BACKGROUND = [];
@@ -17,14 +16,15 @@ class World {
         this.controls = new Controls();
         this.mainCharacter = new Character(this.controls);
         this.mainCharacter.world = this;
+        this.enemies = [new Enemy(this.controls), new Enemy(this.controls), new Enemy(this.controls), new Enemy(this.controls), new Enemy(this.controls)];
         this.gunsProjectils = new GunsProjectils(this.controls);
         this.ctx.imageSmoothingEnabled = false;
-       
+
         this.draw();
     }
 
 
-    
+
 
 
     draw() {
@@ -35,7 +35,7 @@ class World {
 
         if (this.gunsProjectils.otherDirection = this.mainCharacter.otherDirection) {
             this.gunsProjectils.x = this.mainCharacter.x - 30;
-            this.gunsProjectils.y = this.calcJumpPos() - -240;
+            this.gunsProjectils.y = this.calcJumpPos() -240;
         } else {
             this.gunsProjectils.x = this.mainCharacter.x + 350;
             this.gunsProjectils.y = this.calcJumpPos() + 240;
