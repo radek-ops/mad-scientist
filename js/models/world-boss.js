@@ -23,13 +23,44 @@
      * @param {number} amount - How much health to remove
      */
     damageBoss(amount) {
+        if (this.finalBoss.isDead) {
+            return;
+        }
         this.bossHpBar.loseHP(amount);
         this.sound.play('bossHit');
 
         if (this.bossHpBar.currentHP <= 0) {
             this.finalBoss.isDead = true;
-            document.getElementById('winOverlay').classList.add('show');
+            this.playBossDestroy();
+        } else if (!this.finalBoss.isHit) {
+            this.playBossGetHit();
         }
+    },
+
+    /**
+     * Plays the get-hit animation of the boss.
+     */
+    playBossGetHit() {
+        this.finalBoss.isHit = true;
+        let getHitInterval = setInterval(() => {
+            let done = this.finalBoss.getHit();
+            if (done) {
+                clearInterval(getHitInterval);
+            }
+        }, 60);
+    },
+
+    /**
+     * Plays the destroy animation of the boss and shows the win screen.
+     */
+    playBossDestroy() {
+        let destroyInterval = setInterval(() => {
+            let done = this.finalBoss.destroy();
+            if (done) {
+                clearInterval(destroyInterval);
+                document.getElementById('winOverlay').classList.add('show');
+            }
+        }, 60);
     },
 
     /**
@@ -47,6 +78,21 @@
             this.damageBoss(5);
             this.bossLaserCooldown = 20;
         }
+    },
+
+    /**
+     * Triggers the boss boxing (punch) animation every 4 seconds.
+     */
+    checkBossBoxing() {
+        if (this.finalBoss.isDead) {
+            return;
+        }
+        if (this.boxingCooldown > 0) {
+            this.boxingCooldown--;
+            return;
+        }
+        this.boxing.start();
+        this.boxingCooldown = 240;
     },
 
     /**

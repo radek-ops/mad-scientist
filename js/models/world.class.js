@@ -23,6 +23,8 @@
     headBumpCooldown;
     bossLaserCooldown;
     laserSoundCooldown;
+    boxing;
+    boxingCooldown;
 
     drawY;
 
@@ -46,6 +48,7 @@
         this.headBumpCooldown = 0;
         this.bossLaserCooldown = 0;
         this.laserSoundCooldown = 0;
+        this.boxingCooldown = 0;
 
         this.addBackgroundImages();
         this.addBackgroundLayer();
@@ -104,6 +107,7 @@
         this.mainCharacter.world = this;
         this.initEnemies();
         this.finalBoss = new FinalBoss();
+        this.boxing = new Boxing(this.finalBoss.x + 450, 450);
     }
 
     /**
@@ -187,7 +191,6 @@
         this.addObjectToMap(this.enemies);
         this.addObjectToMap(this.bombs.filter(bomb => !bomb.isCollected));
         this.addObjectToMap(this.potions.filter(potion => !potion.isCollected && !potion.isConsumed));
-        this.addObjectToMap(this.thrownBombs);
     }
 
     /**
@@ -203,6 +206,7 @@
         this.checkLaserEnemyCollision09();
         this.checkLaserHitsBoss();
         this.checkLaserSound();
+        this.checkBossBoxing();
 
         this.checkBombCollection();
         this.checkPotionCollection();
@@ -228,9 +232,11 @@
      * Draws the character, boss and gun.
      */
     drawEntities() {
-        this.addToMap(this.mainCharacter);
         this.addToMap(this.finalBoss);
+        this.addToMap(this.boxing);
+        this.addToMap(this.mainCharacter);
         this.addToMap(this.gunsProjectiles);
+        this.addObjectToMap(this.thrownBombs);
         this.ctx.translate(-this.map_scroll_x, 0);
     }
 

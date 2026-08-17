@@ -15,7 +15,7 @@ class Sound {
         this.load('hit', 'sounds/freesound_community-thump-105302.mp3');
         this.load('key', 'sounds/key.wav');
         this.load('playerDeath', 'sounds/player_death.wav');
-        this.load('bossHit', 'sounds/boss_hit.wav');
+        this.load('bossHit', 'sounds/freesound_community-kick-004-82333.mp3');
         this.load('enemyDeath', 'sounds/alien_death1.wav');
         this.load('menuSelect', 'sounds/menu_select.mp3');
         this.load('mainTheme', 'sounds/01_Main_Theme_Rate.mp3');

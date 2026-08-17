@@ -146,6 +146,9 @@
             if (this.explosionHitsBoss(bomb)) {
                 this.damageBoss(5);
             }
+            if (this.explosionHitsCharacter(bomb)) {
+                this.damageCharacter(this.hpbar.maxHP * 0.25);
+            }
         });
     },
 
@@ -188,6 +191,27 @@
             explosionBottom > bossTop &&
             explosionLeft < bossRight &&
             explosionTop < bossBottom;
+    },
+
+    /**
+     * Checks if an explosion touches the main character.
+     * @param {ThrownBomb} bomb - The exploding bomb
+     * @returns {boolean} True when the explosion hits the character
+     */
+    explosionHitsCharacter(bomb) {
+        let explosionLeft = bomb.x;
+        let explosionRight = bomb.x + bomb.width;
+        let explosionTop = bomb.y;
+        let explosionBottom = bomb.y + bomb.height;
+        let charY = this.mainCharacter.getJumpY();
+        let charLeft = this.mainCharacter.x + 106;
+        let charRight = this.mainCharacter.x + 106 + (this.mainCharacter.width - 266);
+        let charHead = charY + 150;
+        let charFeet = charY + 150 + (this.mainCharacter.height - 244);
+        return explosionRight > charLeft &&
+            explosionBottom > charHead &&
+            explosionLeft < charRight &&
+            explosionTop < charFeet;
     },
 
     /**
