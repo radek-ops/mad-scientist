@@ -2,7 +2,7 @@ class Potion extends Moveables {
 
     POTIONS = [];
 
-    xPositions = [80, 145, 210];
+    xPositions = [150, 200, 250];
 
     static counter = 0;
 
