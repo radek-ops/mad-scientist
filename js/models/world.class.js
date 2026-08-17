@@ -1,25 +1,29 @@
 class World {
     ctx;
     canvas;
-    controls;
-    guns;
-    mainCharacter;
     background = new Background();
     enemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
+    controls;
+    mainCharacter;
+    gunsProjectils;
+
 
 
     constructor(canvas) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
-        this.guns = new Guns();
         this.controls = new Controls();
         this.mainCharacter = new Character(this.controls);
+        this.gunsProjectils = new GunsProjectils(this.controls);
         this.draw();
     }
 
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.gunsProjectils.x = this.mainCharacter.x + 350;
+        this.gunsProjectils.y = this.mainCharacter.y + 240
 
         this.ctx.drawImage(
             this.background.img,
@@ -37,8 +41,7 @@ class World {
                 enemy.height)
         });
 
-        
-        if (this.mainCharacter.img) {
+       
             this.ctx.drawImage(
                 this.mainCharacter.img,
                 this.mainCharacter.x,
@@ -46,42 +49,25 @@ class World {
                 this.mainCharacter.width,
                 this.mainCharacter.height
             );
-        }
-
-
-        if (this.mainCharacter.shootFxImg) {
-
+        
+            try {
             this.ctx.drawImage(
-                this.mainCharacter.shootFxImg,
-                this.mainCharacter.x,
-                this.mainCharacter.y,
-                this.mainCharacter.width,
-                this.mainCharacter.height
+
+                this.gunsProjectils.img,
+                this.gunsProjectils.x,
+                this.gunsProjectils.y,
+                this.gunsProjectils.width,
+                this.gunsProjectils.height
             );
-        }
+            } catch (error) {
+        
+        console.warn("STOPP! Hier ist der Fehler beim Zeichnen:");
+                
+        console.log("Inhalt von img:", this.gunsProjectils.img);
+               
+        console.error(error);
+    }
 
-
-        if (this.projectilsImg) {
-
-            this.ctx.drawImage(
-                this.projectilsImg.x,
-                this.projectilsImg.y,
-                this.projectilsImg.width,
-                this.projectilsImg.height
-            );
-        }
-
-
-        if (this.mainCharacter.throwBombImg) {
-
-            this.ctx.drawImage(
-                this.mainCharacter.throwBombImg,
-                this.mainCharacter.x,
-                this.mainCharacter.y,
-                this.mainCharacter.width,
-                this.mainCharacter.height
-            );
-        }
 
         let self = this;
         requestAnimationFrame(function () {

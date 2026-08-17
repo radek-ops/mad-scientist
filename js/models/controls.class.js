@@ -3,12 +3,17 @@ class Controls {
     back = false;
     down = false;
     foward = false;
-    backward = false;
+
     mouseClickLeft = false;
     mouseClickRight = false;
-    
+
 
     constructor() {
+
+        window.addEventListener('contextmenu', (event) => {
+            event.preventDefault();
+        });
+
         window.addEventListener('keydown', (event) => {
             (event.key === 'w') ? this.up = true : false;
             (event.key === 'a') ? this.back = true : false;
@@ -31,7 +36,7 @@ class Controls {
 
         window.addEventListener('mouseup', (event) => {
             (event.button === 0) ? this.mouseClickLeft = false : false;
-            (event.button === 2) ? this.mouseClickRight = false : false;
+            (event.button === 2) ? this.mouseClickRight = false : false;  
         });
 
     }
@@ -40,6 +45,6 @@ class Controls {
 
 
 
-    
+
 
 }

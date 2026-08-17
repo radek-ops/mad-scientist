@@ -2,12 +2,9 @@ class Moveables {
     x;
     y;
     img;
-    shootFxImg;
-    gunImg;
-    throwBombImg;
-    characterImg;
     width;
     height;
+    imageCache = {};
 
 
     loadImages(path) {
@@ -20,7 +17,7 @@ class Moveables {
         images.forEach((imgPath) => {
             let img = new Image();
             img.src = imgPath;
-            this.imagesCache[imgPath] = img;
+            this.imageCache[imgPath] = img;
         });
     }
 
