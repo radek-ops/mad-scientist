@@ -76,13 +76,13 @@ class World {
 
      checkEnemyCollision07And09() {
         this.enemies.forEach((enemy) => {
-            if (this.collision(this.mainCharacter, enemy) && enemy.enemyType === '07' || enemy.enemyType == '09' ) {
+            if (this.collision(this.mainCharacter, enemy) && (enemy.enemyType === '07' || enemy.enemyType == '09')) {
                 let charFeet = this.mainCharacter.getJumpY() + 281;
                 let enemyHead = enemy.y + 148;
                 let isFalling = this.mainCharacter.speedY < 0;
                 let isStomping = isFalling && (charFeet - enemyHead < 50);
                 if (isStomping) {
-                    enemy.enemyGetHit();
+                    return;
                 }
             }
         });
