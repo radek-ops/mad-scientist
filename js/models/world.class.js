@@ -25,16 +25,11 @@ class World {
 
         this.gunsProjectils.x = this.mainCharacter.x + 350;
         this.gunsProjectils.y = this.calcJumpPos() + 240;
-        
+
         this.addObjectToMap(this.IMAGES_BACKGROUND);
         this.addObjectToMap(this.enemies);
         this.addToMap(this.gunsProjectils);
         this.addToMap(this.mainCharacter);
-       
-       
-
-
-
 
 
         let self = this;
@@ -44,7 +39,7 @@ class World {
 
     }
 
-    
+
     calcJumpPos() {
         if (this.mainCharacter.isAboveGround()) {
             return this.mainCharacter.y - (240 - this.mainCharacter.jumpY);
@@ -75,7 +70,8 @@ class World {
         for (let i = 0; i < 3; i++) {
             let imgNumber = i;
             let nextBackground = 1279 * i;
-            this.IMAGES_BACKGROUND.push(new Background(`./img/PNG/Backgrounds/${imgNumber}.png`, nextBackground));
+            this.IMAGES_BACKGROUND.push(new Background(`./img/PNG/Backgrounds/layerLevel1/${imgNumber}.png`, nextBackground));
+            this.IMAGES_BACKGROUND.push(new Background(`./img/PNG/Backgrounds/layerOben/${imgNumber}.png`, nextBackground));
             console.log(this.IMAGES_BACKGROUND);
 
         }

@@ -7,9 +7,9 @@ class Moveables {
     imageCache = {};
 
 
-    loadImages(path) {
+    loadImages(imgPath) {
         this.img = new Image();
-        this.img.src = path;
+        this.img.src = imgPath;
     }
 
 

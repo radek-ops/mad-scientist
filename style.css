@@ -17,8 +17,10 @@ main {
 
 
 canvas {
-    /* background-image: url('./img/PNG/Backgrounds/1.png'); */
-    max-width: 100%;
-    height: auto;
+   
+    width: 100vw;
+    height: 100vh;
+    object-fit: contain;
+    image-rendering: pixelated;
 
 }
