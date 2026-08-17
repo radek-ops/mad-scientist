@@ -27,8 +27,8 @@ h1 {
     -webkit-text-stroke: 3px #0a2d4d;
     filter: drop-shadow(2px 4px 0px #1a4c70);
     font-weight: 900;
-    font-size: clamp(30px, 7vw, 68px);
-    margin-bottom: clamp(-38px, -2vw, -12px);
+    font-size: clamp(40px, 10vw, 90px);
+    margin-bottom: clamp(-45px, -3vw, -50px);
 }
 
 
@@ -36,7 +36,7 @@ h1 {
     font-family: "blablaHawk";
     font-optical-sizing: auto;
     font-weight: bold;
-    font-size: clamp(45px, 11vw, 120px);
+    font-size: clamp(55px, 14vw, 150px);
     margin-bottom: -60px;
     z-index: 1;
     background: linear-gradient(to bottom, #cdd94c 10%, #58b729 100%);
@@ -248,7 +248,7 @@ canvas {
 }
 
 .start-char {
-    width: clamp(120px, 20vw, 200px);
+    width: clamp(180px, 28vw, 300px);
     height: auto;
     filter: drop-shadow(0 0 20px rgba(68, 189, 249, 0.5));
 }
