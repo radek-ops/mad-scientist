@@ -8,6 +8,7 @@ class World {
     IMAGES_BACKGROUND = [];
     map_scroll_x = 0;
     statusBar;
+    hpbar;
     potions;
 
 
@@ -18,7 +19,8 @@ class World {
         this.addBackgroundImages();
         this.addBackgroundlayer();
         this.statusBar = new StatusBar();
-        this.potions = [new Potion(), new Potion(), new Potion()];
+        this.hpbar = new HPBar();
+        this.potions = [new Potion(0), new Potion(1), new Potion(2)];
         this.controls = new Controls();
         this.gunsProjectils = new GunsProjectils(this.controls);
         this.mainCharacter = new Character(this.controls, this.gunsProjectils);
@@ -48,6 +50,7 @@ class World {
 
         this.ctx.translate(-this.map_scroll_x, 0);
         this.addToMap(this.statusBar);
+        this.addToMap(this.hpbar);
         this.addObjectToMap(this.potions);
         this.ctx.translate(this.map_scroll_x, 0);
 
@@ -75,12 +78,18 @@ class World {
             value.x = value.x * -1;
         }
         let drawY = (value === this.mainCharacter) ? this.calcJumpPos() : value.y;
-        this.ctx.drawImage(
-            value.img,
-            value.x,
-            drawY,
-            value.width,
-            value.height);
+
+        if (value.draw) {
+            value.draw(this.ctx);
+        } else {
+            this.ctx.drawImage(
+                value.img,
+                value.x,
+                drawY,
+                value.width,
+                value.height);
+        }
+
         if (value.otherDirection) {
             value.x = value.x * -1;
             this.ctx.restore();
