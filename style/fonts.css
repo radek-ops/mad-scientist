@@ -24,7 +24,7 @@ h1 {
     -webkit-text-stroke: 3px #0a2d4d;
     filter: drop-shadow(2px 4px 0px #1a4c70);
     font-weight: 900;
-    font-size: clamp(40px, 10vw, 90px);
+    font-size: clamp(40px, 10vw, 70px);
     margin-bottom: clamp(-40px, -3vw, 50px);
 }
 
@@ -40,4 +40,27 @@ h1 {
     -webkit-text-fill-color: transparent;
     -webkit-text-stroke: 3px #046eba;
     filter: drop-shadow(2px 4px 0px #1a4c70);
+    margin-bottom: -60px;
+}
+
+
+ @media (max-width: 1124px) {
+
+     .scientist {
+    
+    margin-bottom: 10px;
+}
+
+
+ }
+
+
+
+@media (max-width: 767px) {
+
+.scientist {
+    
+    margin-bottom: 0px;
+}
+
 }

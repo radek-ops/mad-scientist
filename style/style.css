@@ -11,10 +11,10 @@
     font-family: "blablaHawk";
     font-size: 22px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-    margin-top: 20px;
+    margin-top: 40px;
     cursor: pointer;
     transition: transform 0.2s, opacity 0.3s;
-    margin-left: 120px;
+   
 }
 
 .btn-impressum-start:hover {
@@ -22,9 +22,15 @@
     transform: scale(1.05);
 }
 
+body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
 .start-main {
     width: 100%;
-    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -146,15 +152,7 @@
 .start-footer {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     margin-top: 12px;
-}
-
-.start-credit {
-    color: #fff;
-    font-family: "blablaHawk";
-    font-size: 18px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-    margin-top: 50px;
 }

@@ -25,7 +25,7 @@ class World {
         this.gunsProjectils = new GunsProjectils(this.controls);
         this.mainCharacter = new Character(this.controls, this.gunsProjectils);
         this.mainCharacter.world = this;
-        this.enemies = [new Enemy(this.controls), new Enemy(this.controls), new Enemy(this.controls), new Enemy(this.controls), new Enemy(this.controls)];
+        this.enemies = [new Enemy(this.controls), new Enemy(this.controls), new Enemy(this.controls), new Enemy(this.controls), new Enemy(this.controls), new Enemy(this.controls), new Enemy(this.controls), new Enemy(this.controls), new Enemy(this.controls), new Enemy(this.controls)];
         this.finalBoss = new FinalBoss();
         this.draw();
     }
