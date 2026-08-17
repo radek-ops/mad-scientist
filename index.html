@@ -14,6 +14,7 @@
     <script defer src="./js/models/guns-projectils.class.js"></script>
     <script defer src="./js/models/main-character.class.js"></script>
     <script defer src="./js/models/enemy-character.class.js"></script>
+    <script defer src="./js/models/status-bar.class.js"></script>
     <script defer src="./js/models/background.class.js"></script>
     <script defer src="./js/models/world.class.js"></script>
     <script defer src="./js/game.js"></script>
@@ -22,9 +23,12 @@
 
 <body onload="init()">
     <main>
-     
+
         <div class="main-content">
-               <h1>Mad Scientist</h1>
+            <h1>
+                <span class="mad">MAD</span>
+                <span class="scientist">SCIENTIST</span>
+            </h1>
             <canvas id="canvas" width="1919" height="720"></canvas>
         </div>
     </main>

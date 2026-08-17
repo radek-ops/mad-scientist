@@ -1,12 +1,8 @@
 @font-face {
-    src: url(./fonts/Honk-Regular-VariableFont_MORF\,SHLN.ttf);
-    font-family: "Honk", sans-serif, Verdana, Geneva, Tahoma, sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-    font-variation-settings:
-        "MORF" 15,
-        "SHLN" 50;
+    src: url(./fonts/blablahawk/Blablahawk.ttf);
+    font-family: "blablaHawk";
+
+
 }
 
 
@@ -16,19 +12,43 @@ body {
     border: 0;
 }
 
+
 h1 {
-    font-family: "Honk", sans-serif, Verdana, Geneva, Tahoma, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+}
+
+
+.mad {
+    font-family: "blablaHawk";
+    background: linear-gradient(to bottom, #44bdf9 0%, #1771cd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 3px #0a2d4d;
+    filter: drop-shadow(2px 4px 0px #1a4c70);
+    font-weight: 900;
+    font-size: 68px;
+    margin-bottom: -38px;
+}
+
+
+.scientist {
+    font-family: "blablaHawk";
     font-optical-sizing: auto;
     font-weight: bold;
     font-size: 120px;
-    font-style: normal;
-    font-variation-settings:
-        "MORF" 20,
-        "SHLN" 50;
-    margin: -45px 0 -15px 0;
-    position: relative;
+    margin: 0px 0 0px 0;
     z-index: 1;
+    background: linear-gradient(to bottom, #cdd94c 10%, #58b729 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 3px #046eba;
+    filter: drop-shadow(2px 4px 0px #1a4c70);
 }
+
+
 
 
 main {
@@ -42,15 +62,16 @@ main {
     background-size: cover;
     background-position: center;
     position: relative;
-     background-color: rgba(0, 0, 0, 0.7);
-   
+    background-color: rgba(0, 0, 0, 0.7);
+
 }
+
 
 main::before {
     content: "";
     position: absolute;
-    inset: 0;                     
-    background: rgba(0, 0, 0, 0.7);  
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
     z-index: 0;
 }
 
@@ -65,7 +86,7 @@ main::before {
     max-width: 1920px;
     height: 100dvh;
     position: relative;
-   
+
 
 }
 
@@ -76,6 +97,5 @@ canvas {
     filter: brightness(1.2);
     border-radius: 16px;
     box-shadow: 0 0 30px rgba(255, 255, 255, 0.3),
-                0 0 60px rgba(255, 255, 255, 0.2);
+        0 0 60px rgba(255, 255, 255, 0.2);
 }
-

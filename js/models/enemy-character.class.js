@@ -47,7 +47,7 @@ class Enemy extends Moveables {
 
     startAnimationUpdate() {
         this.frameCounter++;
-        if (this.frameCounter % 2 !== 0) return;
+        if (this.frameCounter % 4 !== 0) return;
         let isMoving = this.controls.up || this.controls.back || this.controls.down || this.controls.foward || this.controls.space;
         isMoving ? this.isActivated = true : false;
         if (this.isActivated) {
