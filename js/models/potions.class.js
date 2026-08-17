@@ -12,9 +12,9 @@ class Potion extends Moveables {
         this.addPotions();
         this.saveImages(this.POTIONS)
         this.initPotion();
-        this.y = 110;
-        this.width = 45;
-        this.height = 45;
+        this.y = 100;
+        this.width = 35;
+        this.height = 35;
     }
 
 

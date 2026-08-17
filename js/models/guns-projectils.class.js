@@ -8,13 +8,11 @@ class GunsProjectils extends Moveables {
     EMPTY_IMG = new Image();
 
 
-
-
     constructor(controls) {
         super();
         this.controls = controls;
         this.x = 0;
-        this.y = 290;
+        this.y = 0;
         this.img = this.EMPTY_IMG;
         this.width = 150;
         this.height = 100;
@@ -23,11 +21,23 @@ class GunsProjectils extends Moveables {
         this.useProjectil();
     }
 
+
     SHOOT_SOUND = new Audio('../sounds/Shoot51.wav');
     playShootSound() {
         this.SHOOT_SOUND.play();
     }
 
+
+    draw(ctx) {
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+        if (this.img !== this.EMPTY_IMG) {
+            ctx.beginPath();
+            ctx.lineWidth = "5";
+            ctx.strokeStyle = "blue";
+            ctx.rect(this.x + 10, this.y + 10, this.width - 20, this.height - 20);
+            ctx.stroke();
+        }
+    }
 
     addLaserGunImages() {
         for (let i = 0; i < 5; i++) {

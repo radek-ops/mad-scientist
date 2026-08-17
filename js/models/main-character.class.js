@@ -15,20 +15,32 @@ class Character extends Moveables {
     acceleration = 1;
     otherDirection = false;
     gunsProjectils;
+    x = 0;
+    y = 300;
+    width = 375;
+    height = 375;
+
 
     constructor(controls, gunsProjectils) {
         super();
         this.controls = controls;
         this.gunsProjectils = gunsProjectils;
-        this.x = 0;
-        this.y = 180;
         this.jumpY = 240;
-        this.width = 550;
-        this.height = 550;
         this.loadAllImages();
         this.moveCharacter();
         this.applyGravity();
 
+    }
+
+
+    draw(ctx) {
+        let drawY = this.getJumpY();
+        ctx.drawImage(this.img, this.x, drawY, this.width, this.height);
+        ctx.beginPath();
+        ctx.lineWidth = "5";
+        ctx.strokeStyle = "blue";
+        ctx.rect(this.x + 106, drawY + 150, this.width  - 266 , this.height  - 244);
+        ctx.stroke();
     }
 
     loadAllImages() {
@@ -83,10 +95,10 @@ class Character extends Moveables {
 
 
     movement() {
-        if (this.controls.up && this.y > 140) {
+        if (this.controls.up && this.y > 262) {
             this.y -= 10;
         }
-        if (this.controls.down && this.y < 210) {
+        if (this.controls.down && this.y < 338) {
             this.y += 10;
         }
         if (this.controls.back && this.x > 0) {
@@ -97,7 +109,16 @@ class Character extends Moveables {
             this.x += 10;
             this.otherDirection = false;
         }
-        this.world.map_scroll_x = -this.x;
+           this.movementUpdate();
+    }
+
+    movementUpdate(){
+        let deadZone = 960;
+        if (this.x > deadZone) {
+            this.world.map_scroll_x = -(this.x - deadZone);
+        } else {
+            this.world.map_scroll_x = 0;
+        }
 
         if (this.world.map_scroll_x > 0) {
             this.world.map_scroll_x = 0;
@@ -107,6 +128,7 @@ class Character extends Moveables {
         }
 
     }
+
 
 
     animate() {
@@ -130,7 +152,7 @@ class Character extends Moveables {
         this.throwBombAnimate();
     }
 
-    
+
     walkAnimate() {
         this.walkFrameCounter++;
         if (this.walkFrameCounter % 3 !== 0) return;
@@ -186,9 +208,17 @@ class Character extends Moveables {
         return this.jumpY < 240;
     }
 
+    getJumpY() {
+        if (this.isAboveGround()) {
+            return this.y - (240 - this.jumpY);
+        } else {
+            return this.y;
+        }
+    }
+
     jump() {
         if (this.controls.space && !this.isAboveGround()) {
-            this.speedY = 16;
+            this.speedY = 18 ;
             this.currentJumpImages = 0;
             this.controls.space = false;
         }
@@ -205,5 +235,8 @@ class Character extends Moveables {
         let imgPath = this.IMAGES_JUMP[index];
         this.img = this.imageCache[imgPath];
     }
+
+
+
 
 }

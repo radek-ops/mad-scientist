@@ -8,8 +8,8 @@ class StatusBar extends Moveables {
         this.addProBar();
         this.x = 40;
         this.y = 50;
-        this.width = 450;
-        this.height = 125;
+        this.width = 350;
+        this.height = 100;
         this.loadImages(this.PRO_BAR[0]);
 
     }

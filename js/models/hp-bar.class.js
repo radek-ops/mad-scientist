@@ -2,16 +2,16 @@ class HPBar extends Moveables {
 
     maxHP = 100;
     currentHP = 100;
-    maxWidth = 331;
-    slantedRight = 5;
-    slantedLeft = 5;
+    maxWidth = 256;
+    slantedRight = 4;
+    slantedLeft = 3;
 
     constructor() {
         super();
-        this.x = 145;
-        this.y = 66.8;
+        this.x = 123;
+        this.y = 64;
         this.width = this.maxWidth;
-        this.height = 25;
+        this.height = 18;
     }
 
 
