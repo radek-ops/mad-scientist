@@ -8,9 +8,6 @@ class Controls {
     mouseClickRight = false;
     
 
-
-
-
     constructor() {
         window.addEventListener('keydown', (event) => {
             (event.key === 'w') ? this.up = true : false;
@@ -38,5 +35,11 @@ class Controls {
         });
 
     }
+
+
+
+
+
+    
 
 }

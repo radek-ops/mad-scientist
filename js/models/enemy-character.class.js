@@ -1,15 +1,14 @@
-class Enemy extends moveableCharacters {
+class Enemy extends Moveables {
     IMAGES_IDLE = [];
     IMAGES_WALK = [];
     imagesCache = {};
     currentImage = 0;
 
-
     constructor() {
         super();
         this.loadIdleEnemyImages();
-        this.saveIdleEnemyImages();
-        this.saveWalkEnemyImages();
+        this.saveImages(this.IMAGES_IDLE);
+        this.saveImages(this.IMAGES_WALK);
         this.width = 375;
         this.height = 375;
         this.img = this.imagesCache[this.IMAGES_IDLE[0]];
@@ -26,30 +25,9 @@ class Enemy extends moveableCharacters {
         }
     }
 
-    saveIdleEnemyImages() {
-        for (let i = 0; i < this.IMAGES_IDLE.length; i++) {
-            let imagesIndex = this.IMAGES_IDLE[i];
-            let img = new Image();
-            img.src = imagesIndex;
-            this.imagesCache[imagesIndex] = img;
-        }
-       
-    }
-
-    saveWalkEnemyImages() {
-        for (let i = 0; i < this.IMAGES_WALK.length; i++) {
-            let imagesIndex = this.IMAGES_WALK[i];
-            let img = new Image();
-            img.src = imagesIndex;
-            this.imagesCache[imagesIndex] = img;
-        }
-    }
-
-
     startIdleAnimate() {
         this.x = 550 + Math.random() * 500;
         this.y = 275 + Math.random() * 60;
-
         setInterval(() => {
             let path = this.IMAGES_IDLE[this.currentImage];
             this.img = this.imagesCache[path];
@@ -82,6 +60,4 @@ class Enemy extends moveableCharacters {
 
     }
 
-
-    
 }
