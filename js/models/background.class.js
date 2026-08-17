@@ -9,7 +9,7 @@ class Background extends Moveables{
        this.x = x;
        this.y = 0;
        this.width = 1280;
-       this.height = 719; 
+       this.height = 720; 
       
 
      }

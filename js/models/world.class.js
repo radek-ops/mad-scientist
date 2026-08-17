@@ -1,7 +1,6 @@
 class World {
     ctx;
     canvas;
-  
     enemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
     controls;
     mainCharacter;
@@ -24,29 +23,17 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        let drawX = this.mainCharacter.x;
-        let drawY = this.mainCharacter.y - (240 - this.mainCharacter.jumpY);
-
-        this.gunsProjectils.x = drawX + 350;
-        this.gunsProjectils.y = drawY + 240;
-
+        this.gunsProjectils.x = this.mainCharacter.x + 350;
+        this.gunsProjectils.y = this.mainCharacter.y + 240;
+        
+        this.mainCharacter.y = this.calcJumpPos();   
         this.addObjectToMap(this.IMAGES_BACKGROUND);
         this.addObjectToMap(this.enemies);
         this.addToMap(this.gunsProjectils);
         this.addToMap(this.mainCharacter);
+       
+       
 
-
-
-
-
-
-        // this.ctx.drawImage(
-        //     this.mainCharacter.img,
-        //     drawX,
-        //     drawY,
-        //     this.mainCharacter.width,
-        //     this.mainCharacter.height
-        // );
 
 
 
@@ -58,7 +45,14 @@ class World {
 
     }
 
-
+    
+    calcJumpPos() {
+        if (this.mainCharacter.isAboveGround()) {
+            return this.mainCharacter.y - (240 - this.mainCharacter.jumpY);
+        } else {
+            return this.mainCharacter.y;
+        }
+    }
 
 
     addObjectToMap(objects) {
@@ -68,10 +62,11 @@ class World {
     }
 
     addToMap(value) {
+        let drawY = value.calcJumpY ? value.calcJumpY() : value.y;
         this.ctx.drawImage(
             value.img,
             value.x,
-            value.y,
+            drawY,
             value.width,
             value.height);
     }
@@ -79,12 +74,18 @@ class World {
 
     addBackgroundImages() {
         for (let i = 0; i < 3; i++) {
-            let imgNumber =  i;
+            let imgNumber = i;
             let nextBackground = 1279 * i;
             this.IMAGES_BACKGROUND.push(new Background(`./img/PNG/Backgrounds/${imgNumber}.png`, nextBackground));
+            console.log(this.IMAGES_BACKGROUND);
+
         }
 
     }
+
+
+
+
 
 }
 
