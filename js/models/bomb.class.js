@@ -24,7 +24,7 @@ class Bomb extends Moveables {
 
 
     /**
-     * Moves the bomb to the UI after collecting it.
+     * Marks the bomb as collected and moves it into the UI bar.
      * @param {number} slotNumber - The slot where the bomb appears
      */
     collect(slotNumber) {

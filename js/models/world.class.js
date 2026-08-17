@@ -252,7 +252,7 @@
     }
 
     /**
-     * Draws one object on the canvas, with flipping if needed.
+     * Draws one object on the canvas. Flips the image horizontally when the object faces left.
      * @param {Object} value - The object to draw
      */
     addToMap(value) {

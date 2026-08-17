@@ -10,7 +10,7 @@ class Controls {
 
 
     /**
-     * Sets up all keyboard and mouse events.
+     * Sets up all keyboard and mouse listeners that set the control flags.
      */
     constructor() {
 

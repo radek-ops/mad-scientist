@@ -2,7 +2,7 @@ class StatusBar extends Moveables {
     PRO_BAR = [];
 
     /**
-     * Creates the status bar.
+     * Creates the status bar that shows the collected bombs and potions at the top left.
      */
     constructor() {
         super();
@@ -16,7 +16,7 @@ class StatusBar extends Moveables {
     }
 
     /**
-     * Loads the status bar image.
+     * Loads the profile bar image used for the status bar.
      */
     addProBar() {
         for (let i = 0; i < 1; i++) {

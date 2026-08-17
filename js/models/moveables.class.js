@@ -10,8 +10,8 @@ class Moveables {
 
 
     /**
-     * Loads one single image.
-     * @param {string} imgPath - The path to the image
+     * Loads a single image and sets it as the current image of this object.
+     * @param {string} imgPath - The path to the image file
      */
     loadImages(imgPath) {
         this.img = new Image();
@@ -32,8 +32,8 @@ class Moveables {
     }
 
     /**
-    * Starts the animation loop at 60 frames per second.
-    */
+     * Starts the animation loop at 60 frames per second.
+     */
     startAnimation() {
         setInterval(() => {
             this.startAnimationUpdate();

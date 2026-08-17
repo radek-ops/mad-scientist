@@ -8,7 +8,7 @@ class BossHPBar extends Moveables {
 
 
     /**
-     * Creates the boss health bar.
+     * Creates the boss health bar shown at the top right of the screen.
      */
     constructor() {
         super();
@@ -24,7 +24,7 @@ class BossHPBar extends Moveables {
 
 
     /**
-     * Draws the heart, red bar and frame.
+     * Draws the boss health bar: heart icon, red HP bar, black frame and the "Boss" label.
      * @param {CanvasRenderingContext2D} ctx - The canvas context
      */
     draw(ctx) {
@@ -53,8 +53,8 @@ class BossHPBar extends Moveables {
 
 
     /**
-     * Reduces the health of the boss.
-     * @param {number} amount - How much health to remove
+     * Removes health from the boss. The health never drops below zero.
+     * @param {number} amount - The amount of health to remove
      */
     loseHP(amount) {
         this.currentHP -= amount;
