@@ -96,6 +96,39 @@
     },
 
     /**
+     * Damages the character when the boxing fist hits it.
+     */
+    checkBoxingHitsCharacter() {
+        if (!this.boxing.isActive || this.boxing.hasDamaged) {
+            return;
+        }
+        if (this.boxingHitsCharacter()) {
+            this.boxing.hasDamaged = true;
+            this.damageCharacter(this.hpbar.maxHP * 0.25);
+        }
+    },
+
+    /**
+     * Checks if the boxing fist touches the character.
+     * @returns {boolean} True when the fist hits the character
+     */
+    boxingHitsCharacter() {
+        let boxingLeft = this.boxing.x;
+        let boxingRight = this.boxing.x + this.boxing.width;
+        let boxingTop = this.boxing.y;
+        let boxingBottom = this.boxing.y + this.boxing.height;
+        let charY = this.mainCharacter.getJumpY();
+        let charLeft = this.mainCharacter.x + 106;
+        let charRight = this.mainCharacter.x + 106 + (this.mainCharacter.width - 266);
+        let charHead = charY + 150;
+        let charFeet = charY + 150 + (this.mainCharacter.height - 244);
+        return boxingRight > charLeft &&
+            boxingBottom > charHead &&
+            boxingLeft < charRight &&
+            boxingTop < charFeet;
+    },
+
+    /**
      * Spawns new enemies when the character reaches a new section.
      */
     spawnNewEnemies() {

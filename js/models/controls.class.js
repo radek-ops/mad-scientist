@@ -58,7 +58,61 @@ class Controls {
             (event.code === 'Space') ? this.space = false : false;
         });
 
+        this.setupTouchControls();
+    }
 
+
+    /**
+     * Sets up the on-screen touch controls for mobile and tablet.
+     */
+    setupTouchControls() {
+        let bind = (id, onStart, onEnd) => {
+            let btn = document.getElementById(id);
+            if (!btn) {
+                return;
+            }
+            btn.addEventListener('touchstart', (event) => {
+                event.preventDefault();
+                onStart();
+            }, { passive: false });
+            btn.addEventListener('touchend', (event) => {
+                event.preventDefault();
+                onEnd();
+            }, { passive: false });
+            btn.addEventListener('touchcancel', (event) => {
+                onEnd();
+            });
+            btn.addEventListener('mousedown', (event) => {
+                event.preventDefault();
+                onStart();
+            });
+            btn.addEventListener('mouseup', (event) => {
+                onEnd();
+            });
+            btn.addEventListener('mouseleave', (event) => {
+                onEnd();
+            });
+        };
+
+        bind('btn-up', () => { this.up = true; }, () => { this.up = false; });
+        bind('btn-down', () => { this.down = true; }, () => { this.down = false; });
+        bind('btn-left', () => { this.back = true; }, () => { this.back = false; });
+        bind('btn-right', () => { this.forward = true; }, () => { this.forward = false; });
+        bind('btn-jump', () => { this.space = true; }, () => { this.space = false; });
+        bind('btn-shoot', () => { this.mouseClickLeft = true; }, () => { this.mouseClickLeft = false; });
+        bind('btn-bomb', () => { this.mouseClickRight = true; }, () => { this.mouseClickRight = false; });
+
+        let potionBtn = document.getElementById('btn-potion');
+        if (potionBtn) {
+            potionBtn.addEventListener('touchstart', (event) => {
+                event.preventDefault();
+                this.usePotion = true;
+            }, { passive: false });
+            potionBtn.addEventListener('mousedown', (event) => {
+                event.preventDefault();
+                this.usePotion = true;
+            });
+        }
     }
 
 

@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const menuSound = new Audio('sounds/menu_select.mp3');
-    document.querySelectorAll('a, button:not(.mute-btn)').forEach((element) => {
+    document.querySelectorAll('a, button:not(.mute-btn):not(.touch-btn)').forEach((element) => {
         element.addEventListener('click', () => {
             if (isMuted()) {
                 return;

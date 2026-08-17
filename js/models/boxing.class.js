@@ -2,6 +2,7 @@ class Boxing extends Moveables {
     BOXING_IMAGES = [];
     currentBoxingImages = 0;
     isActive = false;
+    hasDamaged = false;
     animationInterval;
 
 
@@ -63,6 +64,7 @@ class Boxing extends Moveables {
         }
         this.isActive = true;
         this.currentBoxingImages = 0;
+        this.hasDamaged = false;
         this.animationInterval = setInterval(() => {
             let done = this.animate();
             if (done) {

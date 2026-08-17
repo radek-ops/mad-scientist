@@ -207,6 +207,7 @@
         this.checkLaserHitsBoss();
         this.checkLaserSound();
         this.checkBossBoxing();
+        this.checkBoxingHitsCharacter();
 
         this.checkBombCollection();
         this.checkPotionCollection();

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Mobile Landscape Test</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background: #1b1b1f;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            padding: 12px;
+        }
+        h1 { font-size: 18px; margin: 4px 0 10px; }
+        .toolbar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+        button {
+            padding: 10px 14px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            background: #2f6fa7;
+            color: #fff;
+            transition: background 0.15s;
+        }
+        button:hover { background: #3a86c8; }
+        button.active { background: #f0a500; color: #111; font-weight: bold; }
+        .frame {
+            background: #000;
+            border: 2px solid #555;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        iframe {
+            display: block;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>📱 Mobile Landscape Test</h1>
+    <div class="toolbar">
+        <button data-w="667" data-h="375">iPhone SE</button>
+        <button data-w="844" data-h="390">iPhone 14</button>
+        <button data-w="1024" data-h="768" class="active">iPad</button>
+        <button data-w="1366" data-h="1024">iPad Pro</button>
+        <button data-w="768" data-h="1024" title="Hochformat – für den ‚Bitte drehen‘-Hinweis">Hochformat</button>
+    </div>
+    <div class="frame">
+        <iframe id="game" src="./game.html" width="1024" height="768"></iframe>
+    </div>
+    <p style="font-size: 12px; color: #aaa; margin-top: 10px;">
+        Klick auf einen Button = Größe wechseln. Landscape = Touch-Steuerung sichtbar.
+    </p>
+
+    <script>
+        const iframe = document.getElementById('game');
+        document.querySelectorAll('button').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                iframe.width = btn.dataset.w;
+                iframe.height = btn.dataset.h;
+                document.querySelectorAll('button').forEach((b) => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
