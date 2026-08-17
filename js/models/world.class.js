@@ -1,6 +1,9 @@
 class World {
     ctx;
     canvas;
+    controls;
+    attacks;
+    mainCharacter;
     background = new Backdrop();
     enemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
 
@@ -9,10 +12,8 @@ class World {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.controls = new Controls();
-        this.mainCharacter = new Character();
-        this.controls.mainCharacter = this.mainCharacter;
+        this.mainCharacter = new Character(this.controls);
         this.draw();
-
     }
 
 
@@ -52,11 +53,7 @@ class World {
             self.draw();
         });
 
-
-
     }
-
-
 
 }
 
