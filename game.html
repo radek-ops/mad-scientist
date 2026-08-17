@@ -16,22 +16,28 @@
     <script defer src="./js/models/main-character.class.js"></script>
     <script defer src="./js/models/enemy-character.class.js"></script>
      <script defer src="./js/models/potions.class.js"></script>
+    <script defer src="./js/models/bomb.class.js"></script>
+    <script defer src="./js/models/thrown-bomb.class.js"></script>
     <script defer src="./js/models/status-bar.class.js"></script>
      <script defer src="./js/models/hp-bar.class.js"></script>
+    <script defer src="./js/models/boss-hp-bar.class.js"></script>
     <script defer src="./js/models/background.class.js"></script>
     <script defer src="./js/models/world.class.js"></script>
+    <script defer src="./js/models/world-collisions.js"></script>
+    <script defer src="./js/models/world-items.js"></script>
+    <script defer src="./js/models/world-boss.js"></script>
     <script defer src="./js/game.js"></script>
 
 </head>
 
 
 <body onload="init()">
-    <div class="landscape-warning">
+    <!-- <div class="landscape-warning">
         <div class="warning-message">
             <h1>Please rotate your device</h1>
             <p>🔄 Landscape mode required</p>
         </div>
-    </div>
+    </div> -->
     <main>
 
         <div class="main-content">
@@ -43,6 +49,20 @@
             <span class="game-credit">Created by Radek Gnych &copy;</span>
         </div>
     </main>
+
+    <div id="gameOverOverlay" class="game-over-overlay">
+        <div class="game-over-content">
+            <h1 class="game-over-title">You are dead</h1>
+            <a href="./game.html" class="try-again-btn">Try Again</a>
+        </div>
+    </div>
+
+    <div id="winOverlay" class="win-overlay">
+        <div class="win-content">
+            <img src="./img/PNG/User_Interfaces/Accomplished.png" alt="Accomplished" class="win-image">
+            <a href="./index.html" class="new-game-btn">New Game</a>
+        </div>
+    </div>
 </body>
 
 </html>

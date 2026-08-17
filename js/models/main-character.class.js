@@ -5,10 +5,16 @@ class Character extends Moveables {
     IMAGES_SHOOTFX1 = [];
     IMAGES_THROWBOMB = [];
     IMAGES_JUMP = [];
+    IMAGES_GETHIT = [];
+    IMAGES_DEATH = [];
     controls;
     currentThrowBombkImages = 0;
     currentShootFXImages = 0;
     currentJumpImages = 0;
+    currentGetHitImages = 0;
+    currentDeathImages = 0;
+    isHit = false;
+    isDead = false;
     walkFrameCounter = 0;
     shootFxframeCounter = 0;
     speedY = 0;
@@ -21,6 +27,11 @@ class Character extends Moveables {
     height = 375;
 
 
+    /**
+     * Creates the character, loads images and starts movement.
+     * @param {Controls} controls - The keyboard and mouse controls
+     * @param {GunsProjectils} gunsProjectils - The gun of the character
+     */
     constructor(controls, gunsProjectils) {
         super();
         this.controls = controls;
@@ -33,6 +44,10 @@ class Character extends Moveables {
     }
 
 
+    /**
+     * Draws the character and its collision box on the canvas.
+     * @param {CanvasRenderingContext2D} ctx - The canvas context
+     */
     draw(ctx) {
         let drawY = this.getJumpY();
         ctx.drawImage(this.img, this.x, drawY, this.width, this.height);
@@ -43,19 +58,29 @@ class Character extends Moveables {
         ctx.stroke();
     }
 
+    /**
+     * Loads all images of the character.
+     */
     loadAllImages() {
         this.addMoveImages();
         this.addShootFXImages();
         this.addThrowBombImages();
         this.addJumpImages();
+        this.addGetHitImages();
+        this.addDeathImages();
         this.saveImages(this.IMAGES_IDLE);
         this.saveImages(this.IMAGES_WALK);
         this.saveImages(this.IMAGES_SHOOTFX1);
         this.saveImages(this.IMAGES_THROWBOMB);
         this.saveImages(this.IMAGES_JUMP);
+        this.saveImages(this.IMAGES_GETHIT);
+        this.saveImages(this.IMAGES_DEATH);
         this.img = this.imageCache[this.IMAGES_IDLE[0]];
     }
 
+    /**
+     * Loads the idle and walk images.
+     */
     addMoveImages() {
         for (let i = 0; i < 14; i++) {
             let imgNumber = i < 10 ? '0' + i : i;
@@ -64,6 +89,9 @@ class Character extends Moveables {
         }
     }
 
+    /**
+     * Loads the shoot animation images.
+     */
     addShootFXImages() {
         for (let i = 0; i < 4; i++) {
             let imgNumber = '0' + i;
@@ -71,6 +99,9 @@ class Character extends Moveables {
         }
     }
 
+    /**
+     * Loads the throw-bomb animation images.
+     */
     addThrowBombImages() {
         for (let i = 0; i < 20; i++) {
             let imgNumber = i < 10 ? '0' + i : i;
@@ -78,6 +109,9 @@ class Character extends Moveables {
         }
     }
 
+    /**
+     * Loads the jump animation images.
+     */
     addJumpImages() {
         for (let i = 0; i < 9; i++) {
             let imgNumber = '0' + i;
@@ -85,6 +119,29 @@ class Character extends Moveables {
         }
     }
 
+    /**
+     * Loads the get-hit animation images.
+     */
+    addGetHitImages() {
+        for (let i = 0; i <= 9; i++) {
+            let number = i < 10 ? '0' + i : i;
+            this.IMAGES_GETHIT.push(`./img/PNG/Main_Characters/Gun01/GetHit/GetHit_${number}.png`);
+        }
+    }
+
+    /**
+     * Loads the death animation images.
+     */
+    addDeathImages() {
+        for (let i = 0; i <= 43; i++) {
+            let number = i < 10 ? '0' + i : i;
+            this.IMAGES_DEATH.push(`./img/PNG/Main_Characters/Gun01/Death/Death_${number}.png`);
+        }
+    }
+
+    /**
+     * Starts the movement and animation loop.
+     */
     moveCharacter() {
         setInterval(() => {
             this.movement();
@@ -94,7 +151,13 @@ class Character extends Moveables {
     }
 
 
+    /**
+     * Moves the character based on the pressed keys.
+     */
     movement() {
+        if (this.isDead) {
+            return;
+        }
         if (this.controls.up && this.y > 262) {
             this.y -= 10;
         }
@@ -105,13 +168,16 @@ class Character extends Moveables {
             this.x -= 10;
             this.otherDirection = true;
         }
-        else if (this.controls.foward && this.x < 3840 - this.width) {
+        else if (this.controls.foward && this.x < 3300) {
             this.x += 10;
             this.otherDirection = false;
         }
            this.movementUpdate();
     }
 
+    /**
+     * Updates the scrolling of the world when the character moves.
+     */
     movementUpdate(){
         let deadZone = 960;
         if (this.x > deadZone) {
@@ -131,7 +197,13 @@ class Character extends Moveables {
 
 
 
+    /**
+     * Chooses the right animation based on the input.
+     */
     animate() {
+        if (this.isDead || this.isHit) {
+            return;
+        }
         if (this.controls.mouseClickLeft) {
             this.walkAnimate();
             this.shootFxAnimate();
@@ -146,13 +218,20 @@ class Character extends Moveables {
     }
 
 
+    /**
+     * Starts throwing a bomb with the right mouse button.
+     */
     startThrowBomb() {
         this.controls.mouseClickRight = false;
         this.currentThrowBombkImages = 0;
         this.throwBombAnimate();
+        this.world.throwBomb();
     }
 
 
+    /**
+     * Plays the walk or idle animation.
+     */
     walkAnimate() {
         this.walkFrameCounter++;
         if (this.walkFrameCounter % 3 !== 0) return;
@@ -172,6 +251,9 @@ class Character extends Moveables {
         this.img = this.imageCache[imgPath];
     }
 
+    /**
+     * Plays the shoot animation.
+     */
     shootFxAnimate() {
         this.shootFxframeCounter++;
         if (this.shootFxframeCounter % 2 !== 0) return;
@@ -183,6 +265,9 @@ class Character extends Moveables {
         }
     }
 
+    /**
+     * Plays the throw-bomb animation.
+     */
     throwBombAnimate() {
         let imgPath = this.IMAGES_THROWBOMB[this.currentThrowBombkImages];
         this.img = this.imageCache[imgPath];
@@ -192,6 +277,9 @@ class Character extends Moveables {
         }
     }
 
+    /**
+     * Applies gravity to the character every frame.
+     */
     applyGravity() {
         setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) {
@@ -204,10 +292,18 @@ class Character extends Moveables {
         }, 1000 / 60);
     }
 
+    /**
+     * Checks if the character is in the air.
+     * @returns {boolean} True when the character is jumping
+     */
     isAboveGround() {
         return this.jumpY < 240;
     }
 
+    /**
+     * Returns the current y position while jumping.
+     * @returns {number} The y position
+     */
     getJumpY() {
         if (this.isAboveGround()) {
             return this.y - (240 - this.jumpY);
@@ -216,7 +312,13 @@ class Character extends Moveables {
         }
     }
 
+    /**
+     * Makes the character jump with the space key.
+     */
     jump() {
+        if (this.isDead || this.isHit) {
+            return;
+        }
         if (this.controls.space && !this.isAboveGround()) {
             this.speedY = 18 ;
             this.currentJumpImages = 0;
@@ -227,6 +329,9 @@ class Character extends Moveables {
         }
     }
 
+    /**
+     * Plays the jump animation.
+     */
     jumpAnimate() {
         if (this.currentJumpImages < this.IMAGES_JUMP.length) {
             this.currentJumpImages++;
@@ -234,6 +339,43 @@ class Character extends Moveables {
         let index = Math.min(this.currentJumpImages, this.IMAGES_JUMP.length - 1);
         let imgPath = this.IMAGES_JUMP[index];
         this.img = this.imageCache[imgPath];
+    }
+
+    /**
+     * Plays the get-hit animation of the character.
+     * @returns {boolean} True when the animation is finished
+     */
+    characterGetHit() {
+        let imgPath = this.IMAGES_GETHIT[this.currentGetHitImages];
+        let img = this.imageCache[imgPath];
+        if (img && img.complete) {
+            this.img = img;
+        }
+        this.currentGetHitImages++;
+        if (this.currentGetHitImages >= this.IMAGES_GETHIT.length) {
+            this.currentGetHitImages = 0;
+            this.isHit = false;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Plays the death animation of the character.
+     * @returns {boolean} True when the animation is finished
+     */
+    characterDeath() {
+        let imgPath = this.IMAGES_DEATH[this.currentDeathImages];
+        let img = this.imageCache[imgPath];
+        if (img && img.complete) {
+            this.img = img;
+        }
+        this.currentDeathImages++;
+        if (this.currentDeathImages >= this.IMAGES_DEATH.length) {
+            this.currentDeathImages = 0;
+            return true;
+        }
+        return false;
     }
 
 

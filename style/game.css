@@ -56,6 +56,142 @@ canvas {
     margin-top: 24px;
     margin-bottom: 24px;
 }
+
+/* Game Over Screen */
+
+.game-over-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.game-over-overlay.show {
+    display: flex;
+}
+
+.game-over-title {
+    font-family: "blablaHawk";
+    font-size: clamp(40px, 8vw, 90px);
+    color: #cc0000;
+    text-shadow: 0 0 30px #ff0000, 0 0 60px #990000;
+    margin-bottom: 50px;
+    -webkit-text-stroke: 2px #4d0000;
+}
+
+.try-again-btn {
+    background: url('../img/PNG/User_Interfaces/Btn5.png') no-repeat center;
+    background-size: 100% 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    padding: 0 50px;
+    text-decoration: none;
+    color: #fff;
+    font-family: "blablaHawk";
+    font-size: 24px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.3s;
+}
+
+.try-again-btn:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+/* Win Screen */
+
+.win-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.win-overlay.show {
+    display: flex;
+}
+
+.win-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.win-image {
+    width: clamp(200px, 40vw, 450px);
+    height: auto;
+    margin-bottom: 30px;
+    filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.6));
+}
+
+.new-game-btn {
+    background: url('../img/PNG/User_Interfaces/Btn5.png') no-repeat center;
+    background-size: 100% 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    padding: 0 50px;
+    text-decoration: none;
+    color: #fff;
+    font-family: "blablaHawk";
+    font-size: 24px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.3s;
+}
+
+.new-game-btn:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+
+.mad {
+    margin-top: 15px;
+    font-family: "blablaHawk";
+    background: linear-gradient(to bottom, #44bdf9 0%, #1771cd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 3px #0a2d4d;
+    filter: drop-shadow(2px 4px 0px #1a4c70);
+    font-weight: 900;
+    font-size: clamp(22px, 10vw, 70px);
+    margin-bottom: clamp(-60px, -5vw, 50px);
+}
+
+.scientist {
+    font-family: "blablaHawk";
+    font-optical-sizing: auto;
+    font-weight: bold;
+    font-size: clamp(35px, 14vw, 150px);
+    margin: 0;
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(to bottom, #cdd94c 10%, #58b729 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 3px #046eba;
+    filter: drop-shadow(2px 4px 0px #1a4c70);
+    margin-bottom: 0;
+}
+
+.main-content h1 {
+    margin-bottom: clamp(-45px, -2.5vw, -10px);
+    z-index: 2;
+    position: relative;
+}
  
 /* Landscape Warning */
 
@@ -95,3 +231,5 @@ canvas {
         display: flex;
     }
 }
+
+

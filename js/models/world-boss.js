@@ -1,0 +1,83 @@
+﻿Object.assign(World.prototype, {
+    /**
+     * Checks if the laser beam touches the boss.
+     * @returns {boolean} True when the laser hits the boss
+     */
+    laserHitsBoss() {
+        let laserLeft = this.gunsProjectils.x + 10;
+        let laserRight = this.gunsProjectils.x + 10 + (this.gunsProjectils.width - 20);
+        let laserTop = this.gunsProjectils.y + 10;
+        let laserBottom = this.gunsProjectils.y + 10 + (this.gunsProjectils.height - 20);
+        let bossLeft = this.finalBoss.x + 650;
+        let bossRight = this.finalBoss.x + 650 + (this.finalBoss.width - 1300);
+        let bossTop = this.finalBoss.y + 1150;
+        let bossBottom = this.finalBoss.y + 1150 + (this.finalBoss.height - 1500);
+        return laserRight > bossLeft &&
+            laserBottom > bossTop &&
+            laserLeft < bossRight &&
+            laserTop < bossBottom;
+    },
+
+    /**
+     * Removes health from the boss and shows win screen at zero.
+     * @param {number} amount - How much health to remove
+     */
+    damageBoss(amount) {
+        this.bossHpBar.loseHP(amount);
+        if (this.bossHpBar.currentHP <= 0) {
+            this.finalBoss.isDead = true;
+            document.getElementById('winOverlay').classList.add('show');
+        }
+    },
+
+    /**
+     * Damages the boss when the laser hits it.
+     */
+    checkLaserHitsBoss() {
+        if (!this.controls.mouseClickLeft) {
+            return;
+        }
+        if (this.bossLaserCooldown > 0) {
+            this.bossLaserCooldown--;
+            return;
+        }
+        if (this.laserHitsBoss()) {
+            this.damageBoss(5);
+            this.bossLaserCooldown = 20;
+        }
+    },
+
+    /**
+     * Spawns new enemies when the character reaches a new section.
+     */
+    spawnNewEnemies() {
+        let section = Math.floor(this.mainCharacter.x / 1280);
+        if (section > this.lastSection && section < 2) {
+            this.lastSection = section;
+            let offset = section * 1280;
+            for (let i = 0; i < 5; i++) {
+                let e = new Enemy(this.controls);
+                e.x += offset;
+                if (e.x > 2400) {
+                    e.x = 1600 + Math.random() * 700;
+                }
+                this.enemies.push(e);
+            }
+        }
+    },
+
+    /**
+     * Spawns enemies in front of the boss area.
+     */
+    spawnBossAreaEnemies() {
+        if (this.hasSpawnedBossEnemies || this.mainCharacter.x < 1800) {
+            return;
+        }
+        this.hasSpawnedBossEnemies = true;
+        for (let i = 0; i < 5; i++) {
+            let enemy = new Enemy(this.controls);
+            enemy.x = 2000 + (i * 80);
+            this.enemies.push(enemy);
+        }
+    },
+});

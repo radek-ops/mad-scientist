@@ -3,6 +3,9 @@ class StatusBar extends Moveables {
 
 
 
+    /**
+     * Creates the status bar.
+     */
     constructor() {
         super();
         this.addProBar();
@@ -15,6 +18,9 @@ class StatusBar extends Moveables {
     }
 
 
+    /**
+     * Loads the status bar image.
+     */
     addProBar() {
         for (let i = 0; i < 1; i++) {
             this.PRO_BAR.push('./img/PNG/User_Interfaces/ProfileBar.png');

@@ -1,46 +1,32 @@
-class Potion extends Moveables {
+﻿class Potion extends Moveables {
 
-    POTIONS = [];
+    POTION_IMAGE = './img/PNG/User_Interfaces/potion1.png';
+    isCollected = false;
+    isConsumed = false;
 
-    xPositions = [150, 200, 250];
-    index;
 
-
-    constructor(index) {
+    /**
+     * Creates a collectible potion at a world position.
+     * @param {number} worldX - The x position in the world
+     * @param {number} worldY - The y position in the world
+     */
+    constructor(worldX, worldY) {
         super();
-        this.index = index;
-        this.addPotions();
-        this.saveImages(this.POTIONS)
-        this.initPotion();
+        this.x = worldX;
+        this.y = worldY;
+        this.width = 40;
+        this.height = 40;
+        this.loadImages(this.POTION_IMAGE);
+    }
+
+
+    /**
+     * Moves the potion to the UI after collecting it.
+     * @param {number} slotNumber - The slot where the potion appears
+     */
+    collect(slotNumber) {
+        this.isCollected = true;
+        this.x = 150 + (slotNumber * 50);
         this.y = 100;
-        this.width = 35;
-        this.height = 35;
     }
-
-
-    addPotions() {
-        for (let i = 1; i <= 3; i++) {
-            this.POTIONS.push(`./img/PNG/User_Interfaces/potion${i}.png`);
-        }
-    }
-
-    initPotion() {
-        this.img = this.imageCache[this.POTIONS[this.index]];
-        this.x = this.xPositions[this.index];
-
-    }
-
-
-
-
-
-
-
-
-
-
 }
-
-
-
-

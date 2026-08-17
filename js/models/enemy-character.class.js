@@ -7,20 +7,29 @@ class Enemy extends Moveables {
     DEATH01 = [];
     DEATH_07 = [];
     DEATH_09 = [];
+    HIT_01 = [];
+    HIT_07 = [];
     controls;
     speed = 0;
     isActivated = false;
     isHit = false;
     isDead = false;
+    isAttacking = false;
     currentGetHitImages01 = 0;
     currentDeathImages01 = 0;
     currentElectricImages07 = 0;
     currentElectricImages09 = 0;
     currentDeathImages07 = 0;
     currentDeathImages09 = 0;
+    currentHitImages01 = 0;
+    currentHitImages07 = 0;
     frameCounter = 0;
 
 
+    /**
+     * Creates an enemy and loads its images.
+     * @param {Controls} controls - The keyboard and mouse controls
+     */
     constructor(controls) {
         super();
         this.controls = controls;
@@ -33,6 +42,8 @@ class Enemy extends Moveables {
         this.addEnemyDeathImages01();
         this.addEnemyDeathImages07();
         this.addEnemyDeathImages09();
+        this.addEnemyHitImages01();
+        this.addEnemyHitImages07();
         this.saveImages(this.IMAGES_IDLE);
         this.saveImages(this.IMAGES_WALK);
         this.saveImages(this.GET_HIT);
@@ -41,10 +52,16 @@ class Enemy extends Moveables {
         this.saveImages(this.DEATH01);
         this.saveImages(this.DEATH_07);
         this.saveImages(this.DEATH_09);
+        this.saveImages(this.HIT_01);
+        this.saveImages(this.HIT_07);
         this.img = this.imageCache[this.IMAGES_IDLE[0]];
         this.startAnimation();
     }
 
+    /**
+     * Draws the enemy and its collision box.
+     * @param {CanvasRenderingContext2D} ctx - The canvas context
+     */
     draw(ctx) {
         if (this.isDead) return;
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
@@ -56,6 +73,9 @@ class Enemy extends Moveables {
     }
 
 
+    /**
+     * Chooses a random enemy type.
+     */
     addEnemyImages() {
         let availableEnemy = ['01', '07', '09'];
         let randomIndex = Math.floor(Math.random() * availableEnemy.length);
@@ -65,6 +85,11 @@ class Enemy extends Moveables {
         this.addEnemyImagesUpdate(walkEnemyNum, idleEnemyNum);
     }
 
+    /**
+     * Loads the walk and idle images and sets the start position.
+     * @param {string} walkEnemyNum - The enemy type number
+     * @param {string} idleEnemyNum - The enemy type number for idle
+     */
     addEnemyImagesUpdate(walkEnemyNum, idleEnemyNum) {
         for (let i = 0; i <= 13; i++) {
             let number = i < 10 ? '0' + i : i;
@@ -83,8 +108,11 @@ class Enemy extends Moveables {
     }
 
 
+    /**
+     * Plays the walk or idle animation and moves the enemy.
+     */
     startAnimationUpdate() {
-        if (this.isHit) return;
+        if (this.isHit || this.isAttacking) return;
         this.frameCounter++;
         if (this.frameCounter % 4 !== 0) return;
         let isMoving = this.controls.up || this.controls.back || this.controls.down || this.controls.foward || this.controls.space;
@@ -101,6 +129,9 @@ class Enemy extends Moveables {
         }
     }
 
+    /**
+     * Loads the get-hit images for enemy type 01.
+     */
     addEnemyGetHitImages01() {
         for (let i = 0; i <= 9; i++) {
             let number = i < 10 ? '0' + i : i;
@@ -108,18 +139,28 @@ class Enemy extends Moveables {
         }
     }
 
+    /**
+     * Loads the electric images for enemy type 07.
+     */
     addEnemyGetElectricImages07() {
         for (let i = 0; i <= 2; i++) {
             this.GET_ELECTRIC_07.push(`./img/PNG/Enemy_Characters/Enemy_Character07/Get Electric/Get Electric_${i}.png`);
         }
     }
 
+    /**
+     * Loads the electric images for enemy type 09.
+     */
     addEnemyGetElectricImages09() {
         for (let i = 0; i <= 2; i++) {
             this.GET_ELECTRIC_09.push(`./img/PNG/Enemy_Characters/Enemy_Character09/Get Electric/Get Electric_${i}.png`);
         }
     }
 
+    /**
+     * Plays the electric animation for enemy type 07.
+     * @returns {boolean} True when the animation is finished
+     */
     enemy07GetElectric() {
         let imgPath = this.GET_ELECTRIC_07[this.currentElectricImages07];
         let img = this.imageCache[imgPath];
@@ -134,6 +175,10 @@ class Enemy extends Moveables {
         return false;
     }
 
+    /**
+     * Plays the electric animation for enemy type 09.
+     * @returns {boolean} True when the animation is finished
+     */
     enemy09GetElectric() {
         let imgPath = this.GET_ELECTRIC_09[this.currentElectricImages09];
         let img = this.imageCache[imgPath];
@@ -148,6 +193,9 @@ class Enemy extends Moveables {
         return false;
     }
 
+    /**
+     * Loads the death images for enemy type 07.
+     */
     addEnemyDeathImages07() {
         for (let i = 0; i <= 23; i++) {
             let number = i < 10 ? '0' + i : i;
@@ -155,6 +203,9 @@ class Enemy extends Moveables {
         }
     }
 
+    /**
+     * Loads the death images for enemy type 09.
+     */
     addEnemyDeathImages09() {
         for (let i = 0; i <= 13; i++) {
             let number = i < 10 ? '0' + i : i;
@@ -162,6 +213,10 @@ class Enemy extends Moveables {
         }
     }
 
+    /**
+     * Plays the death animation for enemy type 07.
+     * @returns {boolean} True when the animation is finished
+     */
     enemy07Death() {
         let imgPath = this.DEATH_07[this.currentDeathImages07];
         let img = this.imageCache[imgPath];
@@ -176,6 +231,10 @@ class Enemy extends Moveables {
         return false;
     }
 
+    /**
+     * Plays the death animation for enemy type 09.
+     * @returns {boolean} True when the animation is finished
+     */
     enemy09Death() {
         let imgPath = this.DEATH_09[this.currentDeathImages09];
         let img = this.imageCache[imgPath];
@@ -190,14 +249,20 @@ class Enemy extends Moveables {
         return false;
     }
 
-     addEnemyDeathImages01() {
+     /**
+     * Loads the death images for enemy type 01.
+     */
+    addEnemyDeathImages01() {
         for (let i = 0; i <= 23; i++) {
             let number = i < 10 ? '0' + i : i;
             this.DEATH01.push(`./img/PNG/Enemy_Characters/Enemy_Character01/Death/Death_${number}.png`);
         }
     }
 
-     enemy01GetHit() {
+     /**
+     * Plays the get-hit animation for enemy type 01.
+     */
+    enemy01GetHit() {
         let imgPath = this.GET_HIT[this.currentGetHitImages01];
         let img = this.imageCache[imgPath];
         if (img && img.complete) {
@@ -209,6 +274,10 @@ class Enemy extends Moveables {
         }
     }
 
+    /**
+     * Plays the death animation for enemy type 01.
+     * @returns {boolean} True when the animation is finished
+     */
     enemy01Death() {
         let imgPath = this.DEATH01[this.currentDeathImages01];
         let img = this.imageCache[imgPath];
@@ -218,6 +287,64 @@ class Enemy extends Moveables {
         this.currentDeathImages01++;
         if (this.currentDeathImages01 >= this.DEATH01.length) {
             this.currentDeathImages01 = 0;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Loads the attack images for enemy type 01.
+     */
+    addEnemyHitImages01() {
+        for (let i = 0; i <= 13; i++) {
+            let number = i < 10 ? '0' + i : i;
+            this.HIT_01.push(`./img/PNG/Enemy_Characters/Enemy_Character01/Hit/Hit_${number}.png`);
+        }
+    }
+
+    /**
+     * Loads the attack images for enemy type 07.
+     */
+    addEnemyHitImages07() {
+        for (let i = 0; i <= 13; i++) {
+            let number = i < 10 ? '0' + i : i;
+            this.HIT_07.push(`./img/PNG/Enemy_Characters/Enemy_Character07/Hit/Hit_${number}.png`);
+        }
+    }
+
+    /**
+     * Plays the attack animation for enemy type 01.
+     * @returns {boolean} True when the animation is finished
+     */
+    enemy01Attack() {
+        let imgPath = this.HIT_01[this.currentHitImages01];
+        let img = this.imageCache[imgPath];
+        if (img && img.complete) {
+            this.img = img;
+        }
+        this.currentHitImages01++;
+        if (this.currentHitImages01 >= this.HIT_01.length) {
+            this.currentHitImages01 = 0;
+            this.isAttacking = false;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Plays the attack animation for enemy type 07.
+     * @returns {boolean} True when the animation is finished
+     */
+    enemy07Attack() {
+        let imgPath = this.HIT_07[this.currentHitImages07];
+        let img = this.imageCache[imgPath];
+        if (img && img.complete) {
+            this.img = img;
+        }
+        this.currentHitImages07++;
+        if (this.currentHitImages07 >= this.HIT_07.length) {
+            this.currentHitImages07 = 0;
+            this.isAttacking = false;
             return true;
         }
         return false;

@@ -1,8 +1,12 @@
 class FinalBoss extends Moveables {
     IMAGES_IDLE = [];
     frameCounter = 0;
+    isDead = false;
 
 
+    /**
+     * Creates the final boss.
+     */
     constructor() {
         super();
         this.x = 2500;
@@ -16,6 +20,23 @@ class FinalBoss extends Moveables {
     }
 
 
+    /**
+     * Draws the boss and its collision box.
+     * @param {CanvasRenderingContext2D} ctx - The canvas context
+     */
+    draw(ctx) {
+        if (this.isDead) return;
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+        ctx.beginPath();
+        ctx.lineWidth = "5";
+        ctx.strokeStyle = "blue";
+        ctx.rect(this.x + 750, this.y + 1050, this.width - 1470, this.height - 1520);
+        ctx.stroke();
+    }
+
+    /**
+     * Loads the idle images of the boss.
+     */
     addFinalBossImages() {
         for (let i = 0; i <= 6; i++) {
             let number = i;
@@ -23,6 +44,9 @@ class FinalBoss extends Moveables {
         }
     }
 
+    /**
+     * Plays the idle animation of the boss.
+     */
     startAnimationUpdate() {
         this.frameCounter++;
         if (this.frameCounter % 6 !== 0) return;

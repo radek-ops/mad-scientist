@@ -5,11 +5,15 @@ class Controls {
     foward = false;
 
     space = false;
+    usePotion = false;
 
     mouseClickLeft = false;
     mouseClickRight = false;
 
 
+    /**
+     * Sets up all keyboard and mouse events.
+     */
     constructor() {
 
         window.addEventListener('contextmenu', (event) => {
@@ -46,6 +50,9 @@ class Controls {
         });
         window.addEventListener('keydown', (event) => {
             if (event.repeat) return;
+            if (event.key === 'r') {
+                this.usePotion = true;
+            }
             (event.code === 'Space') ? this.space = true : false;
         });
 

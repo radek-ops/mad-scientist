@@ -8,6 +8,10 @@ class GunsProjectils extends Moveables {
     EMPTY_IMG = new Image();
 
 
+    /**
+     * Creates the gun and loads its images.
+     * @param {Controls} controls - The mouse controls
+     */
     constructor(controls) {
         super();
         this.controls = controls;
@@ -23,11 +27,18 @@ class GunsProjectils extends Moveables {
 
 
     SHOOT_SOUND = new Audio('../sounds/Shoot51.wav');
+    /**
+     * Plays the shoot sound.
+     */
     playShootSound() {
         this.SHOOT_SOUND.play();
     }
 
 
+    /**
+     * Draws the laser and its collision box.
+     * @param {CanvasRenderingContext2D} ctx - The canvas context
+     */
     draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
         if (this.img !== this.EMPTY_IMG) {
@@ -39,6 +50,9 @@ class GunsProjectils extends Moveables {
         }
     }
 
+    /**
+     * Loads the laser gun images.
+     */
     addLaserGunImages() {
         for (let i = 0; i < 5; i++) {
             let imgNumber = '0' + i;
@@ -47,6 +61,9 @@ class GunsProjectils extends Moveables {
         }
     }
 
+    /**
+     * Starts the projectile animation loop.
+     */
     useProjectil() {
         setInterval(() => {
             this.projectilAnimate();
@@ -54,6 +71,9 @@ class GunsProjectils extends Moveables {
     }
 
 
+    /**
+     * Plays the laser animation when shooting.
+     */
     projectilAnimate() {
         if (this.controls.mouseClickLeft) {
             let imgPath = this.LASER[this.currentProjectileImages];
