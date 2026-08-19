@@ -40,6 +40,8 @@ Ein 2D-Seitenscroller-Actionspiel, entwickelt mit reinem HTML, CSS und JavaScrip
    - Oder: `npx serve` / `python -m http.server` im Projektordner ausführen.
 
 > Ein lokaler Server wird empfohlen, da Audio und localStorage zuverlässiger funktionieren als über `file://`.
+>
+> **Browser:** Bitte verwende immer die aktuelle Version deines Browsers (Chrome, Firefox, Safari oder Opera). Das Spiel nutzt moderne Web-Funktionen.
 
 ### Mobile-Landscape-Test (ohne echtes Gerät)
 

@@ -16,7 +16,7 @@
             color: #fff;
             padding: 12px;
         }
-        h1 { font-size: 18px; margin: 4px 0 10px; }
+        h1 { font-size: 14px; margin: 4px 0 10px; }
         .toolbar {
             display: flex;
             gap: 8px;
@@ -53,12 +53,16 @@
     <div class="toolbar">
         <button data-w="667" data-h="375">iPhone SE</button>
         <button data-w="844" data-h="390">iPhone 14</button>
+        <button data-w="780" data-h="360">Samsung S23</button>
+        <button data-w="915" data-h="412">Pixel 8</button>
+        <button data-w="915" data-h="412">Pixel 10</button>
         <button data-w="1024" data-h="768" class="active">iPad</button>
         <button data-w="1366" data-h="1024">iPad Pro</button>
-        <button data-w="768" data-h="1024" title="Hochformat – für den ‚Bitte drehen‘-Hinweis">Hochformat</button>
+        <button data-w="1280" data-h="800">Samsung Tab S9</button>
+        <button data-w="1400" data-h="876">Samsung Tab S9+</button>
     </div>
     <div class="frame">
-        <iframe id="game" src="./game.html" width="1024" height="768"></iframe>
+        <iframe id="game" src="./game.html?touch=1" width="1024" height="768"></iframe>
     </div>
     <p style="font-size: 12px; color: #aaa; margin-top: 10px;">
         Klick auf einen Button = Größe wechseln. Landscape = Touch-Steuerung sichtbar.

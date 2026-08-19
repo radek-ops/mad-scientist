@@ -174,7 +174,7 @@ class Character extends Moveables {
      * Updates the scrolling of the world when the character moves.
      */
     movementUpdate(){
-        let deadZone = 960;
+        let deadZone = 640;
         if (this.x > deadZone) {
             this.world.map_scroll_x = -(this.x - deadZone);
         } else {
@@ -184,8 +184,8 @@ class Character extends Moveables {
         if (this.world.map_scroll_x > 0) {
             this.world.map_scroll_x = 0;
         }
-        if (this.world.map_scroll_x < -(3840 - 1920)) {
-            this.world.map_scroll_x = -(3840 - 1920);
+        if (this.world.map_scroll_x < -(3840 - 1280)) {
+            this.world.map_scroll_x = -(3840 - 1280);
         }
 
     }

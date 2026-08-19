@@ -1,3 +1,7 @@
+html, body {
+    overflow: hidden;
+}
+
 main {
     width: 100%;
     display: flex;
@@ -34,8 +38,9 @@ main::before {
 
 canvas {
     margin: 0;
+    height: calc(100dvh - 320px);
+    width: auto;
     max-width: 95vw;
-    max-height: 100vh;
     filter: brightness(1.2);
     border-radius: 16px;
     box-shadow: 0 0 30px rgba(255, 255, 255, 0.3),
@@ -313,17 +318,25 @@ canvas {
     height: 64px;
 }
 
-@media (max-width: 1024px) {
+@media (hover: none) and (pointer: coarse) {
     #touch-controls {
         display: block;
     }
-}
 
-@media (max-width: 844px) {
     .main-content h1 {
         display: none;
     }
+}
 
+html.force-touch #touch-controls {
+    display: block;
+}
+
+html.force-touch .main-content h1 {
+    display: none;
+}
+
+@media (max-width: 844px) {
     .touch-btn {
         font-size: 13px;
     }
@@ -369,6 +382,18 @@ canvas {
         bottom: 95px;
         width: 46px;
         height: 46px;
+    }
+}
+
+@media (max-height: 500px) {
+    .game-credit {
+        display: none;
+    }
+
+    canvas {
+        width: auto;
+        height: 95dvh;
+        max-width: 95vw;
     }
 }
 

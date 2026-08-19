@@ -40,6 +40,8 @@ A 2D side-scrolling action game built with plain HTML, CSS and JavaScript (Canva
    - Or: `npx serve` / `python -m http.server` in the project folder.
 
 > A local server is recommended because audio and localStorage work more reliably than via `file://`.
+>
+> **Browser:** Always use the latest version of your browser (Chrome, Firefox, Safari or Opera). The game uses modern web features.
 
 ### Mobile landscape testing (no device needed)
 

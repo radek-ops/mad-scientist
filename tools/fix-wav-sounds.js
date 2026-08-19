@@ -1,9 +1,9 @@
 const fs = require('fs');
 
 const SAMPLE_RATE = 44100;
-const TARGET_PEAK = 0.85;
-const FADE_IN_MS = 3;
-const FADE_OUT_MS = 5;
+const TARGET_PEAK = 0.80;
+const FADE_IN_MS = 2;
+const FADE_OUT_MS = 2;
 
 const FILES = ['Shoot51', 'player_death', 'alien_death1', 'key'];
 

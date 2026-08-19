@@ -84,6 +84,7 @@ class Controls {
             });
             btn.addEventListener('mousedown', (event) => {
                 event.preventDefault();
+                event.stopPropagation();
                 onStart();
             });
             btn.addEventListener('mouseup', (event) => {
@@ -110,6 +111,7 @@ class Controls {
             }, { passive: false });
             potionBtn.addEventListener('mousedown', (event) => {
                 event.preventDefault();
+                event.stopPropagation();
                 this.usePotion = true;
             });
         }

@@ -12,7 +12,7 @@ class BossHPBar extends Moveables {
      */
     constructor() {
         super();
-        this.x = 1550;
+        this.x = 940;
         this.y = 50;
         this.width = this.maxWidth;
         this.height = 30;

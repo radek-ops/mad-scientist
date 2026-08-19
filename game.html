@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="style/fonts.css">
     <link rel="stylesheet" href="style/game.css">
     <link rel="icon" type="image/png" href="./img/Favicon/Icon.png">
+    <script>
+        if (new URLSearchParams(location.search).get('touch') === '1') {
+            document.documentElement.classList.add('force-touch');
+        }
+    </script>
 
     <script defer src="./js/models/controls.class.js"></script>
     <script defer src="./js/models/moveables.class.js"></script>
@@ -37,12 +42,12 @@
 
 
 <body onload="init()">
-    <!-- <div class="landscape-warning">
+    <div class="landscape-warning">
         <div class="warning-message">
             <h1>Please rotate your device</h1>
             <p>🔄 Landscape mode required</p>
         </div>
-    </div> -->
+    </div>
     <main>
 
         <div class="main-content">
@@ -50,7 +55,7 @@
                 <span class="mad">MAD</span>
                 <span class="scientist">SCIENTIST</span>
             </h1>
-            <canvas id="canvas" width="1919" height="720"></canvas>
+            <canvas id="canvas" width="1280" height="720"></canvas>
             <span class="game-credit">Created by Radek Gnych &copy;</span>
         </div>
     </main>
