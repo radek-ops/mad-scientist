@@ -42,6 +42,10 @@
         let charY = this.mainCharacter.getJumpY();
         let charLeft = this.mainCharacter.x + 106;
         let charRight = this.mainCharacter.x + 106 + (this.mainCharacter.width - 266);
+        if (this.mainCharacter.otherDirection) {
+            charLeft = this.mainCharacter.x + (this.mainCharacter.width - 106 - (this.mainCharacter.width - 266));
+            charRight = this.mainCharacter.x + (this.mainCharacter.width - 106);
+        }
         let charHead = charY + 150;
         let charFeet = charY + 150 + (this.mainCharacter.height - 244);
         let objectLeft = object.x;
@@ -183,10 +187,10 @@
         let explosionRight = bomb.x + bomb.width;
         let explosionTop = bomb.y;
         let explosionBottom = bomb.y + bomb.height;
-        let bossLeft = this.finalBoss.x + 650;
-        let bossRight = this.finalBoss.x + 650 + (this.finalBoss.width - 1300);
-        let bossTop = this.finalBoss.y + 1150;
-        let bossBottom = this.finalBoss.y + 1150 + (this.finalBoss.height - 1500);
+        let bossLeft = this.finalBoss.x + 800;
+        let bossRight = this.finalBoss.x + 800 + (this.finalBoss.width - 1570);
+        let bossTop = this.finalBoss.y + 1100;
+        let bossBottom = this.finalBoss.y + 1100 + (this.finalBoss.height - 1620);
         return explosionRight > bossLeft &&
             explosionBottom > bossTop &&
             explosionLeft < bossRight &&

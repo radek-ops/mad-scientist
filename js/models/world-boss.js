@@ -8,10 +8,10 @@
         let laserRight = this.gunsProjectiles.x + 10 + (this.gunsProjectiles.width - 20);
         let laserTop = this.gunsProjectiles.y + 10;
         let laserBottom = this.gunsProjectiles.y + 10 + (this.gunsProjectiles.height - 20);
-        let bossLeft = this.finalBoss.x + 650;
-        let bossRight = this.finalBoss.x + 650 + (this.finalBoss.width - 1300);
-        let bossTop = this.finalBoss.y + 1150;
-        let bossBottom = this.finalBoss.y + 1150 + (this.finalBoss.height - 1500);
+        let bossLeft = this.finalBoss.x + 800;
+        let bossRight = this.finalBoss.x + 800 + (this.finalBoss.width - 1570);
+        let bossTop = this.finalBoss.y + 1100;
+        let bossBottom = this.finalBoss.y + 1100 + (this.finalBoss.height - 1620);
         return laserRight > bossLeft &&
             laserBottom > bossTop &&
             laserLeft < bossRight &&

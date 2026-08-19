@@ -10,7 +10,7 @@
                 let isFalling = this.mainCharacter.speedY < 0;
                 let isStomping = isFalling && (charFeet - enemyHead > -10 && charFeet - enemyHead < 30);
                 if (isStomping && !enemy.isHit) {
-                    this.playEnemy01GetHit(enemy);
+                    this.laserKillEnemy01(enemy);
                 }
             }
         });

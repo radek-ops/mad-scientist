@@ -92,11 +92,6 @@
     z-index: 1;
 }
 
-.ctrls-container>* {
-    position: relative;
-    z-index: 1;
-}
-
 .ctrls-title {
     margin-bottom: 40px;
 }

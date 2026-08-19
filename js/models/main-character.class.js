@@ -175,7 +175,13 @@ class Character extends Moveables {
      */
     movementUpdate(){
         let deadZone = 640;
-        if (this.x > deadZone) {
+        let bossPanStart = 2500;
+        let bossTargetScroll = -(3840 - 1280);
+
+        if (this.x >= bossPanStart) {
+            let diff = bossTargetScroll - this.world.map_scroll_x;
+            this.world.map_scroll_x += diff * 0.04;
+        } else if (this.x > deadZone) {
             this.world.map_scroll_x = -(this.x - deadZone);
         } else {
             this.world.map_scroll_x = 0;
@@ -184,8 +190,8 @@ class Character extends Moveables {
         if (this.world.map_scroll_x > 0) {
             this.world.map_scroll_x = 0;
         }
-        if (this.world.map_scroll_x < -(3840 - 1280)) {
-            this.world.map_scroll_x = -(3840 - 1280);
+        if (this.world.map_scroll_x < bossTargetScroll) {
+            this.world.map_scroll_x = bossTargetScroll;
         }
 
     }
