@@ -318,6 +318,17 @@ canvas {
     height: 56px;
 }
 
+.btn-gear {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 20px;
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
+    text-decoration: none;
+}
+
 @media (hover: none) and (pointer: coarse) {
     .touch-controls {
         display: block;
@@ -354,7 +365,7 @@ html.force-touch .main-content h1 {
         height: 40px;
     }
 
-    .btn-up { left: px; top: 0; }
+    .btn-up { left: 30px; top: 0; }
     .btn-down { left: 30px; top: 60px; }
     .btn-left { left: 0; top: 30px; }
     .btn-right { left: 60px; top: 30px; }
@@ -385,6 +396,13 @@ html.force-touch .main-content h1 {
         bottom: 15px;
         width: 40px;
         height: 40px;
+    }
+
+    .btn-gear {
+        bottom: 15px;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
     }
 
      canvas {
