@@ -27,18 +27,11 @@ class GunsProjectiles extends Moveables {
 
 
     /**
-     * Draws the laser and its collision box.
+     * Draws the laser.
      * @param {CanvasRenderingContext2D} ctx - The canvas context
      */
     draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-        if (this.img !== this.EMPTY_IMG) {
-            ctx.beginPath();
-            ctx.lineWidth = "5";
-            ctx.strokeStyle = "blue";
-            ctx.rect(this.x + 10, this.y + 10, this.width - 20, this.height - 20);
-            ctx.stroke();
-        }
     }
 
     /**

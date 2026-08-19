@@ -44,7 +44,7 @@ class Enemy extends Moveables {
         this.addEnemyDeathImages09();
         this.addEnemyHitImages01();
         this.addEnemyHitImages07();
-        this.saveAllImeges();
+        this.saveAllImages();
         this.img = this.imageCache[this.IMAGES_IDLE[0]];
         this.startAnimation();
     }
@@ -52,7 +52,7 @@ class Enemy extends Moveables {
     /**
      * Loads all enemy images into the cache.
      */
-    saveAllImeges() {
+    saveAllImages() {
         this.saveImages(this.IMAGES_IDLE);
         this.saveImages(this.IMAGES_WALK);
         this.saveImages(this.GET_HIT);
@@ -68,17 +68,12 @@ class Enemy extends Moveables {
     }
 
     /**
-     * Draws the enemy and its collision box.
+     * Draws the enemy.
      * @param {CanvasRenderingContext2D} ctx - The canvas context
      */
     draw(ctx) {
         if (this.isDead) return;
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-        ctx.beginPath();
-        ctx.lineWidth = "5";
-        ctx.strokeStyle = "blue";
-        ctx.rect(this.x + 111, this.y + 148, this.width - 226, this.height - 226);
-        ctx.stroke();
     }
 
     /**

@@ -45,17 +45,12 @@ class Character extends Moveables {
 
 
     /**
-     * Draws the character and its collision box on the canvas.
+     * Draws the character.
      * @param {CanvasRenderingContext2D} ctx - The canvas context
      */
     draw(ctx) {
         let drawY = this.getJumpY();
         ctx.drawImage(this.img, this.x, drawY, this.width, this.height);
-        ctx.beginPath();
-        ctx.lineWidth = "5";
-        ctx.strokeStyle = "blue";
-        ctx.rect(this.x + 106, drawY + 150, this.width  - 266 , this.height  - 244);
-        ctx.stroke();
     }
 
     /**

@@ -42,16 +42,11 @@ class ThrownBomb extends Moveables {
 
 
     /**
-     * Draws the bomb and its collision box.
+     * Draws the bomb.
      * @param {CanvasRenderingContext2D} ctx - The canvas context
      */
     draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-        ctx.beginPath();
-        ctx.lineWidth = "3";
-        ctx.strokeStyle = "blue";
-        ctx.rect(this.x, this.y, this.width, this.height);
-        ctx.stroke();
     }
 
 

@@ -34,7 +34,7 @@ class Boxing extends Moveables {
 
 
     /**
-     * Draws the boxing animation and its collision box.
+     * Draws the boxing animation.
      * @param {CanvasRenderingContext2D} ctx - The canvas context
      */
     draw(ctx) {
@@ -46,12 +46,6 @@ class Boxing extends Moveables {
         ctx.scale(-1, 1);
         ctx.drawImage(this.img, 0, 0, this.width, this.height);
         ctx.restore();
-
-        ctx.beginPath();
-        ctx.lineWidth = "5";
-        ctx.strokeStyle = "blue";
-        ctx.rect(this.x, this.y, this.width, this.height);
-        ctx.stroke();
     }
 
 

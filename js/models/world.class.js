@@ -204,6 +204,7 @@
         this.checkEnemyAttack();
         this.checkLaserEnemyCollision07();
         this.checkLaserEnemyCollision09();
+        this.checkLaserEnemyCollision01();
         this.checkLaserHitsBoss();
         this.checkLaserSound();
         this.checkBossBoxing();

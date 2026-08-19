@@ -10,19 +10,7 @@
                 let isFalling = this.mainCharacter.speedY < 0;
                 let isStomping = isFalling && (charFeet - enemyHead > -10 && charFeet - enemyHead < 30);
                 if (isStomping && !enemy.isHit) {
-                    enemy.isHit = true;
-                    enemy.enemy01GetHit();
-                    this.sound.play('enemyDeath');
-                    setTimeout(() => {
-                        let deathInterval = setInterval(() => {
-                            let done = enemy.enemy01Death();
-                            if (done) {
-                                clearInterval(deathInterval);
-                                enemy.isDead = true;
-
-                            }
-                        }, 60);
-                    }, 500);
+                    this.playEnemy01GetHit(enemy);
                 }
             }
         });
@@ -211,6 +199,57 @@
                 this.laserKillEnemy(enemy, '09');
             }
         });
+    },
+
+    /**
+     * Kills enemy type 01 when the laser hits it from behind.
+     */
+    checkLaserEnemyCollision01() {
+        if (!this.controls.mouseClickLeft) return;
+        this.enemies.forEach((enemy) => {
+            if (enemy.enemyType === '01' && !enemy.isHit && !enemy.isDead) {
+                if (this.laserHitEnemy(enemy)) {
+                    if (this.mainCharacter.x > enemy.x) {
+                        this.laserKillEnemy01(enemy);
+                    } else {
+                        this.playEnemy01GetHit(enemy);
+                    }
+                }
+            }
+        });
+    },
+
+    /**
+     * Plays the death animation for enemy type 01.
+     * @param {Enemy} enemy - The enemy to kill
+     */
+    laserKillEnemy01(enemy) {
+        enemy.isHit = true;
+        this.sound.play('enemyDeath');
+        let deathInterval = setInterval(() => {
+            let done = enemy.enemy01Death();
+            if (done) {
+                clearInterval(deathInterval);
+                enemy.isDead = true;
+            }
+        }, 60);
+    },
+
+    /**
+     * Plays the get-hit animation for enemy type 01 without killing it.
+     * @param {Enemy} enemy - The enemy that gets hit
+     */
+    playEnemy01GetHit(enemy) {
+        enemy.isHit = true;
+        enemy.currentGetHitImages01 = 0;
+        this.sound.play('enemyDeath');
+        let hitInterval = setInterval(() => {
+            enemy.enemy01GetHit();
+            if (enemy.currentGetHitImages01 === 0) {
+                clearInterval(hitInterval);
+                enemy.isHit = false;
+            }
+        }, 60);
     },
 
     /**
