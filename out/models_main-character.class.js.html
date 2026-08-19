@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: models/main-character.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: models/main-character.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>class Character extends Moveables {
+
+    IMAGES_IDLE = [];
+    IMAGES_WALK = [];
+    IMAGES_SHOOTFX1 = [];
+    IMAGES_THROWBOMB = [];
+    IMAGES_JUMP = [];
+    IMAGES_GETHIT = [];
+    IMAGES_DEATH = [];
+    controls;
+    currentThrowBombImages = 0;
+    currentShootFXImages = 0;
+    currentJumpImages = 0;
+    currentGetHitImages = 0;
+    currentDeathImages = 0;
+    isHit = false;
+    isDead = false;
+    walkFrameCounter = 0;
+    shootFxframeCounter = 0;
+    speedY = 0;
+    acceleration = 1;
+    otherDirection = false;
+    gunsProjectiles;
+    x = 0;
+    y = 300;
+    width = 375;
+    height = 375;
+
+
+    /**
+     * Creates the character, loads images and starts movement.
+     * @param {Controls} controls - The keyboard and mouse controls
+     * @param {GunsProjectiles} gunsProjectiles - The gun of the character
+     */
+    constructor(controls, gunsProjectiles) {
+        super();
+        this.controls = controls;
+        this.gunsProjectiles = gunsProjectiles;
+        this.jumpY = 240;
+        this.loadAllImages();
+        this.moveCharacter();
+        this.applyGravity();
+
+    }
+
+
+    /**
+     * Draws the character.
+     * @param {CanvasRenderingContext2D} ctx - The canvas context
+     */
+    draw(ctx) {
+        let drawY = this.getJumpY();
+        ctx.drawImage(this.img, this.x, drawY, this.width, this.height);
+    }
+
+    /**
+     * Loads all images of the character.
+     */
+    loadAllImages() {
+        this.addMoveImages();
+        this.addShootFXImages();
+        this.addThrowBombImages();
+        this.addJumpImages();
+        this.addGetHitImages();
+        this.addDeathImages();
+        this.saveImages(this.IMAGES_IDLE);
+        this.saveImages(this.IMAGES_WALK);
+        this.saveImages(this.IMAGES_SHOOTFX1);
+        this.saveImages(this.IMAGES_THROWBOMB);
+        this.saveImages(this.IMAGES_JUMP);
+        this.saveImages(this.IMAGES_GETHIT);
+        this.saveImages(this.IMAGES_DEATH);
+        this.img = this.imageCache[this.IMAGES_IDLE[0]];
+    }
+
+    /**
+     * Loads the idle and walk images.
+     */
+    addMoveImages() {
+        for (let i = 0; i &lt; 14; i++) {
+            let imgNumber = i &lt; 10 ? '0' + i : i;
+            this.IMAGES_IDLE.push(`./img/PNG/Main_Characters/Gun01/Idle/Idle_${imgNumber}.png`);
+            this.IMAGES_WALK.push(`./img/PNG/Main_Characters/Gun01/Walk/Walk_${imgNumber}.png`);
+        }
+    }
+
+    /**
+     * Loads the shoot animation images.
+     */
+    addShootFXImages() {
+        for (let i = 0; i &lt; 4; i++) {
+            let imgNumber = '0' + i;
+            this.IMAGES_SHOOTFX1.push(`./img/PNG/Main_Characters/Gun01/ShootFX1/ShootFX1_${imgNumber}.png`);
+        }
+    }
+
+    /**
+     * Loads the throw-bomb animation images.
+     */
+    addThrowBombImages() {
+        for (let i = 0; i &lt; 20; i++) {
+            let imgNumber = i &lt; 10 ? '0' + i : i;
+            this.IMAGES_THROWBOMB.push(`./img/PNG/Main_Characters/Gun01/ThrowBomb/ThrowBomb_${imgNumber}.png`);
+        }
+    }
+
+    /**
+     * Loads the jump animation images.
+     */
+    addJumpImages() {
+        for (let i = 0; i &lt; 9; i++) {
+            let imgNumber = '0' + i;
+            this.IMAGES_JUMP.push(`./img/PNG/Main_Characters/Gun01/Jump/Jump_${imgNumber}.png`);
+        }
+    }
+
+    /**
+     * Loads the get-hit animation images.
+     */
+    addGetHitImages() {
+        for (let i = 0; i &lt;= 9; i++) {
+            let number = i &lt; 10 ? '0' + i : i;
+            this.IMAGES_GETHIT.push(`./img/PNG/Main_Characters/Gun01/GetHit/GetHit_${number}.png`);
+        }
+    }
+
+    /**
+     * Loads the death animation images.
+     */
+    addDeathImages() {
+        for (let i = 0; i &lt;= 43; i++) {
+            let number = i &lt; 10 ? '0' + i : i;
+            this.IMAGES_DEATH.push(`./img/PNG/Main_Characters/Gun01/Death/Death_${number}.png`);
+        }
+    }
+
+    /**
+     * Starts the movement and animation loop.
+     */
+    moveCharacter() {
+        setInterval(() => {
+            this.movement();
+            this.animate();
+            this.jump();
+        }, 1000 / 60);
+    }
+
+
+    /**
+     * Moves the character based on the pressed keys.
+     */
+    movement() {
+        if (this.isDead) {
+            return;
+        }
+        if (this.controls.up &amp;&amp; this.y > 262) {
+            this.y -= 10;
+        }
+        if (this.controls.down &amp;&amp; this.y &lt; 338) {
+            this.y += 10;
+        }
+        if (this.controls.back &amp;&amp; this.x > 0) {
+            this.x -= 10;
+            this.otherDirection = true;
+        }
+        else if (this.controls.forward &amp;&amp; this.x &lt; 3300) {
+            this.x += 10;
+            this.otherDirection = false;
+        }
+           this.movementUpdate();
+    }
+
+    /**
+     * Updates the scrolling of the world when the character moves.
+     */
+    movementUpdate(){
+        let deadZone = 640;
+        if (this.x > deadZone) {
+            this.world.map_scroll_x = -(this.x - deadZone);
+        } else {
+            this.world.map_scroll_x = 0;
+        }
+
+        if (this.world.map_scroll_x > 0) {
+            this.world.map_scroll_x = 0;
+        }
+        if (this.world.map_scroll_x &lt; -(3840 - 1280)) {
+            this.world.map_scroll_x = -(3840 - 1280);
+        }
+
+    }
+
+    /**
+     * Chooses the right animation based on the input.
+     */
+    animate() {
+        if (this.isDead || this.isHit) {
+            return;
+        }
+        if (this.controls.mouseClickLeft) {
+            this.walkAnimate();
+            this.shootFxAnimate();
+            this.gunsProjectiles.projectileAnimate();
+        } else if (this.controls.mouseClickRight &amp;&amp; !this.isAboveGround()) {
+            this.startThrowBomb();
+        } else if (this.currentThrowBombImages > 0) {
+            this.throwBombAnimate();
+        } else {
+            this.walkAnimate();
+        }
+    }
+
+
+    /**
+     * Starts throwing a bomb with the right mouse button.
+     */
+    startThrowBomb() {
+        this.controls.mouseClickRight = false;
+        this.currentThrowBombImages = 0;
+        this.throwBombAnimate();
+        this.world.throwBomb();
+    }
+
+
+    /**
+     * Plays the walk or idle animation.
+     */
+    walkAnimate() {
+        this.walkFrameCounter++;
+        if (this.walkFrameCounter % 3 !== 0) return;
+        let isMoving = this.controls.up || this.controls.back || this.controls.down || this.controls.forward;
+
+        let images;
+        if (isMoving) {
+            images = this.IMAGES_WALK;
+        } else {
+            images = this.IMAGES_IDLE;
+        }
+        this.currentWalkImages++;
+        if (this.currentWalkImages >= images.length) {
+            this.currentWalkImages = 0;
+        }
+        let imgPath = images[this.currentWalkImages];
+        this.img = this.imageCache[imgPath];
+    }
+
+    /**
+     * Plays the shoot animation.
+     */
+    shootFxAnimate() {
+        this.shootFxframeCounter++;
+        if (this.shootFxframeCounter % 2 !== 0) return;
+        let imgPath = this.IMAGES_SHOOTFX1[this.currentShootFXImages];
+        this.img = this.imageCache[imgPath];
+        this.currentShootFXImages++;
+        if (this.currentShootFXImages >= this.IMAGES_SHOOTFX1.length) {
+            this.currentShootFXImages = 0;
+        }
+    }
+
+    /**
+     * Plays the throw-bomb animation.
+     */
+    throwBombAnimate() {
+        let imgPath = this.IMAGES_THROWBOMB[this.currentThrowBombImages];
+        this.img = this.imageCache[imgPath];
+        this.currentThrowBombImages++;
+        if (this.currentThrowBombImages >= this.IMAGES_THROWBOMB.length) {
+            this.currentThrowBombImages = 0;
+        }
+    }
+
+    /**
+     * Applies gravity to the character every frame.
+     */
+    applyGravity() {
+        setInterval(() => {
+            if (this.isAboveGround() || this.speedY > 0) {
+                this.jumpY -= this.speedY;
+                this.speedY -= this.acceleration;
+            } else {
+                this.speedY = 0;
+                this.jumpY = 240;
+            }
+        }, 1000 / 60);
+    }
+
+    /**
+     * Checks if the character is in the air.
+     * @returns {boolean} True when the character is jumping
+     */
+    isAboveGround() {
+        return this.jumpY &lt; 240;
+    }
+
+    /**
+     * Returns the current y position while jumping.
+     * @returns {number} The y position
+     */
+    getJumpY() {
+        if (this.isAboveGround()) {
+            return this.y - (240 - this.jumpY);
+        } else {
+            return this.y;
+        }
+    }
+
+    /**
+     * Makes the character jump with the space key.
+     */
+    jump() {
+        if (this.isDead || this.isHit) {
+            return;
+        }
+        if (this.controls.space &amp;&amp; !this.isAboveGround()) {
+            this.speedY = 18 ;
+            this.currentJumpImages = 0;
+            this.controls.space = false;
+            this.world.sound.play('jump');
+        }
+        if (this.isAboveGround()) {
+            this.jumpAnimate();
+        }
+    }
+
+    /**
+     * Plays the jump animation.
+     */
+    jumpAnimate() {
+        if (this.currentJumpImages &lt; this.IMAGES_JUMP.length) {
+            this.currentJumpImages++;
+        }
+        let index = Math.min(this.currentJumpImages, this.IMAGES_JUMP.length - 1);
+        let imgPath = this.IMAGES_JUMP[index];
+        this.img = this.imageCache[imgPath];
+    }
+
+    /**
+     * Plays the get-hit animation of the character.
+     * @returns {boolean} True when the animation is finished
+     */
+    characterGetHit() {
+        let imgPath = this.IMAGES_GETHIT[this.currentGetHitImages];
+        let img = this.imageCache[imgPath];
+        if (img &amp;&amp; img.complete) {
+            this.img = img;
+        }
+        this.currentGetHitImages++;
+        if (this.currentGetHitImages >= this.IMAGES_GETHIT.length) {
+            this.currentGetHitImages = 0;
+            this.isHit = false;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Plays the death animation of the character.
+     * @returns {boolean} True when the animation is finished
+     */
+    characterDeath() {
+        let imgPath = this.IMAGES_DEATH[this.currentDeathImages];
+        let img = this.imageCache[imgPath];
+        if (img &amp;&amp; img.complete) {
+            this.img = img;
+        }
+        this.currentDeathImages++;
+        if (this.currentDeathImages >= this.IMAGES_DEATH.length) {
+            this.currentDeathImages = 0;
+            return true;
+        }
+        return false;
+    }
+
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Background.html">Background</a></li><li><a href="Bomb.html">Bomb</a></li><li><a href="BossHPBar.html">BossHPBar</a></li><li><a href="Boxing.html">Boxing</a></li><li><a href="Character.html">Character</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="FinalBoss.html">FinalBoss</a></li><li><a href="GunsProjectiles.html">GunsProjectiles</a></li><li><a href="HPBar.html">HPBar</a></li><li><a href="Potion.html">Potion</a></li><li><a href="Sound.html">Sound</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="ThrownBomb.html">ThrownBomb</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MUTE_STORAGE_KEY">MUTE_STORAGE_KEY</a></li><li><a href="global.html#boxingHitsCharacter">boxingHitsCharacter</a></li><li><a href="global.html#canEnemyAttack">canEnemyAttack</a></li><li><a href="global.html#characterTouchesObject">characterTouchesObject</a></li><li><a href="global.html#checkBombCollection">checkBombCollection</a></li><li><a href="global.html#checkBombExplosionDamage">checkBombExplosionDamage</a></li><li><a href="global.html#checkBossBoxing">checkBossBoxing</a></li><li><a href="global.html#checkBoxingHitsCharacter">checkBoxingHitsCharacter</a></li><li><a href="global.html#checkEnemyAttack">checkEnemyAttack</a></li><li><a href="global.html#checkEnemyCollision01">checkEnemyCollision01</a></li><li><a href="global.html#checkEnemyCollision07And09">checkEnemyCollision07And09</a></li><li><a href="global.html#checkEnemyHeadBump09">checkEnemyHeadBump09</a></li><li><a href="global.html#checkLaserEnemyCollision01">checkLaserEnemyCollision01</a></li><li><a href="global.html#checkLaserEnemyCollision07">checkLaserEnemyCollision07</a></li><li><a href="global.html#checkLaserEnemyCollision09">checkLaserEnemyCollision09</a></li><li><a href="global.html#checkLaserHitsBoss">checkLaserHitsBoss</a></li><li><a href="global.html#checkLaserSound">checkLaserSound</a></li><li><a href="global.html#checkPotionCollection">checkPotionCollection</a></li><li><a href="global.html#consumeBomb">consumeBomb</a></li><li><a href="global.html#consumePotion">consumePotion</a></li><li><a href="global.html#damageBoss">damageBoss</a></li><li><a href="global.html#damageCharacter">damageCharacter</a></li><li><a href="global.html#explosionHitsBoss">explosionHitsBoss</a></li><li><a href="global.html#explosionHitsCharacter">explosionHitsCharacter</a></li><li><a href="global.html#explosionHitsEnemy">explosionHitsEnemy</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#isHeadBumpingEnemy">isHeadBumpingEnemy</a></li><li><a href="global.html#isMuted">isMuted</a></li><li><a href="global.html#killCharacter">killCharacter</a></li><li><a href="global.html#killEnemyWithBomb">killEnemyWithBomb</a></li><li><a href="global.html#laserHitEnemy">laserHitEnemy</a></li><li><a href="global.html#laserHitsBoss">laserHitsBoss</a></li><li><a href="global.html#laserKillEnemy">laserKillEnemy</a></li><li><a href="global.html#laserKillEnemy01">laserKillEnemy01</a></li><li><a href="global.html#playBossDestroy">playBossDestroy</a></li><li><a href="global.html#playBossGetHit">playBossGetHit</a></li><li><a href="global.html#playCharacterGetHit">playCharacterGetHit</a></li><li><a href="global.html#playEnemy01GetHit">playEnemy01GetHit</a></li><li><a href="global.html#playEnemyDeath">playEnemyDeath</a></li><li><a href="global.html#setMuted">setMuted</a></li><li><a href="global.html#spawnBossAreaEnemies">spawnBossAreaEnemies</a></li><li><a href="global.html#spawnNewEnemies">spawnNewEnemies</a></li><li><a href="global.html#startEnemyAttack">startEnemyAttack</a></li><li><a href="global.html#throwBomb">throwBomb</a></li><li><a href="global.html#toggleMute">toggleMute</a></li><li><a href="global.html#updateMuteButtons">updateMuteButtons</a></li><li><a href="global.html#updateThrownBombs">updateThrownBombs</a></li><li><a href="global.html#usePotion">usePotion</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Aug 19 2026 11:32:22 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

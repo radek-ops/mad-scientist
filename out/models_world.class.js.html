@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: models/world.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: models/world.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>﻿class World {
+    ctx;
+    canvas;
+    enemies;
+    mainCharacter;
+    finalBoss;
+    gunsProjectiles;
+    IMAGES_BACKGROUND = [];
+    map_scroll_x = 0;
+    statusBar;
+    hpbar;
+    bossHpBar;
+    sound;
+
+    potions;
+    bombs;
+    thrownBombs;
+    collectedBombCount;
+    collectedPotionCount;
+    lastSection;
+    hasSpawnedBossEnemies;
+    controls;
+    headBumpCooldown;
+    bossLaserCooldown;
+    laserSoundCooldown;
+    boxing;
+    boxingCooldown;
+
+    drawY;
+
+    /**
+     * Creates a new World and starts the game loop.
+     * @param {HTMLCanvasElement} canvas - The canvas element where the game is drawn
+     */
+    constructor(canvas) {
+        this.ctx = canvas.getContext('2d');
+        this.canvas = canvas;
+        this.initWorld();
+        this.draw();
+    }
+
+    /**
+     * Sets up all starting values and objects of the world.
+     */
+    initWorld() {
+        this.lastSection = 0;
+        this.hasSpawnedBossEnemies = false;
+        this.headBumpCooldown = 0;
+        this.bossLaserCooldown = 0;
+        this.laserSoundCooldown = 0;
+        this.boxingCooldown = 0;
+
+        this.addBackgroundImages();
+        this.addBackgroundLayer();
+        this.initBars();
+        this.initPotions();
+        this.initBombs();
+        this.initEntities();
+    }
+
+    /**
+     * Creates the status bar and health bars.
+     */
+    initBars() {
+        this.statusBar = new StatusBar();
+        this.hpbar = new HPBar();
+        this.bossHpBar = new BossHPBar();
+        this.sound = new Sound();
+        this.sound.playMusic('mainTheme');
+    }
+
+    /**
+     * Creates the potions and places them in the world.
+     */
+    initPotions() {
+        this.potions = [
+            new Potion(600 + Math.random() * 400, 420),
+            new Potion(1600 + Math.random() * 400, 420),
+            new Potion(0, 0)
+        ];
+        this.potions[2].collect(0);
+        this.collectedPotionCount = 1;
+    }
+
+    /**
+     * Creates the bombs and places them in the world.
+     */
+    initBombs() {
+        this.bombs = [
+            new Bomb(1000, 360, 0),
+            new Bomb(1400, 360, 1),
+            new Bomb(1800, 360, 2),
+            new Bomb(2200, 360, 0),
+            new Bomb(2450, 360, 1)
+        ];
+        this.collectedBombCount = 0;
+        this.thrownBombs = [];
+    }
+
+    /**
+     * Creates the character, enemies and boss.
+     */
+    initEntities() {
+        this.controls = new Controls();
+        this.gunsProjectiles = new GunsProjectiles(this.controls);
+        this.mainCharacter = new Character(this.controls, this.gunsProjectiles);
+        this.mainCharacter.world = this;
+        this.initEnemies();
+        this.finalBoss = new FinalBoss();
+        this.boxing = new Boxing(this.finalBoss.x + 450, 450);
+    }
+
+    /**
+     * Creates the enemies and spreads them across the level.
+     */
+    initEnemies() {
+        this.enemies = [];
+        for (let i = 0; i &lt; 15; i++) {
+            let enemy = new Enemy(this.controls);
+            enemy.x = 400 + (i * 130);
+            this.enemies.push(enemy);
+        }
+    }
+
+    /**
+     * Checks if two objects touch each other (collision box).
+     * @param {Character} mainCharacter - The player character
+     * @param {Enemy} enemies - The enemy object
+     * @returns {boolean} True when they touch, otherwise false
+     */
+    collision(mainCharacter, enemies) {
+        let charY = mainCharacter.getJumpY();
+        let charLeft = mainCharacter.x + 106;
+        let charRight = mainCharacter.x + 106 + (mainCharacter.width - 266);
+        let charHead = charY + 150;
+        let charFeet = charY + 150 + (mainCharacter.height - 244);
+        let enemyLeft = enemies.x + 111;
+        let enemyRight = enemies.x + 111 + (enemies.width - 226);
+        let enemyHead = enemies.y + 148;
+        let enemyFeet = enemies.y + 148 + (enemies.height - 226);
+        if (charRight > enemyLeft &amp;&amp;
+            charFeet > enemyHead &amp;&amp;
+            charLeft &lt; enemyRight &amp;&amp;
+            charHead &lt; enemyFeet) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Clears the canvas and draws the next frame.
+     */
+    draw() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.translate(this.map_scroll_x, 0);
+        this.updateGunPosition();
+        this.allfunctions();
+    }
+
+    /**
+     * Places the gun in the hand of the character.
+     */
+    updateGunPosition() {
+        let gunOffsetY = this.mainCharacter.isAboveGround() ? 70 : 180;
+        this.gunsProjectiles.otherDirection = this.mainCharacter.otherDirection;
+        if (this.gunsProjectiles.otherDirection) {
+            this.gunsProjectiles.x = this.mainCharacter.x - 10;
+            this.gunsProjectiles.y = this.calcJumpPos() + gunOffsetY;
+        } else {
+            this.gunsProjectiles.x = this.mainCharacter.x + 280;
+            this.gunsProjectiles.y = this.calcJumpPos() + gunOffsetY;
+        }
+    }
+
+    /**
+     * Runs all drawing and checking steps of one frame.
+     */
+    allfunctions() {
+        this.drawWorld();
+        this.runChecks();
+        this.drawUI();
+        this.drawEntities();
+        this.nextFrame();
+    }
+
+    /**
+     * Draws the background, enemies and collectibles.
+     */
+    drawWorld() {
+        this.addObjectToMap(this.IMAGES_BACKGROUND);
+        this.addObjectToMap(this.enemies);
+        this.addObjectToMap(this.bombs.filter(bomb => !bomb.isCollected));
+        this.addObjectToMap(this.potions.filter(potion => !potion.isCollected &amp;&amp; !potion.isConsumed));
+    }
+
+    /**
+     * Runs all collision and spawn checks.
+     */
+    runChecks() {
+        this.spawnNewEnemies();
+        this.spawnBossAreaEnemies();
+        this.checkEnemyCollision01();
+        this.checkEnemyHeadBump09();
+        this.checkEnemyAttack();
+        this.checkLaserEnemyCollision07();
+        this.checkLaserEnemyCollision09();
+        this.checkLaserEnemyCollision01();
+        this.checkLaserHitsBoss();
+        this.checkLaserSound();
+        this.checkBossBoxing();
+        this.checkBoxingHitsCharacter();
+
+        this.checkBombCollection();
+        this.checkPotionCollection();
+        this.usePotion();
+        this.updateThrownBombs();
+        this.checkBombExplosionDamage();
+    }
+
+    /**
+     * Draws the status bars and collected items at the top.
+     */
+    drawUI() {
+        this.ctx.translate(-this.map_scroll_x, 0);
+        this.addToMap(this.statusBar);
+        this.addToMap(this.hpbar);
+        this.addToMap(this.bossHpBar);
+        this.addObjectToMap(this.potions.filter(potion => potion.isCollected));
+        this.addObjectToMap(this.bombs.filter(bomb => bomb.isCollected));
+        this.ctx.translate(this.map_scroll_x, 0);
+    }
+
+    /**
+     * Draws the character, boss and gun.
+     */
+    drawEntities() {
+        this.addToMap(this.finalBoss);
+        this.addToMap(this.boxing);
+        this.addToMap(this.mainCharacter);
+        this.addToMap(this.gunsProjectiles);
+        this.addObjectToMap(this.thrownBombs);
+        this.ctx.translate(-this.map_scroll_x, 0);
+    }
+
+    /**
+     * Asks the browser for the next frame.
+     */
+    nextFrame() {
+        let self = this;
+        requestAnimationFrame(function () {
+            self.draw();
+        });
+    }
+
+    /**
+     * Draws one object on the canvas. Flips the image horizontally when the object faces left.
+     * @param {Object} value - The object to draw
+     */
+    addToMap(value) {
+        if (value.otherDirection) {
+            this.ctx.save();
+            this.ctx.translate(value.width, 0);
+            this.ctx.scale(-1, 1);
+            value.x = value.x * -1;
+        }
+        this.drawY = (value === this.mainCharacter) ? this.calcJumpPos() : value.y;
+        if (value.draw) {
+            value.draw(this.ctx);
+        } else {
+            this.ctx.drawImage(value.img, value.x, this.drawY, value.width, value.height);
+        }
+        if (value.otherDirection) {
+            value.x = value.x * -1;
+            this.ctx.restore();
+        }
+    }
+
+    /**
+     * Returns the y position of the character while jumping.
+     * @returns {number} The current y position
+     */
+    calcJumpPos() {
+        return this.mainCharacter.getJumpY();
+    }
+
+    /**
+     * Draws a list of objects on the canvas.
+     * @param {Object[]} objects - The list of objects to draw
+     */
+    addObjectToMap(objects) {
+        objects.forEach(obj => {
+            this.addToMap(obj);
+        });
+    }
+
+    /**
+     * Loads the level background images.
+     */
+    addBackgroundImages() {
+        for (let i = 0; i &lt; 3; i++) {
+            let x = 1278 * i;
+            this.IMAGES_BACKGROUND.push(new Background(`./img/PNG/Backgrounds/layerLevel1/${i}.png`, x));
+        }
+    }
+
+    /**
+     * Loads the top and bottom background layers.
+     */
+    addBackgroundLayer() {
+        for (let i = 0; i &lt; 3; i++) {
+            let x = 1278 * i;
+            this.IMAGES_BACKGROUND.push(new Background(`./img/PNG/Backgrounds/layerTop/${i}.png`, x, 0, 1920, 180));
+            this.IMAGES_BACKGROUND.push(new Background(`./img/PNG/Backgrounds/layerBottom/${i}.png`, x, 600, 1920, 120));
+        }
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Background.html">Background</a></li><li><a href="Bomb.html">Bomb</a></li><li><a href="BossHPBar.html">BossHPBar</a></li><li><a href="Boxing.html">Boxing</a></li><li><a href="Character.html">Character</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="FinalBoss.html">FinalBoss</a></li><li><a href="GunsProjectiles.html">GunsProjectiles</a></li><li><a href="HPBar.html">HPBar</a></li><li><a href="Potion.html">Potion</a></li><li><a href="Sound.html">Sound</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="ThrownBomb.html">ThrownBomb</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MUTE_STORAGE_KEY">MUTE_STORAGE_KEY</a></li><li><a href="global.html#boxingHitsCharacter">boxingHitsCharacter</a></li><li><a href="global.html#canEnemyAttack">canEnemyAttack</a></li><li><a href="global.html#characterTouchesObject">characterTouchesObject</a></li><li><a href="global.html#checkBombCollection">checkBombCollection</a></li><li><a href="global.html#checkBombExplosionDamage">checkBombExplosionDamage</a></li><li><a href="global.html#checkBossBoxing">checkBossBoxing</a></li><li><a href="global.html#checkBoxingHitsCharacter">checkBoxingHitsCharacter</a></li><li><a href="global.html#checkEnemyAttack">checkEnemyAttack</a></li><li><a href="global.html#checkEnemyCollision01">checkEnemyCollision01</a></li><li><a href="global.html#checkEnemyCollision07And09">checkEnemyCollision07And09</a></li><li><a href="global.html#checkEnemyHeadBump09">checkEnemyHeadBump09</a></li><li><a href="global.html#checkLaserEnemyCollision01">checkLaserEnemyCollision01</a></li><li><a href="global.html#checkLaserEnemyCollision07">checkLaserEnemyCollision07</a></li><li><a href="global.html#checkLaserEnemyCollision09">checkLaserEnemyCollision09</a></li><li><a href="global.html#checkLaserHitsBoss">checkLaserHitsBoss</a></li><li><a href="global.html#checkLaserSound">checkLaserSound</a></li><li><a href="global.html#checkPotionCollection">checkPotionCollection</a></li><li><a href="global.html#consumeBomb">consumeBomb</a></li><li><a href="global.html#consumePotion">consumePotion</a></li><li><a href="global.html#damageBoss">damageBoss</a></li><li><a href="global.html#damageCharacter">damageCharacter</a></li><li><a href="global.html#explosionHitsBoss">explosionHitsBoss</a></li><li><a href="global.html#explosionHitsCharacter">explosionHitsCharacter</a></li><li><a href="global.html#explosionHitsEnemy">explosionHitsEnemy</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#isHeadBumpingEnemy">isHeadBumpingEnemy</a></li><li><a href="global.html#isMuted">isMuted</a></li><li><a href="global.html#killCharacter">killCharacter</a></li><li><a href="global.html#killEnemyWithBomb">killEnemyWithBomb</a></li><li><a href="global.html#laserHitEnemy">laserHitEnemy</a></li><li><a href="global.html#laserHitsBoss">laserHitsBoss</a></li><li><a href="global.html#laserKillEnemy">laserKillEnemy</a></li><li><a href="global.html#laserKillEnemy01">laserKillEnemy01</a></li><li><a href="global.html#playBossDestroy">playBossDestroy</a></li><li><a href="global.html#playBossGetHit">playBossGetHit</a></li><li><a href="global.html#playCharacterGetHit">playCharacterGetHit</a></li><li><a href="global.html#playEnemy01GetHit">playEnemy01GetHit</a></li><li><a href="global.html#playEnemyDeath">playEnemyDeath</a></li><li><a href="global.html#setMuted">setMuted</a></li><li><a href="global.html#spawnBossAreaEnemies">spawnBossAreaEnemies</a></li><li><a href="global.html#spawnNewEnemies">spawnNewEnemies</a></li><li><a href="global.html#startEnemyAttack">startEnemyAttack</a></li><li><a href="global.html#throwBomb">throwBomb</a></li><li><a href="global.html#toggleMute">toggleMute</a></li><li><a href="global.html#updateMuteButtons">updateMuteButtons</a></li><li><a href="global.html#updateThrownBombs">updateThrownBombs</a></li><li><a href="global.html#usePotion">usePotion</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Aug 19 2026 11:32:22 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

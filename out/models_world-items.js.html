@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: models/world-items.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: models/world-items.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>﻿Object.assign(World.prototype, {
+    /**
+     * Collects a bomb when the character touches it.
+     */
+    checkBombCollection() {
+        this.bombs.forEach((bomb) => {
+            if (bomb.isCollected || this.collectedBombCount >= 3) {
+                return;
+            }
+            if (this.characterTouchesObject(bomb)) {
+                bomb.collect(this.collectedBombCount);
+                this.collectedBombCount++;
+                this.sound.play('key');
+
+            }
+        });
+    },
+
+    /**
+     * Collects a potion when the character touches it.
+     */
+    checkPotionCollection() {
+        this.potions.forEach((potion) => {
+            if (potion.isCollected || potion.isConsumed || this.collectedPotionCount >= 3) {
+                return;
+            }
+            if (this.characterTouchesObject(potion)) {
+                potion.collect(this.collectedPotionCount);
+                this.collectedPotionCount++;
+                this.sound.play('key');
+
+            }
+        });
+    },
+
+    /**
+     * Checks if the character touches a collectible object.
+     * @param {Object} object - The collectible to check
+     * @returns {boolean} True when the character touches it
+     */
+    characterTouchesObject(object) {
+        let charY = this.mainCharacter.getJumpY();
+        let charLeft = this.mainCharacter.x + 106;
+        let charRight = this.mainCharacter.x + 106 + (this.mainCharacter.width - 266);
+        let charHead = charY + 150;
+        let charFeet = charY + 150 + (this.mainCharacter.height - 244);
+        let objectLeft = object.x;
+        let objectRight = object.x + object.width;
+        let objectHead = object.y;
+        let objectFeet = object.y + object.height;
+        return charRight > objectLeft &amp;&amp;
+            charFeet > objectHead &amp;&amp;
+            charLeft &lt; objectRight &amp;&amp;
+            charHead &lt; objectFeet;
+    },
+
+    /**
+     * Uses a potion to refill health when the R key is pressed.
+     */
+    usePotion() {
+        if (!this.controls.usePotion) {
+            return;
+        }
+        this.controls.usePotion = false;
+        if (this.collectedPotionCount &lt;= 0) {
+            return;
+        }
+        this.consumePotion();
+        this.hpbar.currentHP = this.hpbar.maxHP;
+
+    },
+
+    /**
+     * Removes one potion from the collected potions.
+     */
+    consumePotion() {
+        this.collectedPotionCount--;
+        let collectedPotions = this.potions.filter(potion => potion.isCollected);
+        if (collectedPotions.length > 0) {
+            collectedPotions[collectedPotions.length - 1].isCollected = false;
+            collectedPotions[collectedPotions.length - 1].isConsumed = true;
+        }
+    },
+
+    /**
+     * Throws a bomb in the direction the character looks.
+     */
+    throwBomb() {
+        if (this.collectedBombCount &lt;= 0) {
+            return;
+        }
+        let flyDirection = this.mainCharacter.otherDirection ? -1 : 1;
+        let startX = this.mainCharacter.x + (flyDirection === 1 ? 120 : 180);
+        let startY = this.mainCharacter.getJumpY() + (flyDirection === 1 ? 100 : 130);
+        this.thrownBombs.push(new ThrownBomb(startX, startY, flyDirection));
+        this.consumeBomb();
+    },
+
+    /**
+     * Removes one bomb from the collected bombs.
+     */
+    consumeBomb() {
+        this.collectedBombCount--;
+        let collectedBombs = this.bombs.filter(bomb => bomb.isCollected);
+        if (collectedBombs.length > 0) {
+            collectedBombs[collectedBombs.length - 1].isCollected = false;
+            collectedBombs[collectedBombs.length - 1].isConsumed = true;
+        }
+    },
+
+    /**
+     * Moves all thrown bombs and plays their explosion.
+     */
+    updateThrownBombs() {
+        this.thrownBombs.forEach((bomb, index) => {
+            if (bomb.hasExploded) {
+                let done = bomb.explode();
+                if (done) {
+                    this.thrownBombs.splice(index, 1);
+                }
+            } else {
+                bomb.moveForward();
+            }
+        });
+    },
+
+    /**
+     * Damages all enemies and the boss in the explosion area.
+     */
+    checkBombExplosionDamage() {
+        this.thrownBombs.forEach((bomb) => {
+            if (!bomb.hasExploded || bomb.hasDamaged) {
+                return;
+            }
+            bomb.hasDamaged = true;
+            this.sound.play('explosion');
+
+            this.enemies.forEach((enemy) => {
+                if (enemy.isDead || enemy.isHit) {
+                    return;
+                }
+                if (this.explosionHitsEnemy(bomb, enemy)) {
+                    this.killEnemyWithBomb(enemy);
+                }
+            });
+            if (this.explosionHitsBoss(bomb)) {
+                this.damageBoss(5);
+            }
+            if (this.explosionHitsCharacter(bomb)) {
+                this.damageCharacter(this.hpbar.maxHP * 0.25);
+            }
+        });
+    },
+
+    /**
+     * Checks if an explosion touches an enemy.
+     * @param {ThrownBomb} bomb - The exploding bomb
+     * @param {Enemy} enemy - The enemy to check
+     * @returns {boolean} True when the explosion hits the enemy
+     */
+    explosionHitsEnemy(bomb, enemy) {
+        let explosionLeft = bomb.x;
+        let explosionRight = bomb.x + bomb.width;
+        let explosionTop = bomb.y;
+        let explosionBottom = bomb.y + bomb.height;
+        let enemyLeft = enemy.x + 111;
+        let enemyRight = enemy.x + 111 + (enemy.width - 226);
+        let enemyTop = enemy.y + 148;
+        let enemyBottom = enemy.y + 148 + (enemy.height - 226);
+        return explosionRight > enemyLeft &amp;&amp;
+            explosionBottom > enemyTop &amp;&amp;
+            explosionLeft &lt; enemyRight &amp;&amp;
+            explosionTop &lt; enemyBottom;
+    },
+
+    /**
+     * Checks if an explosion touches the boss.
+     * @param {ThrownBomb} bomb - The exploding bomb
+     * @returns {boolean} True when the explosion hits the boss
+     */
+    explosionHitsBoss(bomb) {
+        let explosionLeft = bomb.x;
+        let explosionRight = bomb.x + bomb.width;
+        let explosionTop = bomb.y;
+        let explosionBottom = bomb.y + bomb.height;
+        let bossLeft = this.finalBoss.x + 650;
+        let bossRight = this.finalBoss.x + 650 + (this.finalBoss.width - 1300);
+        let bossTop = this.finalBoss.y + 1150;
+        let bossBottom = this.finalBoss.y + 1150 + (this.finalBoss.height - 1500);
+        return explosionRight > bossLeft &amp;&amp;
+            explosionBottom > bossTop &amp;&amp;
+            explosionLeft &lt; bossRight &amp;&amp;
+            explosionTop &lt; bossBottom;
+    },
+
+    /**
+     * Checks if an explosion touches the main character.
+     * @param {ThrownBomb} bomb - The exploding bomb
+     * @returns {boolean} True when the explosion hits the character
+     */
+    explosionHitsCharacter(bomb) {
+        let explosionLeft = bomb.x;
+        let explosionRight = bomb.x + bomb.width;
+        let explosionTop = bomb.y;
+        let explosionBottom = bomb.y + bomb.height;
+        let charY = this.mainCharacter.getJumpY();
+        let charLeft = this.mainCharacter.x + 106;
+        let charRight = this.mainCharacter.x + 106 + (this.mainCharacter.width - 266);
+        let charHead = charY + 150;
+        let charFeet = charY + 150 + (this.mainCharacter.height - 244);
+        return explosionRight > charLeft &amp;&amp;
+            explosionBottom > charHead &amp;&amp;
+            explosionLeft &lt; charRight &amp;&amp;
+            explosionTop &lt; charFeet;
+    },
+
+    /**
+     * Kills an enemy with the bomb explosion.
+     * @param {Enemy} enemy - The enemy to kill
+     */
+    killEnemyWithBomb(enemy) {
+        enemy.isHit = true;
+        this.sound.play('enemyDeath');
+        let deathInterval = setInterval(() => {
+            let done;
+            if (enemy.enemyType === '01') {
+                done = enemy.enemy01Death();
+            } else if (enemy.enemyType === '07') {
+                done = enemy.enemy07Death();
+            } else if (enemy.enemyType === '09') {
+                done = enemy.enemy09Death();
+            }
+            if (done) {
+                clearInterval(deathInterval);
+                enemy.isDead = true;
+
+            }
+        }, 60);
+    },
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Background.html">Background</a></li><li><a href="Bomb.html">Bomb</a></li><li><a href="BossHPBar.html">BossHPBar</a></li><li><a href="Boxing.html">Boxing</a></li><li><a href="Character.html">Character</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="FinalBoss.html">FinalBoss</a></li><li><a href="GunsProjectiles.html">GunsProjectiles</a></li><li><a href="HPBar.html">HPBar</a></li><li><a href="Potion.html">Potion</a></li><li><a href="Sound.html">Sound</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="ThrownBomb.html">ThrownBomb</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MUTE_STORAGE_KEY">MUTE_STORAGE_KEY</a></li><li><a href="global.html#boxingHitsCharacter">boxingHitsCharacter</a></li><li><a href="global.html#canEnemyAttack">canEnemyAttack</a></li><li><a href="global.html#characterTouchesObject">characterTouchesObject</a></li><li><a href="global.html#checkBombCollection">checkBombCollection</a></li><li><a href="global.html#checkBombExplosionDamage">checkBombExplosionDamage</a></li><li><a href="global.html#checkBossBoxing">checkBossBoxing</a></li><li><a href="global.html#checkBoxingHitsCharacter">checkBoxingHitsCharacter</a></li><li><a href="global.html#checkEnemyAttack">checkEnemyAttack</a></li><li><a href="global.html#checkEnemyCollision01">checkEnemyCollision01</a></li><li><a href="global.html#checkEnemyCollision07And09">checkEnemyCollision07And09</a></li><li><a href="global.html#checkEnemyHeadBump09">checkEnemyHeadBump09</a></li><li><a href="global.html#checkLaserEnemyCollision01">checkLaserEnemyCollision01</a></li><li><a href="global.html#checkLaserEnemyCollision07">checkLaserEnemyCollision07</a></li><li><a href="global.html#checkLaserEnemyCollision09">checkLaserEnemyCollision09</a></li><li><a href="global.html#checkLaserHitsBoss">checkLaserHitsBoss</a></li><li><a href="global.html#checkLaserSound">checkLaserSound</a></li><li><a href="global.html#checkPotionCollection">checkPotionCollection</a></li><li><a href="global.html#consumeBomb">consumeBomb</a></li><li><a href="global.html#consumePotion">consumePotion</a></li><li><a href="global.html#damageBoss">damageBoss</a></li><li><a href="global.html#damageCharacter">damageCharacter</a></li><li><a href="global.html#explosionHitsBoss">explosionHitsBoss</a></li><li><a href="global.html#explosionHitsCharacter">explosionHitsCharacter</a></li><li><a href="global.html#explosionHitsEnemy">explosionHitsEnemy</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#isHeadBumpingEnemy">isHeadBumpingEnemy</a></li><li><a href="global.html#isMuted">isMuted</a></li><li><a href="global.html#killCharacter">killCharacter</a></li><li><a href="global.html#killEnemyWithBomb">killEnemyWithBomb</a></li><li><a href="global.html#laserHitEnemy">laserHitEnemy</a></li><li><a href="global.html#laserHitsBoss">laserHitsBoss</a></li><li><a href="global.html#laserKillEnemy">laserKillEnemy</a></li><li><a href="global.html#laserKillEnemy01">laserKillEnemy01</a></li><li><a href="global.html#playBossDestroy">playBossDestroy</a></li><li><a href="global.html#playBossGetHit">playBossGetHit</a></li><li><a href="global.html#playCharacterGetHit">playCharacterGetHit</a></li><li><a href="global.html#playEnemy01GetHit">playEnemy01GetHit</a></li><li><a href="global.html#playEnemyDeath">playEnemyDeath</a></li><li><a href="global.html#setMuted">setMuted</a></li><li><a href="global.html#spawnBossAreaEnemies">spawnBossAreaEnemies</a></li><li><a href="global.html#spawnNewEnemies">spawnNewEnemies</a></li><li><a href="global.html#startEnemyAttack">startEnemyAttack</a></li><li><a href="global.html#throwBomb">throwBomb</a></li><li><a href="global.html#toggleMute">toggleMute</a></li><li><a href="global.html#updateMuteButtons">updateMuteButtons</a></li><li><a href="global.html#updateThrownBombs">updateThrownBombs</a></li><li><a href="global.html#usePotion">usePotion</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Aug 19 2026 11:32:22 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

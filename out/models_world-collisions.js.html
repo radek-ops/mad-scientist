@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: models/world-collisions.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: models/world-collisions.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>﻿Object.assign(World.prototype, {
+    /**
+     * Kills enemy type 01 when the character jumps on its head.
+     */
+    checkEnemyCollision01() {
+        this.enemies.forEach((enemy) => {
+            if (this.collision(this.mainCharacter, enemy) &amp;&amp; enemy.enemyType === '01') {
+                let charFeet = this.mainCharacter.getJumpY() + 281;
+                let enemyHead = enemy.y + 148;
+                let isFalling = this.mainCharacter.speedY &lt; 0;
+                let isStomping = isFalling &amp;&amp; (charFeet - enemyHead > -10 &amp;&amp; charFeet - enemyHead &lt; 30);
+                if (isStomping &amp;&amp; !enemy.isHit) {
+                    this.playEnemy01GetHit(enemy);
+                }
+            }
+        });
+    },
+
+    /**
+     * Damages the character when its head hits enemy type 09.
+     */
+    checkEnemyHeadBump09() {
+        if (this.mainCharacter.isDead) {
+            return;
+        }
+        if (this.headBumpCooldown > 0) {
+            this.headBumpCooldown--;
+            return;
+        }
+        this.enemies.forEach((enemy) => {
+            if (enemy.enemyType !== '09' || enemy.isDead) {
+                return;
+            }
+            if (this.isHeadBumpingEnemy(enemy)) {
+                this.damageCharacter(10);
+                this.headBumpCooldown = 30;
+            }
+        });
+    },
+
+    /**
+     * Checks if the character head is touching the feet of an enemy.
+     * @param {Enemy} enemy - The enemy to check
+     * @returns {boolean} True when the head bumps the enemy
+     */
+    isHeadBumpingEnemy(enemy) {
+        let charY = this.mainCharacter.getJumpY();
+        let charLeft = this.mainCharacter.x + 106;
+        let charRight = this.mainCharacter.x + 106 + (this.mainCharacter.width - 266);
+        let charHead = charY + 150;
+        let enemyLeft = enemy.x + 111;
+        let enemyRight = enemy.x + 111 + (enemy.width - 226);
+        let enemyFeet = enemy.y + 148 + (enemy.height - 226);
+        let isMovingUp = this.mainCharacter.speedY > 0;
+        let touchesSide = charRight > enemyLeft &amp;&amp; charLeft &lt; enemyRight;
+        let headNearFeet = enemyFeet - charHead > -20 &amp;&amp; enemyFeet - charHead &lt; 30;
+        return isMovingUp &amp;&amp; touchesSide &amp;&amp; headNearFeet;
+    },
+
+    /**
+     * Removes health from the character and plays an animation.
+     * @param {number} amount - How much health to remove
+     */
+    damageCharacter(amount) {
+        if (this.mainCharacter.isDead) {
+            return;
+        }
+        this.hpbar.currentHP -= amount;
+        if (this.hpbar.currentHP &lt; 0) {
+            this.hpbar.currentHP = 0;
+        }
+        if (this.hpbar.currentHP &lt;= 0) {
+            this.killCharacter();
+        } else {
+            this.playCharacterGetHit();
+        }
+    },
+
+    /**
+     * Plays the death animation and shows the game over screen.
+     */
+    killCharacter() {
+        this.mainCharacter.isDead = true;
+        this.sound.stopMusic();
+        this.sound.play('playerDeath');
+
+        let deathInterval = setInterval(() => {
+            let done = this.mainCharacter.characterDeath();
+            if (done) {
+                clearInterval(deathInterval);
+                this.sound.play('gameOver');
+                document.getElementById('gameOverOverlay').classList.add('show');
+            }
+        }, 60);
+    },
+
+    /**
+     * Plays the get-hit animation of the character.
+     */
+    playCharacterGetHit() {
+        this.mainCharacter.isHit = true;
+        this.sound.play('hit');
+        let getHitInterval = setInterval(() => {
+            let done = this.mainCharacter.characterGetHit();
+            if (done) {
+                clearInterval(getHitInterval);
+            }
+        }, 60);
+    },
+
+    /**
+     * Starts the attack of enemies that touch the character.
+     */
+    checkEnemyAttack() {
+        if (this.mainCharacter.isDead) {
+            return;
+        }
+        this.enemies.forEach((enemy) => {
+            if (this.canEnemyAttack(enemy)) {
+                this.startEnemyAttack(enemy);
+            }
+        });
+    },
+
+    /**
+     * Checks if an enemy is allowed to attack.
+     * @param {Enemy} enemy - The enemy to check
+     * @returns {boolean} True when the enemy can attack
+     */
+    canEnemyAttack(enemy) {
+        if (enemy.isDead || enemy.isHit) {
+            return false;
+        }
+        if (enemy.enemyType !== '01' &amp;&amp; enemy.enemyType !== '07') {
+            return false;
+        }
+        if (!this.collision(this.mainCharacter, enemy)) {
+            return false;
+        }
+        return !enemy.isAttacking;
+    },
+
+    /**
+     * Plays the attack animation and damages the character.
+     * @param {Enemy} enemy - The attacking enemy
+     */
+    startEnemyAttack(enemy) {
+        enemy.isAttacking = true;
+        if (enemy.enemyType === '01') {
+            let attackInterval = setInterval(() => {
+                let done = enemy.enemy01Attack();
+                if (done) clearInterval(attackInterval);
+            }, 60);
+        } else {
+            let attackInterval = setInterval(() => {
+                let done = enemy.enemy07Attack();
+                if (done) clearInterval(attackInterval);
+            }, 60);
+        }
+        this.damageCharacter(2);
+    },
+
+    /**
+     * Checks the stomp collision for enemy types 07 and 09.
+     */
+    checkEnemyCollision07And09() {
+        this.enemies.forEach((enemy) => {
+            if (this.collision(this.mainCharacter, enemy) &amp;&amp; (enemy.enemyType === '07' || enemy.enemyType == '09')) {
+                let charFeet = this.mainCharacter.getJumpY() + 281;
+                let enemyHead = enemy.y + 148;
+                let isFalling = this.mainCharacter.speedY &lt; 0;
+                let isStomping = isFalling &amp;&amp; (charFeet - enemyHead &lt; 50);
+                if (isStomping) {
+                    return;
+                }
+            }
+        });
+    },
+
+    /**
+     * Kills enemy type 07 when the laser hits it.
+     */
+    checkLaserEnemyCollision07() {
+        if (!this.controls.mouseClickLeft) return;
+        this.enemies.forEach((enemy) => {
+            if (enemy.enemyType === '07' &amp;&amp; this.laserHitEnemy(enemy) &amp;&amp; !enemy.isHit) {
+                this.laserKillEnemy(enemy, '07');
+            }
+        });
+    },
+
+    /**
+     * Kills enemy type 09 when the laser hits it.
+     */
+    checkLaserEnemyCollision09() {
+        if (!this.controls.mouseClickLeft) return;
+        this.enemies.forEach((enemy) => {
+            if (enemy.enemyType === '09' &amp;&amp; this.laserHitEnemy(enemy) &amp;&amp; !enemy.isHit) {
+                this.laserKillEnemy(enemy, '09');
+            }
+        });
+    },
+
+    /**
+     * Kills enemy type 01 when the laser hits it from behind.
+     */
+    checkLaserEnemyCollision01() {
+        if (!this.controls.mouseClickLeft) return;
+        this.enemies.forEach((enemy) => {
+            if (enemy.enemyType === '01' &amp;&amp; !enemy.isHit &amp;&amp; !enemy.isDead) {
+                if (this.laserHitEnemy(enemy)) {
+                    if (this.mainCharacter.x > enemy.x) {
+                        this.laserKillEnemy01(enemy);
+                    } else {
+                        this.playEnemy01GetHit(enemy);
+                    }
+                }
+            }
+        });
+    },
+
+    /**
+     * Plays the death animation for enemy type 01.
+     * @param {Enemy} enemy - The enemy to kill
+     */
+    laserKillEnemy01(enemy) {
+        enemy.isHit = true;
+        this.sound.play('enemyDeath');
+        let deathInterval = setInterval(() => {
+            let done = enemy.enemy01Death();
+            if (done) {
+                clearInterval(deathInterval);
+                enemy.isDead = true;
+            }
+        }, 60);
+    },
+
+    /**
+     * Plays the get-hit animation for enemy type 01 without killing it.
+     * @param {Enemy} enemy - The enemy that gets hit
+     */
+    playEnemy01GetHit(enemy) {
+        enemy.isHit = true;
+        enemy.currentGetHitImages01 = 0;
+        this.sound.play('enemyDeath');
+        let hitInterval = setInterval(() => {
+            enemy.enemy01GetHit();
+            if (enemy.currentGetHitImages01 === 0) {
+                clearInterval(hitInterval);
+                enemy.isHit = false;
+            }
+        }, 60);
+    },
+
+    /**
+     * Plays the electric animation and then the death animation.
+     * @param {Enemy} enemy - The enemy that gets hit
+     * @param {string} type - The enemy type ('07' or '09')
+     */
+    laserKillEnemy(enemy, type) {
+        enemy.isHit = true;
+        this.sound.play('enemyDeath');
+        let electricInterval = setInterval(() => {
+            let done = type === '07' ? enemy.enemy07GetElectric() : enemy.enemy09GetElectric();
+            if (done) {
+                clearInterval(electricInterval);
+                setTimeout(() => {
+                    this.playEnemyDeath(enemy, type);
+                }, 300);
+            }
+        }, 100);
+    },
+
+    /**
+     * Plays the death animation of an enemy.
+     * @param {Enemy} enemy - The dying enemy
+     * @param {string} type - The enemy type ('07' or '09')
+     */
+    playEnemyDeath(enemy, type) {
+        let deathInterval = setInterval(() => {
+            let done = type === '07' ? enemy.enemy07Death() : enemy.enemy09Death();
+            if (done) {
+                clearInterval(deathInterval);
+                enemy.isDead = true;
+
+            }
+        }, 60);
+    },
+
+    /**
+     * Checks if the laser beam touches an enemy.
+     * @param {Enemy} enemy - The enemy to check
+     * @returns {boolean} True when the laser hits the enemy
+     */
+    laserHitEnemy(enemy) {
+        let laserLeft = this.gunsProjectiles.x + 10;
+        let laserRight = this.gunsProjectiles.x + 10 + (this.gunsProjectiles.width - 20);
+        let laserTop = this.gunsProjectiles.y + 10;
+        let laserBottom = this.gunsProjectiles.y + 10 + (this.gunsProjectiles.height - 20);
+        let enemyLeft = enemy.x + 111;
+        let enemyRight = enemy.x + 111 + (enemy.width - 226);
+        let enemyTop = enemy.y + 148;
+        let enemyBottom = enemy.y + 148 + (enemy.height - 226);
+        return laserRight > enemyLeft &amp;&amp;
+            laserBottom > enemyTop &amp;&amp;
+            laserLeft &lt; enemyRight &amp;&amp;
+            laserTop &lt; enemyBottom;
+    },
+    /**
+     * Plays the laser sound while shooting, with a cooldown.
+     */
+    checkLaserSound() {
+        if (!this.controls.mouseClickLeft) {
+            return;
+        }
+        if (this.laserSoundCooldown > 0) {
+            this.laserSoundCooldown--;
+            return;
+        }
+        this.sound.play('lazer');
+        this.laserSoundCooldown = 30;
+    },
+
+
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Background.html">Background</a></li><li><a href="Bomb.html">Bomb</a></li><li><a href="BossHPBar.html">BossHPBar</a></li><li><a href="Boxing.html">Boxing</a></li><li><a href="Character.html">Character</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="FinalBoss.html">FinalBoss</a></li><li><a href="GunsProjectiles.html">GunsProjectiles</a></li><li><a href="HPBar.html">HPBar</a></li><li><a href="Potion.html">Potion</a></li><li><a href="Sound.html">Sound</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="ThrownBomb.html">ThrownBomb</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MUTE_STORAGE_KEY">MUTE_STORAGE_KEY</a></li><li><a href="global.html#boxingHitsCharacter">boxingHitsCharacter</a></li><li><a href="global.html#canEnemyAttack">canEnemyAttack</a></li><li><a href="global.html#characterTouchesObject">characterTouchesObject</a></li><li><a href="global.html#checkBombCollection">checkBombCollection</a></li><li><a href="global.html#checkBombExplosionDamage">checkBombExplosionDamage</a></li><li><a href="global.html#checkBossBoxing">checkBossBoxing</a></li><li><a href="global.html#checkBoxingHitsCharacter">checkBoxingHitsCharacter</a></li><li><a href="global.html#checkEnemyAttack">checkEnemyAttack</a></li><li><a href="global.html#checkEnemyCollision01">checkEnemyCollision01</a></li><li><a href="global.html#checkEnemyCollision07And09">checkEnemyCollision07And09</a></li><li><a href="global.html#checkEnemyHeadBump09">checkEnemyHeadBump09</a></li><li><a href="global.html#checkLaserEnemyCollision01">checkLaserEnemyCollision01</a></li><li><a href="global.html#checkLaserEnemyCollision07">checkLaserEnemyCollision07</a></li><li><a href="global.html#checkLaserEnemyCollision09">checkLaserEnemyCollision09</a></li><li><a href="global.html#checkLaserHitsBoss">checkLaserHitsBoss</a></li><li><a href="global.html#checkLaserSound">checkLaserSound</a></li><li><a href="global.html#checkPotionCollection">checkPotionCollection</a></li><li><a href="global.html#consumeBomb">consumeBomb</a></li><li><a href="global.html#consumePotion">consumePotion</a></li><li><a href="global.html#damageBoss">damageBoss</a></li><li><a href="global.html#damageCharacter">damageCharacter</a></li><li><a href="global.html#explosionHitsBoss">explosionHitsBoss</a></li><li><a href="global.html#explosionHitsCharacter">explosionHitsCharacter</a></li><li><a href="global.html#explosionHitsEnemy">explosionHitsEnemy</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#isHeadBumpingEnemy">isHeadBumpingEnemy</a></li><li><a href="global.html#isMuted">isMuted</a></li><li><a href="global.html#killCharacter">killCharacter</a></li><li><a href="global.html#killEnemyWithBomb">killEnemyWithBomb</a></li><li><a href="global.html#laserHitEnemy">laserHitEnemy</a></li><li><a href="global.html#laserHitsBoss">laserHitsBoss</a></li><li><a href="global.html#laserKillEnemy">laserKillEnemy</a></li><li><a href="global.html#laserKillEnemy01">laserKillEnemy01</a></li><li><a href="global.html#playBossDestroy">playBossDestroy</a></li><li><a href="global.html#playBossGetHit">playBossGetHit</a></li><li><a href="global.html#playCharacterGetHit">playCharacterGetHit</a></li><li><a href="global.html#playEnemy01GetHit">playEnemy01GetHit</a></li><li><a href="global.html#playEnemyDeath">playEnemyDeath</a></li><li><a href="global.html#setMuted">setMuted</a></li><li><a href="global.html#spawnBossAreaEnemies">spawnBossAreaEnemies</a></li><li><a href="global.html#spawnNewEnemies">spawnNewEnemies</a></li><li><a href="global.html#startEnemyAttack">startEnemyAttack</a></li><li><a href="global.html#throwBomb">throwBomb</a></li><li><a href="global.html#toggleMute">toggleMute</a></li><li><a href="global.html#updateMuteButtons">updateMuteButtons</a></li><li><a href="global.html#updateThrownBombs">updateThrownBombs</a></li><li><a href="global.html#usePotion">usePotion</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Aug 19 2026 11:32:22 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

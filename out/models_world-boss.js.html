@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: models/world-boss.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: models/world-boss.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>﻿Object.assign(World.prototype, {
+    /**
+     * Checks if the laser beam touches the boss.
+     * @returns {boolean} True when the laser hits the boss
+     */
+    laserHitsBoss() {
+        let laserLeft = this.gunsProjectiles.x + 10;
+        let laserRight = this.gunsProjectiles.x + 10 + (this.gunsProjectiles.width - 20);
+        let laserTop = this.gunsProjectiles.y + 10;
+        let laserBottom = this.gunsProjectiles.y + 10 + (this.gunsProjectiles.height - 20);
+        let bossLeft = this.finalBoss.x + 650;
+        let bossRight = this.finalBoss.x + 650 + (this.finalBoss.width - 1300);
+        let bossTop = this.finalBoss.y + 1150;
+        let bossBottom = this.finalBoss.y + 1150 + (this.finalBoss.height - 1500);
+        return laserRight > bossLeft &amp;&amp;
+            laserBottom > bossTop &amp;&amp;
+            laserLeft &lt; bossRight &amp;&amp;
+            laserTop &lt; bossBottom;
+    },
+
+    /**
+     * Removes health from the boss and shows win screen at zero.
+     * @param {number} amount - How much health to remove
+     */
+    damageBoss(amount) {
+        if (this.finalBoss.isDead) {
+            return;
+        }
+        this.bossHpBar.loseHP(amount);
+        this.sound.play('bossHit');
+
+        if (this.bossHpBar.currentHP &lt;= 0) {
+            this.finalBoss.isDead = true;
+            this.playBossDestroy();
+        } else if (!this.finalBoss.isHit) {
+            this.playBossGetHit();
+        }
+    },
+
+    /**
+     * Plays the get-hit animation of the boss.
+     */
+    playBossGetHit() {
+        this.finalBoss.isHit = true;
+        let getHitInterval = setInterval(() => {
+            let done = this.finalBoss.getHit();
+            if (done) {
+                clearInterval(getHitInterval);
+            }
+        }, 60);
+    },
+
+    /**
+     * Plays the destroy animation of the boss and shows the win screen.
+     */
+    playBossDestroy() {
+        let destroyInterval = setInterval(() => {
+            let done = this.finalBoss.destroy();
+            if (done) {
+                clearInterval(destroyInterval);
+                this.sound.stopMusic();
+                this.sound.play('win');
+                document.getElementById('winOverlay').classList.add('show');
+            }
+        }, 60);
+    },
+
+    /**
+     * Damages the boss when the laser hits it.
+     */
+    checkLaserHitsBoss() {
+        if (!this.controls.mouseClickLeft) {
+            return;
+        }
+        if (this.bossLaserCooldown > 0) {
+            this.bossLaserCooldown--;
+            return;
+        }
+        if (this.laserHitsBoss()) {
+            this.damageBoss(5);
+            this.bossLaserCooldown = 20;
+        }
+    },
+
+    /**
+     * Triggers the boss boxing (punch) animation every 4 seconds.
+     */
+    checkBossBoxing() {
+        if (this.finalBoss.isDead) {
+            return;
+        }
+        if (this.boxingCooldown > 0) {
+            this.boxingCooldown--;
+            return;
+        }
+        this.boxing.start();
+        this.boxingCooldown = 240;
+    },
+
+    /**
+     * Damages the character when the boxing fist hits it.
+     */
+    checkBoxingHitsCharacter() {
+        if (!this.boxing.isActive || this.boxing.hasDamaged) {
+            return;
+        }
+        if (this.boxingHitsCharacter()) {
+            this.boxing.hasDamaged = true;
+            this.damageCharacter(this.hpbar.maxHP * 0.25);
+        }
+    },
+
+    /**
+     * Checks if the boxing fist touches the character.
+     * @returns {boolean} True when the fist hits the character
+     */
+    boxingHitsCharacter() {
+        let boxingLeft = this.boxing.x;
+        let boxingRight = this.boxing.x + this.boxing.width;
+        let boxingTop = this.boxing.y;
+        let boxingBottom = this.boxing.y + this.boxing.height;
+        let charY = this.mainCharacter.getJumpY();
+        let charLeft = this.mainCharacter.x + 106;
+        let charRight = this.mainCharacter.x + 106 + (this.mainCharacter.width - 266);
+        let charHead = charY + 150;
+        let charFeet = charY + 150 + (this.mainCharacter.height - 244);
+        return boxingRight > charLeft &amp;&amp;
+            boxingBottom > charHead &amp;&amp;
+            boxingLeft &lt; charRight &amp;&amp;
+            boxingTop &lt; charFeet;
+    },
+
+    /**
+     * Spawns new enemies when the character reaches a new section.
+     */
+    spawnNewEnemies() {
+        let section = Math.floor(this.mainCharacter.x / 1280);
+        if (section > this.lastSection &amp;&amp; section &lt; 2) {
+            this.lastSection = section;
+            let offset = section * 1280;
+            for (let i = 0; i &lt; 5; i++) {
+                let e = new Enemy(this.controls);
+                e.x += offset;
+                if (e.x > 2400) {
+                    e.x = 1600 + Math.random() * 700;
+                }
+                this.enemies.push(e);
+            }
+        }
+    },
+
+    /**
+     * Spawns enemies in front of the boss area.
+     */
+    spawnBossAreaEnemies() {
+        if (this.hasSpawnedBossEnemies || this.mainCharacter.x &lt; 1800) {
+            return;
+        }
+        this.hasSpawnedBossEnemies = true;
+        for (let i = 0; i &lt; 5; i++) {
+            let enemy = new Enemy(this.controls);
+            enemy.x = 2000 + (i * 80);
+            this.enemies.push(enemy);
+        }
+    },
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Background.html">Background</a></li><li><a href="Bomb.html">Bomb</a></li><li><a href="BossHPBar.html">BossHPBar</a></li><li><a href="Boxing.html">Boxing</a></li><li><a href="Character.html">Character</a></li><li><a href="Controls.html">Controls</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="FinalBoss.html">FinalBoss</a></li><li><a href="GunsProjectiles.html">GunsProjectiles</a></li><li><a href="HPBar.html">HPBar</a></li><li><a href="Potion.html">Potion</a></li><li><a href="Sound.html">Sound</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="ThrownBomb.html">ThrownBomb</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MUTE_STORAGE_KEY">MUTE_STORAGE_KEY</a></li><li><a href="global.html#boxingHitsCharacter">boxingHitsCharacter</a></li><li><a href="global.html#canEnemyAttack">canEnemyAttack</a></li><li><a href="global.html#characterTouchesObject">characterTouchesObject</a></li><li><a href="global.html#checkBombCollection">checkBombCollection</a></li><li><a href="global.html#checkBombExplosionDamage">checkBombExplosionDamage</a></li><li><a href="global.html#checkBossBoxing">checkBossBoxing</a></li><li><a href="global.html#checkBoxingHitsCharacter">checkBoxingHitsCharacter</a></li><li><a href="global.html#checkEnemyAttack">checkEnemyAttack</a></li><li><a href="global.html#checkEnemyCollision01">checkEnemyCollision01</a></li><li><a href="global.html#checkEnemyCollision07And09">checkEnemyCollision07And09</a></li><li><a href="global.html#checkEnemyHeadBump09">checkEnemyHeadBump09</a></li><li><a href="global.html#checkLaserEnemyCollision01">checkLaserEnemyCollision01</a></li><li><a href="global.html#checkLaserEnemyCollision07">checkLaserEnemyCollision07</a></li><li><a href="global.html#checkLaserEnemyCollision09">checkLaserEnemyCollision09</a></li><li><a href="global.html#checkLaserHitsBoss">checkLaserHitsBoss</a></li><li><a href="global.html#checkLaserSound">checkLaserSound</a></li><li><a href="global.html#checkPotionCollection">checkPotionCollection</a></li><li><a href="global.html#consumeBomb">consumeBomb</a></li><li><a href="global.html#consumePotion">consumePotion</a></li><li><a href="global.html#damageBoss">damageBoss</a></li><li><a href="global.html#damageCharacter">damageCharacter</a></li><li><a href="global.html#explosionHitsBoss">explosionHitsBoss</a></li><li><a href="global.html#explosionHitsCharacter">explosionHitsCharacter</a></li><li><a href="global.html#explosionHitsEnemy">explosionHitsEnemy</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#isHeadBumpingEnemy">isHeadBumpingEnemy</a></li><li><a href="global.html#isMuted">isMuted</a></li><li><a href="global.html#killCharacter">killCharacter</a></li><li><a href="global.html#killEnemyWithBomb">killEnemyWithBomb</a></li><li><a href="global.html#laserHitEnemy">laserHitEnemy</a></li><li><a href="global.html#laserHitsBoss">laserHitsBoss</a></li><li><a href="global.html#laserKillEnemy">laserKillEnemy</a></li><li><a href="global.html#laserKillEnemy01">laserKillEnemy01</a></li><li><a href="global.html#playBossDestroy">playBossDestroy</a></li><li><a href="global.html#playBossGetHit">playBossGetHit</a></li><li><a href="global.html#playCharacterGetHit">playCharacterGetHit</a></li><li><a href="global.html#playEnemy01GetHit">playEnemy01GetHit</a></li><li><a href="global.html#playEnemyDeath">playEnemyDeath</a></li><li><a href="global.html#setMuted">setMuted</a></li><li><a href="global.html#spawnBossAreaEnemies">spawnBossAreaEnemies</a></li><li><a href="global.html#spawnNewEnemies">spawnNewEnemies</a></li><li><a href="global.html#startEnemyAttack">startEnemyAttack</a></li><li><a href="global.html#throwBomb">throwBomb</a></li><li><a href="global.html#toggleMute">toggleMute</a></li><li><a href="global.html#updateMuteButtons">updateMuteButtons</a></li><li><a href="global.html#updateThrownBombs">updateThrownBombs</a></li><li><a href="global.html#usePotion">usePotion</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Aug 19 2026 11:32:22 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
