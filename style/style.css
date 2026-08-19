@@ -1,5 +1,5 @@
 .btn-impressum-start {
-    background: url('../img/PNG/User_Interfaces/Btn3.png') no-repeat center;
+    background: url('../img/PNG/User_Interfaces/Btn3.svg') no-repeat center;
     background-size: 100% 100%;
     display: inline-flex;
     align-items: center;
@@ -123,7 +123,7 @@ body {
     font-size: clamp(20px, 3vw, 28px);
     color: #fff;
     text-decoration: none;
-    background: url('../img/PNG/User_Interfaces/Btn3.png') no-repeat center;
+    background: url('../img/PNG/User_Interfaces/Btn3.svg') no-repeat center;
     background-size: 100% 100%;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     cursor: pointer;
@@ -133,6 +133,10 @@ body {
 .start-button:hover {
     transform: scale(1.05);
     opacity: 0.9;
+}
+
+button.start-button {
+    border: none;
 }
 
 @media (max-width: 767px) {
@@ -160,4 +164,110 @@ body {
     justify-content: center;
     width: 100%;
     margin-top: 12px;
+}
+
+.description-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    background-image: url('../img/PNG/User_Interfaces/LandingScreen.png');
+    background-size: cover;
+    background-position: center;
+    padding: 80px 16px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.description-overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 0;
+}
+
+.description-overlay[hidden] {
+    display: none;
+}
+
+.description-container {
+    margin: auto;
+    width: clamp(280px, 90%, 800px);
+    padding: clamp(16px, 3vw, 40px);
+    background-color: rgba(0, 0, 0, 0.9);
+    border-radius: 16px;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+}
+
+.description-back {
+    background: url('../img/PNG/User_Interfaces/Btn3.svg') no-repeat center;
+    background-size: 100% 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 55px;
+    padding: 0 40px;
+    border: none;
+    color: #fff;
+    font-family: "blablaHawk";
+    font-size: 22px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.3s;
+}
+
+.description-back:hover {
+    opacity: 0.85;
+    transform: scale(1.05);
+}
+
+.description-title {
+    margin-bottom: 40px;
+}
+
+.description-h2 {
+    font-family: "blablaHawk";
+    background: linear-gradient(to bottom, #44bdf9 0%, #1771cd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 2px #0a2d4d;
+    font-size: clamp(30px, 5vw, 36px);
+    margin-top: 0;
+    margin-bottom: 24px;
+}
+
+.description-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-family: Arial, sans-serif;
+    font-size: clamp(13px, 2vw, 16px);
+    line-height: 1.6;
+    margin: 6px 0;
+}
+
+@media (max-width: 600px) {
+    .description-container {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 400px) {
+    .description-container {
+        border-radius: 12px;
+    }
+}
+
+@media (max-height: 480px) and (orientation: landscape) {
+    .description-overlay {
+        padding: 16px;
+    }
+
+    .description-back {
+        height: 40px;
+        padding: 0 26px;
+        font-size: 16px;
+    }
 }

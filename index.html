@@ -10,6 +10,7 @@
     <link rel="icon" type="image/png" href="./img/Favicon/Icon.png">
     <script defer src="./js/mute.js"></script>
     <script defer src="./js/menu-sound.js"></script>
+    <script defer src="./js/description.js"></script>
 </head>
 
 <body>
@@ -26,19 +27,34 @@
                 <div class="start-buttons">
                     <a href="./game.html" class="start-button">Start Game</a>
                     <a href="./controls.html" class="start-button">Controls</a>
+                    <button class="start-button" type="button" id="description-btn">Description</button>
                 </div>
             </div>
 
-            <p class="start-text">Fight through a lab full of enemies, collect bombs and potions, and defeat the final boss!</p>
-            <p class="start-text">Enemies with a shield can only be killed from behind with the laser, by jumping on their heads or through the bomb.</p>
-  
+
             <div class="start-footer">
-              
+
                 <a href="./impressum.html" class="btn-impressum-start">Impressum</a>
-               
+
             </div>
         </div>
     </main>
+
+    <div class="description-overlay" id="description-overlay" hidden>
+        <div class="description-container">
+            <button class="description-back" type="button" id="description-back">Back</button>
+            <h1 class="description-title">
+                <span class="mad">MAD</span>
+                <span class="scientist">SCIENTIST</span>
+            </h1>
+            <h2 class="description-h2">Description</h2>
+            <p class="start-text">Fight through a lab full of enemies, collect bombs and potions, and defeat the final
+                boss!</p>
+            <p class="start-text">Enemies with a shield can only be killed from behind with the laser, by jumping on
+                their heads or through the bomb.</p>
+
+        </div>
+    </div>
 </body>
 
 </html>

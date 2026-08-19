@@ -85,7 +85,7 @@ canvas {
 }
 
 .try-again-btn {
-    background: url('../img/PNG/User_Interfaces/Btn5.png') no-repeat center;
+    background: url('../img/PNG/User_Interfaces/Btn5.svg') no-repeat center;
     background-size: 100% 100%;
     display: inline-flex;
     align-items: center;
@@ -137,7 +137,7 @@ canvas {
 }
 
 .new-game-btn {
-    background: url('../img/PNG/User_Interfaces/Btn5.png') no-repeat center;
+    background: url('../img/PNG/User_Interfaces/Btn5.svgs') no-repeat center;
     background-size: 100% 100%;
     display: inline-flex;
     align-items: center;
@@ -234,7 +234,7 @@ canvas {
 
 /* Touch Controls (mobile / tablet) */
 
-#touch-controls {
+.touch-controls {
     display: none;
     position: fixed;
     inset: 0;
@@ -268,8 +268,8 @@ canvas {
 
 .dpad {
     position: absolute;
-    left: 20px;
-    bottom: 20px;
+    left: 10px;
+    bottom: 10px;
     width: 136px;
     height: 136px;
     pointer-events: auto;
@@ -281,45 +281,45 @@ canvas {
     height: 56px;
 }
 
-#btn-up { left: 40px; top: 0; }
-#btn-down { left: 40px; top: 80px; }
-#btn-left { left: 0; top: 40px; }
-#btn-right { left: 80px; top: 40px; }
+.btn-up { left: 40px; top: 0; }
+.btn-down { left: 40px; top: 80px; }
+.btn-left { left: 0; top: 40px; }
+.btn-right { left: 80px; top: 40px; }
 
-#btn-potion {
+.btn-potion {
     position: absolute;
     left: 165px;
-    bottom: 85px;
+    bottom: 10px;
     width: 56px;
     height: 56px;
 }
 
-#btn-shoot {
+.btn-shoot {
     position: absolute;
     right: 20px;
-    bottom: 20px;
-    width: 90px;
-    height: 90px;
-}
-
-#btn-jump {
-    position: absolute;
-    right: 130px;
     bottom: 20px;
     width: 80px;
     height: 80px;
 }
 
-#btn-bomb {
+.btn-jump {
     position: absolute;
-    right: 35px;
-    bottom: 130px;
-    width: 64px;
-    height: 64px;
+    right: 112px;
+    bottom: 20px;
+    width: 56px;
+    height: 56px;
+}
+
+.btn-bomb {
+    position: absolute;
+    right: 180px;
+    bottom: 20px;
+    width: 56px;
+    height: 56px;
 }
 
 @media (hover: none) and (pointer: coarse) {
-    #touch-controls {
+    .touch-controls {
         display: block;
     }
 
@@ -328,13 +328,16 @@ canvas {
     }
 }
 
-html.force-touch #touch-controls {
+html.force-touch .touch-controls {
     display: block;
 }
 
 html.force-touch .main-content h1 {
     display: none;
 }
+
+
+
 
 @media (max-width: 844px) {
     .touch-btn {
@@ -351,39 +354,46 @@ html.force-touch .main-content h1 {
         height: 40px;
     }
 
-    #btn-up { left: 30px; top: 0; }
-    #btn-down { left: 30px; top: 60px; }
-    #btn-left { left: 0; top: 30px; }
-    #btn-right { left: 60px; top: 30px; }
+    .btn-up { left: px; top: 0; }
+    .btn-down { left: 30px; top: 60px; }
+    .btn-left { left: 0; top: 30px; }
+    .btn-right { left: 60px; top: 30px; }
 
-    #btn-potion {
+    .btn-potion {
         left: 120px;
-        bottom: 60px;
+        bottom: 10px;
         width: 40px;
         height: 40px;
     }
 
-    #btn-shoot {
+    .btn-shoot {
         right: 15px;
-        bottom: 15px;
-        width: 64px;
-        height: 64px;
-    }
-
-    #btn-jump {
-        right: 95px;
         bottom: 15px;
         width: 56px;
         height: 56px;
     }
 
-    #btn-bomb {
-        right: 25px;
-        bottom: 95px;
-        width: 46px;
-        height: 46px;
+    .btn-jump {
+        right: 80px;
+        bottom: 15px;
+        width: 40px;
+        height: 40px;
     }
+
+    .btn-bomb {
+        right: 130px;
+        bottom: 15px;
+        width: 40px;
+        height: 40px;
+    }
+
+     canvas {
+        width: auto;
+        height:100dvh;
+        max-width: 120vw;
 }
+}
+
 
 @media (max-height: 500px) {
     .game-credit {
@@ -392,8 +402,8 @@ html.force-touch .main-content h1 {
 
     canvas {
         width: auto;
-        height: 95dvh;
-        max-width: 95vw;
+        height: calc(100dvh - 50px);
+        max-width: 100vw;
     }
 }
 
