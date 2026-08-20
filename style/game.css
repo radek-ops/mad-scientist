@@ -339,14 +339,6 @@ canvas {
     }
 }
 
-html.force-touch .touch-controls {
-    display: block;
-}
-
-html.force-touch .main-content h1 {
-    display: none;
-}
-
 
 
 

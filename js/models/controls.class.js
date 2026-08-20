@@ -7,6 +7,7 @@ class Controls {
     usePotion = false;
     mouseClickLeft = false;
     mouseClickRight = false;
+    isPaused = false;
 
 
     /**
@@ -19,10 +20,16 @@ class Controls {
         });
 
         window.addEventListener('keydown', (event) => {
+
             if (event.key === 'Escape') {
+                this.isPaused = !this.isPaused;
                 window.location.href = './controls-game.html';
                 return;
+            }else  {
+               this.isPaused = false;
+
             }
+
             (event.key === 'w') ? this.up = true : false;
             (event.key === 'a') ? this.back = true : false;
             (event.key === 's') ? this.down = true : false;
@@ -116,10 +123,5 @@ class Controls {
             });
         }
     }
-
-
-
-
-
 
 }

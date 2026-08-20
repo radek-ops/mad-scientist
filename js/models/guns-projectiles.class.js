@@ -54,6 +54,8 @@ class GunsProjectiles extends Moveables {
         }, 1000 / 60);
     }
 
+
+
     /**
      * Plays the laser animation when shooting.
      */

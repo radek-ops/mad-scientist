@@ -292,6 +292,8 @@ class Character extends Moveables {
         }, 1000 / 60);
     }
 
+
+
     /**
      * Checks if the character is in the air.
      * @returns {boolean} True when the character is jumping
