@@ -351,5 +351,6 @@ class Enemy extends Moveables {
         }
         return false;
     }
+    
 
 }

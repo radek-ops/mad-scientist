@@ -36,7 +36,11 @@ class Moveables {
      */
     startAnimation() {
         setInterval(() => {
-            this.startAnimationUpdate();
+            this.startAnimationUpdate(); 
+            
+
+
+
         }, 1000 / 60);
     }
 

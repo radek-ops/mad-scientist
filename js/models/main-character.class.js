@@ -139,9 +139,10 @@ class Character extends Moveables {
      */
     moveCharacter() {
         setInterval(() => {
-            this.movement();
+             this.movement();
             this.animate();
             this.jump();
+          
         }, 1000 / 60);
     }
 
