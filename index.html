@@ -36,7 +36,7 @@
 </head>
 
 <body>
-    <main class="start-main">
+    <main class="start-main" id="startPage">
         <div class="start-container">
 
             <h1 class="start-title">
@@ -61,7 +61,7 @@
 
     <!-- Start Game -->
 
-    <div  class="game-overlay" id="game-overlay"  hidden>
+    <div  class="game-overlay" id="game-overlay" hidden>
         <div class="landscape-warning">
             <div class="warning-message">
                 <h1>Please rotate your device</h1>
@@ -78,7 +78,7 @@
         </div>
     </div>
 
-    <div id="touch-controls" class="touch-controls" hidden>
+    <div id="touch-controls" class="touch-controls">
         <div class="dpad">
             <button class="touch-btn btn-up" id="btn-up" type="button">↑</button>
             <button class="touch-btn btn-left" id="btn-left" type="button">←</button>
@@ -89,20 +89,20 @@
         <button class="touch-btn btn-jump" id="btn-jump" type="button">Jump</button>
         <button class="touch-btn btn-shoot" id="btn-shoot" type="button">Shoot</button>
         <button class="touch-btn btn-bomb" id="btn-bomb" type="button">Bomb</button>
-        <a href="./controls-game.html" class="touch-btn btn-gear">⚙️</a>
+        <button type="button" class="touch-btn btn-gear">⚙️</button>
     </div>
 
     <div id="gameOverOverlay" class="game-over-overlay" hidden>
         <div class="game-over-content">
             <h1 class="game-over-title">You are dead</h1>
-            <a href="./game.html" class="try-again-btn">Try Again</a>
+            <button type="button" class="try-again-btn" id="btnGameOverTryAgain">Try Again</button>
         </div>
     </div>
 
     <div id="winOverlay" class="win-overlay" hidden>
         <div class="win-content">
             <img src="./img/PNG/User_Interfaces/Accomplished.png" alt="Accomplished" class="win-image">
-            <a href="./index.html" class="new-game-btn">New Game</a>
+            <button type="button" class="new-game-btn" id="btnWinExitGame">Exit Game</button>
         </div>
     </div>
 

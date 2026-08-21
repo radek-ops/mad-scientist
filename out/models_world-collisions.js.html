@@ -113,7 +113,7 @@
         this.sound.play('playerDeath');
 
         let deathInterval = setInterval(() => {
-            let done = this.mainCharacter.characterDeath();
+           
             if (done) {
                 clearInterval(deathInterval);
                 this.sound.play('gameOver');

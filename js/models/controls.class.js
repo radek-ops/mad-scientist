@@ -8,27 +8,22 @@ class Controls {
     mouseClickLeft = false;
     mouseClickRight = false;
     isPaused = false;
-   
-
 
 
     /**
      * Sets up all keyboard and mouse listeners that set the control flags.
      */
     constructor() {
-
         window.addEventListener('contextmenu', (event) => {
             event.preventDefault();
         });
 
         window.addEventListener('keydown', (event) => {
-                         if (event.key === 'Escape') {
+            if (event.key === 'Escape') {
                 this.isPaused = !this.isPaused;
-              
                 const overlay = document.getElementById('controls-overlay');
                 if (overlay) {
                     overlay.hidden = !this.isPaused;
-                    
                     document.getElementById('btnBackToGame').hidden = !this.isPaused;
                     document.getElementById('btnExitGame').hidden = !this.isPaused;
                     document.getElementById('btnTryAgain').hidden = !this.isPaused;
@@ -70,6 +65,17 @@ class Controls {
 
         window.addEventListener('keyup', (event) => {
             (event.code === 'Space') ? this.space = false : false;
+        });
+
+        window.addEventListener('blur', () => {
+            this.up = false;
+            this.back = false;
+            this.down = false;
+            this.forward = false;
+            this.space = false;
+            this.usePotion = false;
+            this.mouseClickLeft = false;
+            this.mouseClickRight = false;
         });
 
         this.setupTouchControls();

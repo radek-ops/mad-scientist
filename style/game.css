@@ -93,9 +93,16 @@ canvas {
     -webkit-text-stroke: 2px #4d0000;
 }
 
+.game-over-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .try-again-btn {
     background: url('../img/PNG/User_Interfaces/Btn5.svg') no-repeat center;
     background-size: 100% 100%;
+    border: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -146,8 +153,9 @@ canvas {
 }
 
 .new-game-btn {
-    background: url('../img/PNG/User_Interfaces/Btn5.svgs') no-repeat center;
+    background: url('../img/PNG/User_Interfaces/Btn5.svg') no-repeat center;
     background-size: 100% 100%;
+    border: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;

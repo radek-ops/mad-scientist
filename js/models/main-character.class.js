@@ -139,7 +139,10 @@ class Character extends Moveables {
      */
     moveCharacter() {
         setInterval(() => {
-             this.movement();
+            if (this.controls.isPaused) {
+                return;
+            }
+            this.movement();
             this.animate();
             this.jump();
           

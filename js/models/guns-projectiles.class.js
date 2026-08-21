@@ -49,7 +49,7 @@ class GunsProjectiles extends Moveables {
      * Starts the projectile animation loop.
      */
     useProjectile() {
-        setInterval(() => {
+        window.projectileInterval = setInterval(() => {
             this.projectileAnimate();
         }, 1000 / 60);
     }

@@ -85,6 +85,7 @@
         this.sound.play('playerDeath');
 
         let deathInterval = setInterval(() => {
+           
             let done = this.mainCharacter.characterDeath();
             if (done) {
                 clearInterval(deathInterval);
@@ -100,6 +101,7 @@
     playCharacterGetHit() {
         this.mainCharacter.isHit = true;
         this.sound.play('hit');
+      
         let getHitInterval = setInterval(() => {
             let done = this.mainCharacter.characterGetHit();
             if (done) {
@@ -148,33 +150,18 @@
         enemy.isAttacking = true;
         if (enemy.enemyType === '01') {
             let attackInterval = setInterval(() => {
+               
                 let done = enemy.enemy01Attack();
                 if (done) clearInterval(attackInterval);
             }, 60);
         } else {
             let attackInterval = setInterval(() => {
+               
                 let done = enemy.enemy07Attack();
                 if (done) clearInterval(attackInterval);
             }, 60);
         }
         this.damageCharacter(2);
-    },
-
-    /**
-     * Checks the stomp collision for enemy types 07 and 09.
-     */
-    checkEnemyCollision07And09() {
-        this.enemies.forEach((enemy) => {
-            if (this.collision(this.mainCharacter, enemy) && (enemy.enemyType === '07' || enemy.enemyType == '09')) {
-                let charFeet = this.mainCharacter.getJumpY() + 281;
-                let enemyHead = enemy.y + 148;
-                let isFalling = this.mainCharacter.speedY < 0;
-                let isStomping = isFalling && (charFeet - enemyHead < 50);
-                if (isStomping) {
-                    return;
-                }
-            }
-        });
     },
 
     /**
@@ -227,6 +214,7 @@
         enemy.isHit = true;
         this.sound.play('enemyDeath');
         let deathInterval = setInterval(() => {
+             
             let done = enemy.enemy01Death();
             if (done) {
                 clearInterval(deathInterval);
@@ -261,6 +249,7 @@
         enemy.isHit = true;
         this.sound.play('enemyDeath');
         let electricInterval = setInterval(() => {
+            
             let done = type === '07' ? enemy.enemy07GetElectric() : enemy.enemy09GetElectric();
             if (done) {
                 clearInterval(electricInterval);

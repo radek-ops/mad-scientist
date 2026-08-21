@@ -55,7 +55,7 @@
      */
     playBossDestroy() {
         let destroyInterval = setInterval(() => {
-            let done = this.finalBoss.destroy();
+             let done = this.finalBoss.destroy();
             if (done) {
                 clearInterval(destroyInterval);
                 this.sound.stopMusic();

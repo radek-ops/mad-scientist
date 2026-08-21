@@ -1,4 +1,4 @@
-﻿class World {
+class World {
     ctx;
     canvas;
     enemies;
@@ -27,6 +27,7 @@
     boxingCooldown;
 
     drawY;
+    isRunning = true;
 
     /**
      * Creates a new World and starts the game loop.
@@ -151,6 +152,13 @@
      * Clears the canvas and draws the next frame.
      */
     draw() {
+        if (!this.isRunning) {
+            return;
+        }
+        if (this.controls && this.controls.isPaused) {
+            this.nextFrame();
+            return;
+        }
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.map_scroll_x, 0);
         this.updateGunPosition();
@@ -197,6 +205,7 @@
      * Runs all collision and spawn checks.
      */
     runChecks() {
+        if (this.controls.isPaused) return; 
         this.spawnNewEnemies();
         this.spawnBossAreaEnemies();
         this.checkEnemyCollision01();
