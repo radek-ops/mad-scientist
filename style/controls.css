@@ -1,33 +1,7 @@
-.btn-back {
-    background: url('../img/PNG/User_Interfaces/Btn3.svg') no-repeat center;
-    background-size: 100% 100%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 55px;
-    padding: 0 40px;
-    text-decoration: none;
-    color: #fff;
-    font-family: "blablaHawk";
-    font-size: 22px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-    cursor: pointer;
-    transition: transform 0.2s, opacity 0.3s;
-    margin-top: 0;
-    margin-bottom: 20px;
-    align-self: flex-start;
-    border: none;
-}
-
-.btn-back:hover {
-    opacity: 0.85;
-    transform: scale(1.05);
-}
-
 .mute-btn {
     background: url('../img/PNG/User_Interfaces/Btn3.svg') no-repeat center;
     background-size: 100% 100%;
-    display: inline-flex;
+    /* display: inline-flex; */
     align-items: center;
     justify-content: center;
     height: 55px;
@@ -39,7 +13,7 @@
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     cursor: pointer;
     transition: transform 0.2s, opacity 0.3s;
-    margin-top: 0;
+    margin-top: 30px;
 }
 
 .mute-btn:hover {
@@ -51,30 +25,23 @@
     opacity: 0.7;
 }
 
-.ctrls-buttons {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 16px;
-    margin-top: 12px;
-}
-
-.ctrls-main {
-    width: 100%;
-    min-height: 100dvh;
+.ctrls-overlay {
+    width: 100vw;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
     background-image: url('../img/PNG/User_Interfaces/LandingScreen.png');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
-    padding: 80px 16px;
+    /* background-attachment: fixed; */
     box-sizing: border-box;
-    position: relative;
+    position: fixed;
+    inset: 0;
+    z-index: 10;
 }
 
-.ctrls-main::before {
+.ctrls-overlay::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -82,8 +49,25 @@
     z-index: 0;
 }
 
+.ctrls-overlay[hidden] {
+    display: none;
+}
+
+#btnTryAgain.start-button[hidden] {
+    display: none;
+}
+
+#btnBackToGame.start-button[hidden] {
+    display: none;
+}
+
+#btnExitGame.start-button[hidden] {
+    display: none;
+}
+
 .ctrls-container {
     width: clamp(280px, 90%, 800px);
+    height: 100vh;
     padding: clamp(16px, 3vw, 40px);
     background-color: rgba(0, 0, 0, 0.9);
     border-radius: 16px;
@@ -160,7 +144,12 @@
     }
 
     .ctrls-buttons .btn-back,
-    .ctrls-buttons .mute-btn {
+    .ctrls-buttons {
         margin-top: 0;
     }
+ 
+     .mute-btn {
+        margin-top: 30;
+    }
+
 }

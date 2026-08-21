@@ -5,11 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mad Scientist</title>
-    <link rel="stylesheet" href="style/fonts.css">
-    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="./style/fonts.css">
+    <link rel="stylesheet" href="./style/style.css">
+   
+    <link rel="stylesheet" href="./style/game.css">
+    <link rel="stylesheet" href="./style/controls.css">
+    <link rel="stylesheet" href="./style/impressum.css">
     <link rel="icon" type="image/png" href="./img/Favicon/Icon.png">
     <script defer src="./js/mute.js"></script>
-    <script defer src="./js/description.js"></script>
+    <script defer src="./js/buttons.js"></script>
 </head>
 
 <body>
@@ -25,23 +29,22 @@
                 <img class="start-char" src="./img/PNG/Main_Characters/Gun05/Idle/Idle_000.png" alt="Character">
                 <div class="start-buttons">
                     <a href="./game.html" class="start-button">Start Game</a>
-                    <a href="./controls.html" class="start-button">Controls</a>
+                    <button class="start-button" type="button" id="controls-btn">Controls</button>
                     <button class="start-button" type="button" id="description-btn">Description</button>
                 </div>
             </div>
 
-
             <div class="start-footer">
-
-                <a href="./impressum.html" class="btn-impressum-start">Impressum</a>
-
+               <button class="start-button" type="button" id="impressum-btn">Impressum</button>
             </div>
         </div>
     </main>
 
+    <!-- Description Page -->
+
     <div class="description-overlay" id="description-overlay" hidden>
         <div class="description-container">
-            <button class="description-back" type="button" id="description-back">Back</button>
+            <button class="back" type="button" id="description-back">Back</button>
             <h1 class="description-title">
                 <span class="mad">MAD</span>
                 <span class="scientist">SCIENTIST</span>
@@ -51,9 +54,84 @@
                 boss!</p>
             <p class="start-text">Enemies with a shield can only be killed from behind with the laser, by jumping on
                 their heads or through the bomb.</p>
+        </div>
+    </div>
+
+<!-- controls Page -->
+
+     <div class="ctrls-overlay" id="controls-overlay" hidden>
+        <div class="ctrls-container">
+
+            <button id="controls-back" type="button" class="back">Back</button>
+            <button id="btnTryAgain" type="button" class="start-button" hidden>Try Again</button>
+            <button id="btnBackToGame" type="button" class="start-button" hidden>Back to Game</button>
+            <button id="btnExitGame" type="button" class="start-button" hidden>Exit Game</button>
+
+
+            <h1 class="ctrls-title">
+                <span class="mad">MAD</span>
+                <span class="scientist">SCIENTIST</span>
+            </h1>
+
+            <h2 class="ctrls-h2">Controls</h2>
+
+            <p class="ctrls-text">On mobile: use the on-screen touch buttons (D-Pad, Jump, Shoot, Bomb, HP). The HP
+                button uses a potion to heal &ndash; same as the R key.</p>
+
+            <div class="ctrls-table">
+                <div class="ctrls-row"><span class="ctrls-key">W</span><span class="ctrls-action">Up</span></div>
+                <div class="ctrls-row"><span class="ctrls-key">A</span><span class="ctrls-action">Left</span></div>
+                <div class="ctrls-row"><span class="ctrls-key">S</span><span class="ctrls-action">Down</span></div>
+                <div class="ctrls-row"><span class="ctrls-key">D</span><span class="ctrls-action">Right</span></div>
+                <div class="ctrls-row"><span class="ctrls-key">Space</span><span class="ctrls-action">Jump</span></div>
+                <div class="ctrls-row"><span class="ctrls-key">Left Click</span><span class="ctrls-action">Shoot</span>
+                </div>
+                <div class="ctrls-row"><span class="ctrls-key">Right Click</span><span class="ctrls-action">Bomb</span>
+                </div>
+                <div class="ctrls-row"><span class="ctrls-key">R</span><span class="ctrls-action">Use Potion
+                        (Heal)</span></div>
+                <div class="ctrls-row"><span class="ctrls-key">Esc</span><span class="ctrls-action">Break</span></div>
+            </div>
+
+            <div class="ctrls-buttons">
+                <button class="mute-btn" type="button">🔊 Sound On</button>
+            </div>
 
         </div>
     </div>
+
+   <!-- Impressum Page -->
+
+     <div class="impressum-overlay" id="overlay-impressum"  hidden>
+        <div class="impressum-container">
+            <button class="back" type="button" id="impressum-back">Back</button>
+            <h1 class="impressum-title">
+                <span class="mad">MAD</span>
+                <span class="scientist">SCIENTIST</span>
+            </h1>
+
+            <h2 class="imp-h2">Impressum</h2>
+
+            <p><strong>Radek Gnych</strong></p>
+            <p>Schwalbenweg 1b</p>
+            <p>21481 Lauenburg/Elbe</p>
+            <p>E-Mail: <a class="imp-link" href="mailto:radekgnych@gmail.com">radekgnych@gmail.com</a></p>
+            <p>Quelle: <a class="imp-link"
+                    href="https://www.e-recht24.de/impressum-generator.html">www.e-recht24.de/impressum-generator.html</a>
+            </p>
+
+            <h3 class="imp-h3">Quellenangaben</h3>
+            <p>Fonts made from <a class="imp-link" href="http://www.onlinewebfonts.com">Web Fonts</a> is licensed by CC
+                BY 4.0</p>
+            <p>Spiele-Assets von <a class="imp-link" href="https://craftpix.net/">Craftpix.net</a></p>
+            <p>Sounds von <a class="imp-link" href="https://freesound.org/">Freesound.org</a></p>
+            <p>Dieses Projekt dient ausschließlich zu Lern- und Demonstrationszwecken.</p>
+        </div>
+     </div>
+     
+    <iframe id="page3" src="game.html" name="game" ></iframe>
+  
+   
 </body>
 
 </html>

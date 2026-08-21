@@ -1,4 +1,4 @@
-.impressum-main {
+.impressum-overlay {
     width: 100%;
     min-height: 100dvh;
     display: flex;
@@ -10,15 +10,22 @@
     background-attachment: fixed;
     padding: 80px 16px;
     box-sizing: border-box;
-    position: relative;
+    position: fixed;
+    z-index: 10;
+     inset: 0;
+
 }
 
-.impressum-main::before {
+.impressum-overlay::before {
     content: "";
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.85);
     z-index: 0;
+}
+
+.impressum-overlay[hidden] {
+    display: none;
 }
  
 .impressum-container {
@@ -34,28 +41,6 @@
 
 .impressum-title {
     margin-bottom: 40px;
-}
-
-.btn-impressum {
-    background: url('../img/PNG/User_Interfaces/Btn3.svg') no-repeat center;
-    background-size: 100% 100%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 55px;
-    padding: 0 40px;
-    text-decoration: none;
-    color: #fff;
-    font-family: "blablaHawk";
-    font-size: 22px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-    cursor: pointer;
-    transition: transform 0.2s, opacity 0.3s;
-}
-
-.btn-impressum:hover {
-    opacity: 0.85;
-    transform: scale(1.05);
 }
 
 .imp-link {
