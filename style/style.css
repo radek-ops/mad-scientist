@@ -4,6 +4,7 @@ body {
     border: 0;
 }
 
+
 .start-main {
     width: 100%;
     min-height: 100dvh;
@@ -199,13 +200,17 @@ button.start-button {
     transition: transform 0.2s, opacity 0.3s;
 }
 
+.back[hidden] {
+    display: none;
+}
+
 .description-back:hover {
     opacity: 0.85;
     transform: scale(1.05);
 }
 
 .description-title {
-    margin-bottom: 40px;
+    margin:0px;
 }
 
 .description-h2 {
@@ -226,7 +231,6 @@ button.start-button {
     line-height: 1.6;
     margin: 6px 0;
 }
-
 @media (max-width: 600px) {
     .description-container {
         padding: 20px;
@@ -250,3 +254,12 @@ button.start-button {
         font-size: 16px;
     }
 }
+
+.game-over-overlay.show, .win-overlay.show {
+    display: flex;
+}
+
+
+
+
+

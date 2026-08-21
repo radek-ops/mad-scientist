@@ -8,6 +8,8 @@ class Controls {
     mouseClickLeft = false;
     mouseClickRight = false;
     isPaused = false;
+   
+
 
 
     /**
@@ -20,14 +22,19 @@ class Controls {
         });
 
         window.addEventListener('keydown', (event) => {
-
-            if (event.key === 'Escape') {
+                         if (event.key === 'Escape') {
                 this.isPaused = !this.isPaused;
-                window.location.href = './controls-game.html';
-                return;
-            }else  {
-               this.isPaused = false;
-
+              
+                const overlay = document.getElementById('controls-overlay');
+                if (overlay) {
+                    overlay.hidden = !this.isPaused;
+                    
+                    document.getElementById('btnBackToGame').hidden = !this.isPaused;
+                    document.getElementById('btnExitGame').hidden = !this.isPaused;
+                    document.getElementById('btnTryAgain').hidden = !this.isPaused;
+                    document.getElementById('controls-back').hidden = true;
+                }
+                return
             }
 
             (event.key === 'w') ? this.up = true : false;

@@ -7,12 +7,31 @@
     <title>Mad Scientist</title>
     <link rel="stylesheet" href="./style/fonts.css">
     <link rel="stylesheet" href="./style/style.css">
-   
     <link rel="stylesheet" href="./style/game.css">
     <link rel="stylesheet" href="./style/controls.css">
     <link rel="stylesheet" href="./style/impressum.css">
     <link rel="icon" type="image/png" href="./img/Favicon/Icon.png">
+    <script defer src="./js/models/controls.class.js"></script>
+    <script defer src="./js/models/moveables.class.js"></script>
+    <script defer src="./js/models/final-boss.class.js"></script>
+    <script defer src="./js/models/guns-projectiles.class.js"></script>
+    <script defer src="./js/models/main-character.class.js"></script>
+    <script defer src="./js/models/enemy-character.class.js"></script>
+    <script defer src="./js/models/potions.class.js"></script>
+    <script defer src="./js/models/bomb.class.js"></script>
+    <script defer src="./js/models/thrown-bomb.class.js"></script>
+    <script defer src="./js/models/boxing.class.js"></script>
+    <script defer src="./js/models/status-bar.class.js"></script>
+    <script defer src="./js/models/hp-bar.class.js"></script>
+    <script defer src="./js/models/boss-hp-bar.class.js"></script>
+    <script defer src="./js/models/sound.class.js"></script>
     <script defer src="./js/mute.js"></script>
+    <script defer src="./js/models/background.class.js"></script>
+    <script defer src="./js/models/world.class.js"></script>
+    <script defer src="./js/models/world-collisions.js"></script>
+    <script defer src="./js/models/world-items.js"></script>
+    <script defer src="./js/models/world-boss.js"></script>
+    <script defer src="./js/game.js"></script>
     <script defer src="./js/buttons.js"></script>
 </head>
 
@@ -28,17 +47,65 @@
             <div class="start-row">
                 <img class="start-char" src="./img/PNG/Main_Characters/Gun05/Idle/Idle_000.png" alt="Character">
                 <div class="start-buttons">
-                    <a href="./game.html" class="start-button">Start Game</a>
+                    <button class="start-button" type="button" id="start-btn">Start Game</button>
                     <button class="start-button" type="button" id="controls-btn">Controls</button>
                     <button class="start-button" type="button" id="description-btn">Description</button>
                 </div>
             </div>
 
             <div class="start-footer">
-               <button class="start-button" type="button" id="impressum-btn">Impressum</button>
+                <button class="start-button" type="button" id="impressum-btn">Impressum</button>
             </div>
         </div>
     </main>
+
+    <!-- Start Game -->
+
+    <div  class="game-overlay" id="game-overlay"  hidden>
+        <div class="landscape-warning">
+            <div class="warning-message">
+                <h1>Please rotate your device</h1>
+                <p>🔄 Landscape mode required</p>
+            </div>
+        </div>
+        <div class="game-content">
+            <h1>
+                <span class="mad">MAD</span>
+                <span class="scientist">SCIENTIST</span>
+            </h1>
+            <canvas id="canvas" width="1280" height="720"></canvas>
+            <span class="game-credit">Created by Radek Gnych &copy;</span>
+        </div>
+    </div>
+
+    <div id="touch-controls" class="touch-controls" hidden>
+        <div class="dpad">
+            <button class="touch-btn btn-up" id="btn-up" type="button">↑</button>
+            <button class="touch-btn btn-left" id="btn-left" type="button">←</button>
+            <button class="touch-btn btn-right" id="btn-right" type="button">→</button>
+            <button class="touch-btn btn-down" id="btn-down" type="button">↓</button>
+        </div>
+        <button class="touch-btn btn-potion" id="btn-potion" type="button">HP</button>
+        <button class="touch-btn btn-jump" id="btn-jump" type="button">Jump</button>
+        <button class="touch-btn btn-shoot" id="btn-shoot" type="button">Shoot</button>
+        <button class="touch-btn btn-bomb" id="btn-bomb" type="button">Bomb</button>
+        <a href="./controls-game.html" class="touch-btn btn-gear">⚙️</a>
+    </div>
+
+    <div id="gameOverOverlay" class="game-over-overlay" hidden>
+        <div class="game-over-content">
+            <h1 class="game-over-title">You are dead</h1>
+            <a href="./game.html" class="try-again-btn">Try Again</a>
+        </div>
+    </div>
+
+    <div id="winOverlay" class="win-overlay" hidden>
+        <div class="win-content">
+            <img src="./img/PNG/User_Interfaces/Accomplished.png" alt="Accomplished" class="win-image">
+            <a href="./index.html" class="new-game-btn">New Game</a>
+        </div>
+    </div>
+
 
     <!-- Description Page -->
 
@@ -57,15 +124,15 @@
         </div>
     </div>
 
-<!-- controls Page -->
+    <!-- controls Page -->
 
-     <div class="ctrls-overlay" id="controls-overlay" hidden>
+    <div class="ctrls-overlay" id="controls-overlay" hidden>
         <div class="ctrls-container">
 
             <button id="controls-back" type="button" class="back">Back</button>
-            <button id="btnTryAgain" type="button" class="start-button" hidden>Try Again</button>
-            <button id="btnBackToGame" type="button" class="start-button" hidden>Back to Game</button>
-            <button id="btnExitGame" type="button" class="start-button" hidden>Exit Game</button>
+            <button id="btnTryAgain" type="button" class="back" hidden>Try Again</button>
+            <button id="btnBackToGame" type="button" class="back" hidden>Back to Game</button>
+            <button id="btnExitGame" type="button" class="back" hidden>Exit Game</button>
 
 
             <h1 class="ctrls-title">
@@ -100,9 +167,9 @@
         </div>
     </div>
 
-   <!-- Impressum Page -->
+    <!-- Impressum Page -->
 
-     <div class="impressum-overlay" id="overlay-impressum"  hidden>
+    <div class="impressum-overlay" id="overlay-impressum" hidden>
         <div class="impressum-container">
             <button class="back" type="button" id="impressum-back">Back</button>
             <h1 class="impressum-title">
@@ -127,11 +194,8 @@
             <p>Sounds von <a class="imp-link" href="https://freesound.org/">Freesound.org</a></p>
             <p>Dieses Projekt dient ausschließlich zu Lern- und Demonstrationszwecken.</p>
         </div>
-     </div>
-     
-    <iframe id="page3" src="game.html" name="game" ></iframe>
-  
-   
-</body>
+    </div>
+
+   </body>
 
 </html>
