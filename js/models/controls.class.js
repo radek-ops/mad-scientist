@@ -173,6 +173,13 @@ class Controls {
                 this.togglePause();
             });
         }
+
+        let gearDesktopBtn = document.getElementById('btn-gear-desktop');
+        if (gearDesktopBtn) {
+            gearDesktopBtn.addEventListener('click', () => {
+                this.togglePause();
+            });
+        }
     }
 
 }

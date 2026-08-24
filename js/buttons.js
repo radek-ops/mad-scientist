@@ -86,7 +86,6 @@ const exitGame = document.getElementById('btnExitGame');
 }); 
 
 
-
   backToGame.addEventListener("click", () => {
         document.getElementById('controls-overlay').hidden = true;
         gameOverlay.hidden = false;
@@ -96,12 +95,6 @@ const exitGame = document.getElementById('btnExitGame');
         
 
 });
-
-
-
-
-
-
 
 
 });
