@@ -15,20 +15,14 @@ class Controls {
      */
     constructor() {
         window.addEventListener('contextmenu', (event) => {
-            event.preventDefault();
+            if (event.target && event.target.closest && event.target.closest('#game-overlay')) {
+                event.preventDefault();
+            }
         });
 
         window.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') {
-                this.isPaused = !this.isPaused;
-                const overlay = document.getElementById('controls-overlay');
-                if (overlay) {
-                    overlay.hidden = !this.isPaused;
-                    document.getElementById('btnBackToGame').hidden = !this.isPaused;
-                    document.getElementById('btnExitGame').hidden = !this.isPaused;
-                    document.getElementById('btnTryAgain').hidden = !this.isPaused;
-                    document.getElementById('controls-back').hidden = true;
-                }
+                this.togglePause();
                 return
             }
 
@@ -46,12 +40,15 @@ class Controls {
         });
 
 
-        window.addEventListener('mousedown', (event) => {
+        window.addEventListener('pointerdown', (event) => {
+            if (event.target && event.target.closest && event.target.closest('.touch-btn')) {
+                return;
+            }
             (event.button === 0) ? this.mouseClickLeft = true : false;
             (event.button === 2) ? this.mouseClickRight = true : false;
         });
 
-        window.addEventListener('mouseup', (event) => {
+        window.addEventListener('pointerup', (event) => {
             (event.button === 0) ? this.mouseClickLeft = false : false;
             (event.button === 2) ? this.mouseClickRight = false : false;
         });
@@ -59,6 +56,9 @@ class Controls {
             if (event.repeat) return;
             if (event.key === 'r') {
                 this.usePotion = true;
+            }
+            if (event.code === 'KeyB') {
+                this.mouseClickRight = true;
             }
             (event.code === 'Space') ? this.space = true : false;
         });
@@ -81,6 +81,21 @@ class Controls {
         this.setupTouchControls();
     }
 
+    /**
+     * Toggles the pause state and shows/hides the controls menu.
+     */
+    togglePause() {
+        this.isPaused = !this.isPaused;
+        const overlay = document.getElementById('controls-overlay');
+        if (overlay) {
+            overlay.hidden = !this.isPaused;
+            document.getElementById('btnBackToGame').hidden = !this.isPaused;
+            document.getElementById('btnExitGame').hidden = !this.isPaused;
+            document.getElementById('btnTryAgain').hidden = !this.isPaused;
+            document.getElementById('controls-back').hidden = true;
+        }
+    }
+
 
     /**
      * Sets up the on-screen touch controls for mobile and tablet.
@@ -92,11 +107,15 @@ class Controls {
                 return;
             }
             btn.addEventListener('touchstart', (event) => {
-                event.preventDefault();
+                if (event.cancelable) {
+                    event.preventDefault();
+                }
                 onStart();
             }, { passive: false });
             btn.addEventListener('touchend', (event) => {
-                event.preventDefault();
+                if (event.cancelable) {
+                    event.preventDefault();
+                }
                 onEnd();
             }, { passive: false });
             btn.addEventListener('touchcancel', (event) => {
@@ -126,13 +145,22 @@ class Controls {
         let potionBtn = document.getElementById('btn-potion');
         if (potionBtn) {
             potionBtn.addEventListener('touchstart', (event) => {
-                event.preventDefault();
+                if (event.cancelable) {
+                    event.preventDefault();
+                }
                 this.usePotion = true;
             }, { passive: false });
             potionBtn.addEventListener('mousedown', (event) => {
                 event.preventDefault();
                 event.stopPropagation();
                 this.usePotion = true;
+            });
+        }
+
+        let gearBtn = document.getElementById('btn-gear');
+        if (gearBtn) {
+            gearBtn.addEventListener('click', () => {
+                this.togglePause();
             });
         }
     }

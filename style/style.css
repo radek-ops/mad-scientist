@@ -6,20 +6,18 @@ body {
 
 
 .start-main {
-    width: 100%;
-    min-height: 100dvh;
+    position: fixed;
+    inset: 0;
+    overflow-y: auto;
     display: flex;
-    align-items: center;
-    justify-content: center;
     background-image: url('../img/PNG/User_Interfaces/LandingScreen.png');
     background-size: cover;
     background-position: center;
-    position: relative;
 }
 
 .start-main::before {
     content: "";
-    position: absolute;
+    position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.6);
     z-index: 0;
@@ -27,6 +25,7 @@ body {
 
 .start-container {
     width: clamp(320px, 90%, 1280px);
+    margin: auto;
     padding: clamp(24px, 4vw, 60px);
     background-image: url('../img/PNG/Backgrounds/layerLevel2/0.png');
     background-size: cover;
