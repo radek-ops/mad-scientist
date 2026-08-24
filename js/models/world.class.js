@@ -172,7 +172,7 @@ class World {
         let gunOffsetY = this.mainCharacter.isAboveGround() ? 70 : 180;
         this.gunsProjectiles.otherDirection = this.mainCharacter.otherDirection;
         if (this.gunsProjectiles.otherDirection) {
-            this.gunsProjectiles.x = this.mainCharacter.x - 10;
+            this.gunsProjectiles.x = this.mainCharacter.x - 50;
             this.gunsProjectiles.y = this.calcJumpPos() + gunOffsetY;
         } else {
             this.gunsProjectiles.x = this.mainCharacter.x + 280;

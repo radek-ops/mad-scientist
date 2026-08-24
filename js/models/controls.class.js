@@ -52,6 +52,16 @@ class Controls {
             (event.button === 0) ? this.mouseClickLeft = false : false;
             (event.button === 2) ? this.mouseClickRight = false : false;
         });
+
+        window.addEventListener('pointercancel', () => {
+            this.mouseClickLeft = false;
+            this.mouseClickRight = false;
+        });
+
+        document.documentElement.addEventListener('mouseleave', () => {
+            this.mouseClickLeft = false;
+            this.mouseClickRight = false;
+        });
         window.addEventListener('keydown', (event) => {
             if (event.repeat) return;
             if (event.key === 'r') {

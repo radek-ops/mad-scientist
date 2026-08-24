@@ -32,6 +32,15 @@ const exitGame = document.getElementById('btnExitGame');
         }
     });
 
+    const gameOverExitGame = document.getElementById('btnGameOverExitGame');
+    gameOverExitGame.addEventListener("click", () => {
+        document.getElementById('gameOverOverlay').classList.remove('show');
+        gameOverlay.hidden = true;
+        if (world) {
+            world.isRunning = false;
+        }
+    });
+
     const winExitGame = document.getElementById('btnWinExitGame');
     winExitGame.addEventListener("click", () => {
         document.getElementById('winOverlay').classList.remove('show');
