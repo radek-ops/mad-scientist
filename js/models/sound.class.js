@@ -100,4 +100,18 @@ class Sound {
             this.music = null;
         }
     }
+
+
+    /**
+     * Stops or resumes all sounds after the mute state changed.
+     */
+    updateMute() {
+        if (isMuted()) {
+            Object.keys(this.audioList).forEach((name) => {
+                this.audioList[name].pause();
+            });
+        } else if (this.music) {
+            this.music.play();
+        }
+    }
 }

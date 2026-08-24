@@ -27,6 +27,9 @@ function toggleMute() {
     const muted = !isMuted();
     setMuted(muted);
     updateMuteButtons();
+    if (typeof world !== 'undefined' && world && world.sound) {
+        world.sound.updateMute();
+    }
     return muted;
 }
 
