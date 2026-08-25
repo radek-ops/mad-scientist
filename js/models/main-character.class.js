@@ -178,7 +178,7 @@ class Character extends Moveables {
      * Updates the scrolling of the world when the character moves.
      */
     movementUpdate(){
-        let deadZone = 640;
+        let deadZone = 427; // 1/3 of the first background image (1280/3)
         let bossPanStart = 2500;
         let bossTargetScroll = -(3840 - 1280);
 

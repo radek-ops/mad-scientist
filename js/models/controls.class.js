@@ -17,6 +17,7 @@ class Controls {
         window.addEventListener('contextmenu', (event) => {
             if (event.target && event.target.closest && event.target.closest('#game-overlay')) {
                 event.preventDefault();
+                this.mouseClickRight = true;
             }
         });
 
@@ -45,7 +46,6 @@ class Controls {
                 return;
             }
             (event.button === 0) ? this.mouseClickLeft = true : false;
-            (event.button === 2) ? this.mouseClickRight = true : false;
         });
 
         window.addEventListener('pointerup', (event) => {
@@ -66,9 +66,6 @@ class Controls {
             if (event.repeat) return;
             if (event.key === 'r') {
                 this.usePotion = true;
-            }
-            if (event.code === 'KeyB') {
-                this.mouseClickRight = true;
             }
             (event.code === 'Space') ? this.space = true : false;
         });
@@ -102,7 +99,7 @@ class Controls {
             document.getElementById('btnBackToGame').hidden = !this.isPaused;
             document.getElementById('btnExitGame').hidden = !this.isPaused;
             document.getElementById('btnTryAgain').hidden = !this.isPaused;
-            document.getElementById('controls-back').hidden = true;
+            document.getElementById('controls-back').hidden = this.isPaused;
         }
     }
 

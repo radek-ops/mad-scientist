@@ -18,9 +18,29 @@ let tryAgain = document.getElementById('btnTryAgain');
 let backToGame = document.getElementById('btnBackToGame');
 const exitGame = document.getElementById('btnExitGame');
 
+    /**
+     * Resets the controls overlay to its default "info" mode:
+     * only the "Back" button is visible.
+     */
+    function resetControlsToInfoMode() {
+        document.getElementById('controls-back').hidden = false;
+        document.getElementById('btnTryAgain').hidden = true;
+        document.getElementById('btnBackToGame').hidden = true;
+        document.getElementById('btnExitGame').hidden = true;
+    }
+
     exitGame.addEventListener("click", () => {
         document.getElementById('controls-overlay').hidden = true;
         gameOverlay.hidden = true;
+        overlayImpressum.hidden = true;
+        overlayDescription.hidden = true;
+        if (world) {
+            world.isRunning = false;
+            if (world.controls) {
+                world.controls.isPaused = false;
+            }
+        }
+        resetControlsToInfoMode();
     });
 
     const gameOverTryAgain = document.getElementById('btnGameOverTryAgain');
@@ -57,10 +77,12 @@ const exitGame = document.getElementById('btnExitGame');
         } 
         });
     controlsButton.addEventListener('click', () => {
+        resetControlsToInfoMode();
         overlayControls.hidden = false;
     });
     controlsBackButton.addEventListener('click', () => {
         overlayControls.hidden = true;
+        resetControlsToInfoMode();
     });
     descriptionButton.addEventListener('click', () => {
         overlayDescription.hidden = false;
@@ -78,6 +100,7 @@ const exitGame = document.getElementById('btnExitGame');
     
     tryAgain.addEventListener("click", () => {
         document.getElementById('controls-overlay').hidden = true;
+        resetControlsToInfoMode();
         gameOverlay.hidden = false;
         if (gameOverlay) {
             init();
@@ -88,6 +111,7 @@ const exitGame = document.getElementById('btnExitGame');
 
   backToGame.addEventListener("click", () => {
         document.getElementById('controls-overlay').hidden = true;
+        resetControlsToInfoMode();
         gameOverlay.hidden = false;
         if (world && world.controls) {
             world.controls.isPaused = false;

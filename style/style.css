@@ -15,6 +15,15 @@ body {
     background-position: center;
 }
 
+/* In landscape the start page must not scroll */
+@media (orientation: landscape) {
+    .start-main {
+        overflow: hidden;
+    }
+}
+
+
+
 .start-main::before {
     content: "";
     position: fixed;
@@ -134,6 +143,8 @@ button.start-button {
     }
 }
 
+
+
 .start-footer {
     display: flex;
     align-items: center;
@@ -156,6 +167,7 @@ button.start-button {
     padding: 80px 16px;
     box-sizing: border-box;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .description-overlay::before {
@@ -261,4 +273,62 @@ button.start-button {
 
 
 
+
+@media (hover: none) and (pointer: coarse) {
+    .description-overlay {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .description-overlay::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* Mobile landscape: shrink the start page so everything fits on screen */
+@media (orientation: landscape) and (max-height: 500px) {
+    .start-container {
+        padding: 8px 16px;
+    }
+
+    .start-title {
+        margin-top: 0;
+    }
+
+    .start-title .mad {
+        font-size: 44px;
+        margin-top: 0;
+        margin-bottom: -16px;
+    }
+
+    .start-title .scientist {
+        font-size: 60px;
+        margin-bottom: 0;
+    }
+
+    .start-char {
+        width: 150px;
+    }
+
+    .start-row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .start-buttons {
+        gap: 6px;
+    }
+
+    .start-button {
+        height: 44px;
+        padding: 0 28px;
+        font-size: 18px;
+    }
+
+    .start-footer {
+        margin-top: 4px;
+    }
+}
 

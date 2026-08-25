@@ -94,7 +94,8 @@ class World {
             new Bomb(2200, 360, 0),
             new Bomb(2450, 360, 1)
         ];
-        this.collectedBombCount = 0;
+        this.bombs[0].collect(0);
+        this.collectedBombCount = 1;
         this.thrownBombs = [];
     }
 
