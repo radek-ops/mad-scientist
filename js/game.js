@@ -2,9 +2,6 @@ let canvas;
 let world;
 
 
-
-
-
 /**
  * Starts the game by creating the World.
  * This function is called when the page loads.
