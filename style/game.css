@@ -57,13 +57,13 @@ canvas {
         0 0 60px rgba(255, 255, 255, 0.2);
 }
 
-/* Responsive canvas sizing (mobile / tablet) */
+/* Responsive canvas sizing (mobile / tablet): 10px margin, no crop */
 @media (hover: none) and (pointer: coarse) and (orientation: landscape) {
     canvas {
         width: auto;
         height: auto;
-        max-width: 100vw;
-        max-height: 100dvh;
+        max-width: calc(100vw - 20px);
+        max-height: calc(100dvh - 20px);
         border-radius: 0;
     }
 }
@@ -72,8 +72,8 @@ canvas {
     canvas {
         width: auto;
         height: auto;
-        max-width: 100%;
-        max-height: 100dvh;
+        max-width: calc(100% - 20px);
+        max-height: calc(100dvh - 20px);
     }
 }
 
@@ -85,16 +85,8 @@ canvas {
     canvas {
         width: auto;
         height: auto;
-        max-width: 100%;
-        max-height: 100dvh;
-    }
-}
-
-/* Wider phones (not iPhone SE): let the canvas fill the width with 16px side margins */
-@media (hover: none) and (pointer: coarse) and (orientation: landscape) and (min-width: 700px) {
-    canvas {
-        max-width: calc(100vw - 32px);
-        max-height: none;
+        max-width: calc(100% - 20px);
+        max-height: calc(100dvh - 20px);
     }
 }
 
