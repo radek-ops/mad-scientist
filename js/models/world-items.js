@@ -66,7 +66,7 @@
             return;
         }
         this.controls.usePotion = false;
-        if (this.collectedPotionCount <= 0) {
+        if (this.mainCharacter.isDead || this.collectedPotionCount <= 0) {
             return;
         }
         this.consumePotion();

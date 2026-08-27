@@ -66,7 +66,10 @@ class Controls {
             if (event.key === 'r') {
                 this.usePotion = true;
             }
-            (event.code === 'Space') ? this.space = true : false;
+            if (event.code === 'Space') {
+                event.preventDefault();
+                this.space = true;
+            }
         });
         window.addEventListener('keyup', (event) => {
             (event.code === 'Space') ? this.space = false : false;
