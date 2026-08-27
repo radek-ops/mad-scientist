@@ -185,5 +185,4 @@ backToGame.addEventListener("click", () => {
     }
 });
 
-
 });
