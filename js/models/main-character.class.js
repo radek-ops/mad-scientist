@@ -21,7 +21,7 @@ class Character extends Moveables {
     acceleration = 1;
     otherDirection = false;
     gunsProjectiles;
-    x = 0;
+    x = 100;
     y = 300;
     width = 375;
     height = 375;
