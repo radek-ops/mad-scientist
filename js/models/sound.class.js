@@ -21,6 +21,7 @@ class Sound {
         this.load('gameOver', 'sounds/02_Ending.mp3');
         this.load('win', 'sounds/02_Ending.mp3');
         this.setVolume('lazer', 0.5);
+        this.setVolume('enemyDeath', 0.3);
     }
 
     /**
@@ -109,6 +110,17 @@ class Sound {
             this.music.currentTime = 0;
             this.music = null;
         }
+    }
+
+    /**
+     * Stops the background music and all one-shot sounds.
+     */
+    stopAll() {
+        this.stopMusic();
+        Object.keys(this.audioList).forEach((name) => {
+            this.audioList[name].pause();
+            this.audioList[name].currentTime = 0;
+        });
     }
 
     /**

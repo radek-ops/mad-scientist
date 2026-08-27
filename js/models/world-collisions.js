@@ -212,13 +212,13 @@
      */
     laserKillEnemy01(enemy) {
         enemy.isHit = true;
-        this.sound.play('enemyDeath');
         let deathInterval = setInterval(() => {
              
             let done = enemy.enemy01Death();
             if (done) {
                 clearInterval(deathInterval);
                 enemy.isDead = true;
+                this.sound.play('enemyDeath');
             }
         }, 60);
     },
@@ -230,7 +230,6 @@
     playEnemy01GetHit(enemy) {
         enemy.isHit = true;
         enemy.currentGetHitImages01 = 0;
-        this.sound.play('enemyDeath');
         let hitInterval = setInterval(() => {
             enemy.enemy01GetHit();
             if (enemy.currentGetHitImages01 === 0) {
@@ -247,7 +246,6 @@
      */
     laserKillEnemy(enemy, type) {
         enemy.isHit = true;
-        this.sound.play('enemyDeath');
         let electricInterval = setInterval(() => {
             
             let done = type === '07' ? enemy.enemy07GetElectric() : enemy.enemy09GetElectric();
@@ -271,7 +269,7 @@
             if (done) {
                 clearInterval(deathInterval);
                 enemy.isDead = true;
-
+                this.sound.play('enemyDeath');
             }
         }, 60);
     },

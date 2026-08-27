@@ -231,7 +231,6 @@
      */
     killEnemyWithBomb(enemy) {
         enemy.isHit = true;
-        this.sound.play('enemyDeath');
         let deathInterval = setInterval(() => {
             let done;
             if (enemy.enemyType === '01') {
@@ -244,7 +243,7 @@
             if (done) {
                 clearInterval(deathInterval);
                 enemy.isDead = true;
-
+                this.sound.play('enemyDeath');
             }
         }, 60);
     },

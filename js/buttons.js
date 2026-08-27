@@ -46,6 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (world.controls) {
                 world.controls.isPaused = false;
             }
+            if (world.sound) {
+                world.sound.stopAll();
+            }
         }
         resetControlsToInfoMode();
     });
@@ -73,6 +76,9 @@ gameOverExitGame.addEventListener("click", () => {
     gameOverlay.hidden = true;
     if (world) {
         world.isRunning = false;
+        if (world.sound) {
+            world.sound.stopAll();
+        }
     }
 });
 
@@ -86,6 +92,9 @@ winExitGame.addEventListener("click", () => {
     gameOverlay.hidden = true;
     if (world) {
         world.isRunning = false;
+        if (world.sound) {
+            world.sound.stopAll();
+        }
     }
 });
 
