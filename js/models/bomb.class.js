@@ -22,7 +22,6 @@ class Bomb extends Moveables {
         this.loadImages(this.BOMB_IMAGE);
     }
 
-
     /**
      * Marks the bomb as collected and moves it into the UI bar.
      * @param {number} slotNumber - The slot where the bomb appears

@@ -22,7 +22,6 @@ class BossHPBar extends Moveables {
         this.barImg.src = this.BAR_IMAGE;
     }
 
-
     /**
      * Draws the boss health bar: heart icon, red HP bar, black frame and the "Boss" label.
      * @param {CanvasRenderingContext2D} ctx - The canvas context
@@ -32,25 +31,20 @@ class BossHPBar extends Moveables {
         ctx.beginPath();
         ctx.roundRect(this.x - 10, this.y - 10, 330, 60, 15);
         ctx.fill();
-
         ctx.drawImage(this.heartImg, this.x, this.y, 40, 40);
-
         let currentWidth = this.maxWidth * (this.currentHP / this.maxHP);
         ctx.fillStyle = '#cc0000';
         ctx.fillRect(this.x + 50, this.y + 5, currentWidth, this.height);
-
         ctx.fillStyle = '#ffffff';
         ctx.font = '18px "blablaHawk", sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText('Boss', this.x + 175, this.y + 25);
-
         ctx.beginPath();
         ctx.roundRect(this.x - 10, this.y - 10, 330, 60, 15);
         ctx.lineWidth = "4";
         ctx.strokeStyle = "#000000";
         ctx.stroke();
     }
-
 
     /**
      * Removes health from the boss. The health never drops below zero.

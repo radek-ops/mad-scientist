@@ -67,7 +67,6 @@ class Boxing extends Moveables {
         }, 60);
     }
 
-
     /**
      * Plays one frame of the boxing animation.
      * @returns {boolean} True when the animation is finished

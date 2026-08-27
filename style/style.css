@@ -4,7 +4,6 @@ body {
     border: 0;
 }
 
-
 .start-main {
     position: fixed;
     inset: 0;
@@ -21,8 +20,6 @@ body {
         overflow: hidden;
     }
 }
-
-
 
 .start-main::before {
     content: "";
@@ -143,8 +140,6 @@ button.start-button {
     }
 }
 
-
-
 .start-footer {
     display: flex;
     align-items: center;
@@ -152,7 +147,6 @@ button.start-button {
     width: 100%;
     margin-top: 12px;
 }
-
 
 /* Description */
 
@@ -269,9 +263,6 @@ button.start-button {
 .game-over-overlay.show, .win-overlay.show {
     display: flex;
 }
-
-
-
 
 
 @media (hover: none) and (pointer: coarse) {
