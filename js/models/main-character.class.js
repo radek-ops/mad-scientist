@@ -43,7 +43,6 @@ class Character extends Moveables {
 
     }
 
-
     /**
      * Draws the character.
      * @param {CanvasRenderingContext2D} ctx - The canvas context
@@ -149,7 +148,6 @@ class Character extends Moveables {
         }, 1000 / 60);
     }
 
-
     /**
      * Moves the character based on the pressed keys.
      */
@@ -220,7 +218,6 @@ class Character extends Moveables {
         }
     }
 
-
     /**
      * Starts throwing a bomb with the right mouse button.
      */
@@ -230,7 +227,6 @@ class Character extends Moveables {
         this.throwBombAnimate();
         this.world.throwBomb();
     }
-
 
     /**
      * Plays the walk or idle animation.

@@ -19,7 +19,6 @@
         this.loadImages(this.POTION_IMAGE);
     }
 
-
     /**
      * Marks the potion as collected and moves it into the UI bar.
      * @param {number} slotNumber - The slot where the potion appears

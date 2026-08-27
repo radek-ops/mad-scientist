@@ -18,7 +18,6 @@ class Moveables {
         this.img.src = imgPath;
     }
 
-
     /**
      * Loads many images and stores them in the cache.
      * @param {string[]} images - The list of image paths

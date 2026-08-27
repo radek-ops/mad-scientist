@@ -131,7 +131,6 @@ class Controls {
         }
     }
 
-
     /**
      * Sets up the on-screen touch controls for mobile and tablet.
      */

@@ -29,7 +29,6 @@ class FinalBoss extends Moveables {
         this.startAnimation();
     }
 
-
     /**
      * Draws the boss.
      * @param {CanvasRenderingContext2D} ctx - The canvas context

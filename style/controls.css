@@ -262,7 +262,6 @@
     text-decoration: none;
 }
 
-
 @media (hover: none) and (pointer: coarse) and (orientation: landscape) {
     .touch-controls {
         display: block;
@@ -272,7 +271,6 @@
         display: none;
     }
 }
-
 
 @media (hover: none) and (pointer: coarse) and (min-width: 1024px) {
     .touch-btn {

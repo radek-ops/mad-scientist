@@ -7,7 +7,6 @@ class GunsProjectiles extends Moveables {
     currentProjectileImages = 0;
     EMPTY_IMG = new Image();
 
-
     /**
      * Creates the gun and loads its images.
      * @param {Controls} controls - The mouse controls
@@ -24,7 +23,6 @@ class GunsProjectiles extends Moveables {
         this.saveImages(this.LASER);
         this.useProjectile();
     }
-
 
     /**
      * Draws the laser.
@@ -53,8 +51,6 @@ class GunsProjectiles extends Moveables {
             this.projectileAnimate();
         }, 1000 / 60);
     }
-
-
 
     /**
      * Plays the laser animation when shooting.

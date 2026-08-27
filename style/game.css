@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
     overflow: hidden;
     margin: 0;
     height: 100%;
@@ -18,7 +19,7 @@ html, body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 50; 
+    z-index: 50;
 }
 
 .game-overlay::before {
@@ -43,7 +44,6 @@ html, body {
     max-width: 1920px;
     position: relative;
     margin: 0;
-    
 }
 
 canvas {
@@ -64,7 +64,7 @@ canvas {
         height: auto;
         max-width: calc(100vw - 20px);
         max-height: calc(100dvh - 20px);
-        box-shadow:none;
+        box-shadow: none;
     }
 }
 
@@ -91,7 +91,6 @@ canvas {
         justify-content: space-evenly;
     }
 }
-
 
 .scientist-row {
     display: flex;
@@ -291,7 +290,7 @@ canvas {
     z-index: 2;
     position: relative;
 }
- 
+
 /* Landscape Warning */
 
 .landscape-warning {
@@ -337,4 +336,3 @@ canvas {
         display: flex;
     }
 }
-

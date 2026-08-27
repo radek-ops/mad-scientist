@@ -47,7 +47,6 @@ class HPBar extends Moveables {
         let color = this.getColor();
         let sl = this.slantedLeft;
         let sr = this.slantedRight;
-
         ctx.fillStyle = color;
         ctx.beginPath();
         ctx.moveTo(this.x, this.y);
