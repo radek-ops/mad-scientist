@@ -64,7 +64,7 @@ canvas {
         height: auto;
         max-width: calc(100vw - 20px);
         max-height: calc(100dvh - 20px);
-        border-radius: 0;
+        box-shadow:none;
     }
 }
 
@@ -83,10 +83,12 @@ canvas {
     }
 
     canvas {
-        width: auto;
-        height: auto;
-        max-width: calc(100% - 20px);
-        max-height: calc(100dvh - 20px);
+        width: calc(100% - 20px);
+        height: calc(100dvh - 20px);
+        margin: 10px auto;
+        padding: 10px;
+        box-sizing: border-box;
+        justify-content: space-evenly;
     }
 }
 

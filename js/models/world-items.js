@@ -138,22 +138,29 @@
             }
             bomb.hasDamaged = true;
             this.sound.play('explosion');
+            this.applyBombExplosionDamage(bomb);
+        });
+    },
 
-            this.enemies.forEach((enemy) => {
-                if (enemy.isDead || enemy.isHit) {
-                    return;
-                }
-                if (this.explosionHitsEnemy(bomb, enemy)) {
-                    this.killEnemyWithBomb(enemy);
-                }
-            });
-            if (this.explosionHitsBoss(bomb)) {
-                this.damageBoss(5);
+    /**
+     * Applies the damage of one bomb explosion to enemies, boss and character.
+     * @param {ThrownBomb} bomb - The exploding bomb
+     */
+    applyBombExplosionDamage(bomb) {
+        this.enemies.forEach((enemy) => {
+            if (enemy.isDead || enemy.isHit) {
+                return;
             }
-            if (this.explosionHitsCharacter(bomb)) {
-                this.damageCharacter(this.hpbar.maxHP * 0.25);
+            if (this.explosionHitsEnemy(bomb, enemy)) {
+                this.killEnemyWithBomb(enemy);
             }
         });
+        if (this.explosionHitsBoss(bomb)) {
+            this.damageBoss(5);
+        }
+        if (this.explosionHitsCharacter(bomb)) {
+            this.damageCharacter(this.hpbar.maxHP * 0.25);
+        }
     },
 
     /**

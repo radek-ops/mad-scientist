@@ -210,45 +210,45 @@
 
 .dpad .touch-btn {
     position: absolute;
-    width: 40px;
-    height: 40px;
+    width: 55px;
+    height: 55px;
 }
 
-.btn-up { left: 28px; top: 0; }
-.btn-down { left: 28px; top: 56px; }
-.btn-left { left: 0; top: 28px; }
-.btn-right { left: 56px; top: 28px; }
+.btn-up { left: 40px; top: -23px; }
+.btn-down { left: 40px; top: 50px; }
+.btn-left { left:  0; top: 14px; }
+.btn-right { left: 81px; top: 14px; }
 
 .btn-potion {
     position: absolute;
-    left: 120px;
+    left: 165px;
     bottom: 10px;
-    width: 40px;
-    height: 40px;
+    width: 55px;
+    height: 55px;
 }
 
 .btn-shoot {
     position: absolute;
-    right: 20px;
-    bottom: 20px;
-    width: 56px;
-    height: 56px;
+    right: 10px;
+    bottom: 10px;
+    width: 70px;
+    height: 70px;
 }
 
 .btn-jump {
     position: absolute;
-    right: 84px;
-    bottom: 20px;
-    width: 40px;
-    height: 40px;
+    right: 95px;
+    bottom: 10px;
+    width: 55px;
+    height: 55px;
 }
 
 .btn-bomb {
     position: absolute;
-    right: 132px;
-    bottom: 20px;
-    width: 40px;
-    height: 40px;
+    right: 170px;
+    bottom: 10px;
+    width: 50px;
+    height: 50px;
 }
 
 .btn-gear {
@@ -256,8 +256,8 @@
     left: 50%;
     transform: translateX(-50%);
     bottom: 20px;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     font-size: 20px;
     text-decoration: none;
 }
@@ -273,59 +273,60 @@
     }
 }
 
-@media (max-width: 844px) {
+
+@media (hover: none) and (pointer: coarse) and (min-width: 1024px) {
     .touch-btn {
-        font-size: 13px;
+        font-size: 26px;
     }
 
     .dpad {
+        width: 180px;
+        height: 180px;
+    }
+
+    .dpad .touch-btn {
+        width: 72px;
+        height: 72px;
+    }
+
+    .btn-up { left: 54px; top: 0; }
+    .btn-down { left: 54px; top: 108px; }
+    .btn-left { left: 0; top: 54px; }
+    .btn-right { left: 108px; top: 54px; }
+
+    .btn-potion {
+        left: 200px;
+        bottom: 10px;
+        width: 72px;
+        height: 72px;
+    }
+
+    .btn-shoot {
+        right: 20px;
+        bottom: 20px;
         width: 100px;
         height: 100px;
     }
 
-    .dpad .touch-btn {
-        width: 40px;
-        height: 40px;
-    }
-
-    .btn-up { left: 30px; top: 0; }
-    .btn-down { left: 30px; top: 60px; }
-    .btn-left { left: 0; top: 30px; }
-    .btn-right { left: 60px; top: 30px; }
-
-    .btn-potion {
-        left: 120px;
-        bottom: 10px;
-        width: 40px;
-        height: 40px;
-    }
-
-    .btn-shoot {
-        right: 15px;
-        bottom: 15px;
-        width: 56px;
-        height: 56px;
-    }
-
     .btn-jump {
-        right: 80px;
-        bottom: 15px;
-        width: 40px;
-        height: 40px;
+        right: 130px;
+        bottom: 20px;
+        width: 72px;
+        height: 72px;
     }
 
     .btn-bomb {
-        right: 130px;
-        bottom: 15px;
-        width: 40px;
-        height: 40px;
+        right: 212px;
+        bottom: 20px;
+        width: 72px;
+        height: 72px;
     }
 
     .btn-gear {
-        bottom: 15px;
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
+        bottom: 20px;
+        width: 72px;
+        height: 72px;
+        font-size: 30px;
     }
 }
 

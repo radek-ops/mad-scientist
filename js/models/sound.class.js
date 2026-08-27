@@ -72,21 +72,36 @@ class Sound {
         this.music.loop = true;
         this.music.volume = this.musicVolume;
         this.music.currentTime = 0;
-        let music = this.music;
+        this.startMusicPlayback(this.music);
+    }
+
+    /**
+     * Plays the given music and unlocks it on the first user gesture if needed.
+     * @param {HTMLAudioElement} music - The audio element to play
+     */
+    startMusicPlayback(music) {
         let playPromise = music.play();
         if (playPromise && typeof playPromise.catch === 'function') {
             playPromise.catch(() => {
-                let unlock = () => {
-                    if (this.music === music) {
-                        music.play();
-                    }
-                    document.removeEventListener('pointerdown', unlock);
-                    document.removeEventListener('keydown', unlock);
-                };
-                document.addEventListener('pointerdown', unlock);
-                document.addEventListener('keydown', unlock);
+                this.unlockMusicOnGesture(music);
             });
         }
+    }
+
+    /**
+     * Retries playing the music on the next user gesture.
+     * @param {HTMLAudioElement} music - The audio element to play
+     */
+    unlockMusicOnGesture(music) {
+        let unlock = () => {
+            if (this.music === music) {
+                music.play();
+            }
+            document.removeEventListener('pointerdown', unlock);
+            document.removeEventListener('keydown', unlock);
+        };
+        document.addEventListener('pointerdown', unlock);
+        document.addEventListener('keydown', unlock);
     }
 
 

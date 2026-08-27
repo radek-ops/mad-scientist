@@ -318,8 +318,8 @@ button.start-button {
     .start-row {
         flex-direction: row;
         align-items: center;
-        justify-content: center;
-        gap: 20px;
+        justify-content:space-around;
+        
     }
 
     .start-buttons {

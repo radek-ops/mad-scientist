@@ -198,7 +198,7 @@ class World {
     drawWorld() {
         this.addObjectToMap(this.IMAGES_BACKGROUND);
         this.addObjectToMap(this.enemies);
-        this.addObjectToMap(this.bombs.filter(bomb => !bomb.isCollected));
+        this.addObjectToMap(this.bombs.filter(bomb => !bomb.isCollected && !bomb.isConsumed));
         this.addObjectToMap(this.potions.filter(potion => !potion.isCollected && !potion.isConsumed));
     }
 

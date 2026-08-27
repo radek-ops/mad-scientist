@@ -57,7 +57,6 @@ class HPBar extends Moveables {
         ctx.closePath();
         ctx.fill();
     }
-
 }
 
 
