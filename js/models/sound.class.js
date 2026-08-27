@@ -23,7 +23,6 @@ class Sound {
         this.setVolume('lazer', 0.5);
     }
 
-
     /**
      * Loads one sound and stores it by name.
      * @param {string} name - The name of the sound
@@ -32,7 +31,6 @@ class Sound {
     load(name, path) {
         this.audioList[name] = new Audio(path);
     }
-
 
     /**
      * Sets the volume of one sound.
@@ -45,7 +43,6 @@ class Sound {
         }
     }
 
-
     /**
      * Plays a sound by its name.
      * @param {string} name - The name of the sound to play
@@ -57,7 +54,6 @@ class Sound {
         this.audioList[name].currentTime = 0;
         this.audioList[name].play();
     }
-
 
     /**
      * Starts looping background music.
@@ -104,7 +100,6 @@ class Sound {
         document.addEventListener('keydown', unlock);
     }
 
-
     /**
      * Stops the current background music.
      */
@@ -115,7 +110,6 @@ class Sound {
             this.music = null;
         }
     }
-
 
     /**
      * Stops or resumes all sounds after the mute state changed.

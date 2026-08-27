@@ -30,7 +30,6 @@ class ThrownBomb extends Moveables {
         this.loadImages(this.BOMB_IMAGE);
     }
 
-
     /**
      * Loads the explosion animation images.
      */
@@ -40,7 +39,6 @@ class ThrownBomb extends Moveables {
         }
     }
 
-
     /**
      * Draws the bomb.
      * @param {CanvasRenderingContext2D} ctx - The canvas context
@@ -48,7 +46,6 @@ class ThrownBomb extends Moveables {
     draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
-
 
     /**
      * Moves the bomb forward with gravity.
@@ -64,7 +61,6 @@ class ThrownBomb extends Moveables {
             this.height = 200;
         }
     }
-
 
     /**
      * Plays one frame of the explosion animation.
