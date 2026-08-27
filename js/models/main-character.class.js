@@ -21,11 +21,23 @@ class Character extends Moveables {
     acceleration = 1;
     otherDirection = false;
     gunsProjectiles;
-    x = 100;
+    x = this.getStartX();
     y = 300;
     width = 375;
     height = 375;
 
+
+    /**
+     * Returns the starting x position of the character.
+     * On iPhone SE the character starts further to the right.
+     * @returns {number} The starting x position
+     */
+    getStartX() {
+        const shortSide = Math.min(window.screen.width, window.screen.height);
+        const longSide = Math.max(window.screen.width, window.screen.height);
+        const isIPhoneSE = /iPhone/.test(navigator.userAgent) && longSide <= 667 && shortSide <= 375;
+        return isIPhoneSE ? 190 : 120;
+    }
 
     /**
      * Creates the character, loads images and starts movement.
