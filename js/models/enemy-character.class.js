@@ -24,6 +24,7 @@ class Enemy extends Moveables {
     currentHitImages01 = 0;
     currentHitImages07 = 0;
     frameCounter = 0;
+    COLLISION = { left: 111, shrinkX: 226, top: 148, shrinkY: 226 };
 
 
     /**

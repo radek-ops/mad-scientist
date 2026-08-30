@@ -44,13 +44,8 @@
      * @returns {boolean} True when the head bumps the enemy
      */
     isHeadBumpingEnemy(enemy) {
-        let charY = this.mainCharacter.getJumpY();
-        let charLeft = this.mainCharacter.x + 106;
-        let charRight = this.mainCharacter.x + 106 + (this.mainCharacter.width - 266);
-        let charHead = charY + 150;
-        let enemyLeft = enemy.x + 111;
-        let enemyRight = enemy.x + 111 + (enemy.width - 226);
-        let enemyFeet = enemy.y + 148 + (enemy.height - 226);
+        let { left: charLeft, right: charRight, top: charHead } = this.mainCharacter.getCollisionBox();
+        let { left: enemyLeft, right: enemyRight, bottom: enemyFeet } = enemy.getCollisionBox();
         let isMovingUp = this.mainCharacter.speedY > 0;
         let touchesSide = charRight > enemyLeft && charLeft < enemyRight;
         let headNearFeet = enemyFeet - charHead > -20 && enemyFeet - charHead < 30;
@@ -280,14 +275,8 @@
      * @returns {boolean} True when the laser hits the enemy
      */
     laserHitEnemy(enemy) {
-        let laserLeft = this.gunsProjectiles.x + 10;
-        let laserRight = this.gunsProjectiles.x + 10 + (this.gunsProjectiles.width - 20);
-        let laserTop = this.gunsProjectiles.y + 10;
-        let laserBottom = this.gunsProjectiles.y + 10 + (this.gunsProjectiles.height - 20);
-        let enemyLeft = enemy.x + 111;
-        let enemyRight = enemy.x + 111 + (enemy.width - 226);
-        let enemyTop = enemy.y + 148;
-        let enemyBottom = enemy.y + 148 + (enemy.height - 226);
+        let { left: laserLeft, right: laserRight, top: laserTop, bottom: laserBottom } = this.gunsProjectiles.getCollisionBox();
+        let { left: enemyLeft, right: enemyRight, top: enemyTop, bottom: enemyBottom } = enemy.getCollisionBox();
         return laserRight > enemyLeft &&
             laserBottom > enemyTop &&
             laserLeft < enemyRight &&

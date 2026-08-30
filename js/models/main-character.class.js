@@ -25,6 +25,7 @@ class Character extends Moveables {
     y = 300;
     width = 375;
     height = 375;
+    COLLISION = { left: 106, shrinkX: 266, top: 150, shrinkY: 244 };
 
 
     /**

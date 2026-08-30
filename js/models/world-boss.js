@@ -4,14 +4,8 @@
      * @returns {boolean} True when the laser hits the boss
      */
     laserHitsBoss() {
-        let laserLeft = this.gunsProjectiles.x + 10;
-        let laserRight = this.gunsProjectiles.x + 10 + (this.gunsProjectiles.width - 20);
-        let laserTop = this.gunsProjectiles.y + 10;
-        let laserBottom = this.gunsProjectiles.y + 10 + (this.gunsProjectiles.height - 20);
-        let bossLeft = this.finalBoss.x + 800;
-        let bossRight = this.finalBoss.x + 800 + (this.finalBoss.width - 1570);
-        let bossTop = this.finalBoss.y + 1100;
-        let bossBottom = this.finalBoss.y + 1100 + (this.finalBoss.height - 1620);
+        let { left: laserLeft, right: laserRight, top: laserTop, bottom: laserBottom } = this.gunsProjectiles.getCollisionBox();
+        let { left: bossLeft, right: bossRight, top: bossTop, bottom: bossBottom } = this.finalBoss.getCollisionBox();
         return laserRight > bossLeft &&
             laserBottom > bossTop &&
             laserLeft < bossRight &&
@@ -115,15 +109,8 @@
      * @returns {boolean} True when the fist hits the character
      */
     boxingHitsCharacter() {
-        let boxingLeft = this.boxing.x;
-        let boxingRight = this.boxing.x + this.boxing.width;
-        let boxingTop = this.boxing.y;
-        let boxingBottom = this.boxing.y + this.boxing.height;
-        let charY = this.mainCharacter.getJumpY();
-        let charLeft = this.mainCharacter.x + 106;
-        let charRight = this.mainCharacter.x + 106 + (this.mainCharacter.width - 266);
-        let charHead = charY + 150;
-        let charFeet = charY + 150 + (this.mainCharacter.height - 244);
+        let { left: boxingLeft, right: boxingRight, top: boxingTop, bottom: boxingBottom } = this.boxing.getCollisionBox();
+        let { left: charLeft, right: charRight, top: charHead, bottom: charFeet } = this.mainCharacter.getCollisionBox();
         return boxingRight > charLeft &&
             boxingBottom > charHead &&
             boxingLeft < charRight &&

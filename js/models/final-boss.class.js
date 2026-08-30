@@ -8,6 +8,7 @@ class FinalBoss extends Moveables {
     isHit = false;
     isDead = false;
     destroyFinished = false;
+    COLLISION = { left: 800, shrinkX: 1570, top: 1100, shrinkY: 1620 };
 
 
     /**

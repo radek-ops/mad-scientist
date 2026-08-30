@@ -6,6 +6,7 @@ class GunsProjectiles extends Moveables {
     controls;
     currentProjectileImages = 0;
     EMPTY_IMG = new Image();
+    COLLISION = { left: 10, shrinkX: 20, top: 10, shrinkY: 20 };
 
     /**
      * Creates the gun and loads its images.

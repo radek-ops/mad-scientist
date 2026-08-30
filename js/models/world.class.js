@@ -124,21 +124,14 @@ class World {
     }
 
     /**
-     * Checks if two objects touch each other (collision box).
+     * Checks if the character touches an enemy (collision box).
      * @param {Character} mainCharacter - The player character
      * @param {Enemy} enemies - The enemy object
      * @returns {boolean} True when they touch, otherwise false
      */
     collision(mainCharacter, enemies) {
-        let charY = mainCharacter.getJumpY();
-        let charLeft = mainCharacter.x + 106;
-        let charRight = mainCharacter.x + 106 + (mainCharacter.width - 266);
-        let charHead = charY + 150;
-        let charFeet = charY + 150 + (mainCharacter.height - 244);
-        let enemyLeft = enemies.x + 111;
-        let enemyRight = enemies.x + 111 + (enemies.width - 226);
-        let enemyHead = enemies.y + 148;
-        let enemyFeet = enemies.y + 148 + (enemies.height - 226);
+        let { left: charLeft, right: charRight, top: charHead, bottom: charFeet } = mainCharacter.getCollisionBox();
+        let { left: enemyLeft, right: enemyRight, top: enemyHead, bottom: enemyFeet } = enemies.getCollisionBox();
         if (charRight > enemyLeft &&
             charFeet > enemyHead &&
             charLeft < enemyRight &&
@@ -169,7 +162,7 @@ class World {
         
         this.ctx.translate(this.mapScrollX, 0); // Kamera anwenden
         this.updateGunPosition();
-        this.allfunctions();
+        this.updateFrame();
     }
 
     /**
@@ -190,7 +183,7 @@ class World {
     /**
      * Runs all drawing and checking steps of one frame.
      */
-    allfunctions() {
+    updateFrame() {
         this.drawWorld();
         this.runChecks();
         this.drawUI();
@@ -225,7 +218,6 @@ class World {
         this.checkLaserSound();
         this.checkBossBoxing();
         this.checkBoxingHitsCharacter();
-
         this.checkBombCollection();
         this.checkPotionCollection();
         this.usePotion();

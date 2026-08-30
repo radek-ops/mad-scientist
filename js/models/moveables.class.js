@@ -7,7 +7,24 @@ class Moveables {
     imageCache = {};
     currentIdleImages = 0;
     currentWalkImages = 0;
+    COLLISION = { left: 0, shrinkX: 0, top: 0, shrinkY: 0 };
 
+    /**
+     * Returns the collision box (left, right, top, bottom) of this object.
+     * The box is shrunk by the offsets defined in COLLISION.
+     * @returns {{left:number, right:number, top:number, bottom:number}} The box
+     */
+    getCollisionBox() {
+        let o = this.COLLISION;
+        let topY = this.getJumpY ? this.getJumpY() : this.y;
+        let boxLeft = this.x + o.left;
+        return {
+            left: boxLeft,
+            right: boxLeft + (this.width - o.shrinkX),
+            top: topY + o.top,
+            bottom: topY + o.top + (this.height - o.shrinkY)
+        };
+    }
 
     /**
      * Loads a single image and sets it as the current image of this object.

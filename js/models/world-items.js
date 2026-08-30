@@ -39,19 +39,13 @@
      * @returns {boolean} True when the character touches it
      */
     characterTouchesObject(object) {
-        let charY = this.mainCharacter.getJumpY();
-        let charLeft = this.mainCharacter.x + 106;
-        let charRight = this.mainCharacter.x + 106 + (this.mainCharacter.width - 266);
+        let { left: charLeft, right: charRight, top: charHead, bottom: charFeet } = this.mainCharacter.getCollisionBox();
         if (this.mainCharacter.otherDirection) {
-            charLeft = this.mainCharacter.x + (this.mainCharacter.width - 106 - (this.mainCharacter.width - 266));
+            let boxWidth = charRight - charLeft;
             charRight = this.mainCharacter.x + (this.mainCharacter.width - 106);
+            charLeft = charRight - boxWidth;
         }
-        let charHead = charY + 150;
-        let charFeet = charY + 150 + (this.mainCharacter.height - 244);
-        let objectLeft = object.x;
-        let objectRight = object.x + object.width;
-        let objectHead = object.y;
-        let objectFeet = object.y + object.height;
+        let { left: objectLeft, right: objectRight, top: objectHead, bottom: objectFeet } = object.getCollisionBox();
         return charRight > objectLeft &&
             charFeet > objectHead &&
             charLeft < objectRight &&
@@ -170,14 +164,8 @@
      * @returns {boolean} True when the explosion hits the enemy
      */
     explosionHitsEnemy(bomb, enemy) {
-        let explosionLeft = bomb.x;
-        let explosionRight = bomb.x + bomb.width;
-        let explosionTop = bomb.y;
-        let explosionBottom = bomb.y + bomb.height;
-        let enemyLeft = enemy.x + 111;
-        let enemyRight = enemy.x + 111 + (enemy.width - 226);
-        let enemyTop = enemy.y + 148;
-        let enemyBottom = enemy.y + 148 + (enemy.height - 226);
+        let { left: explosionLeft, right: explosionRight, top: explosionTop, bottom: explosionBottom } = bomb.getCollisionBox();
+        let { left: enemyLeft, right: enemyRight, top: enemyTop, bottom: enemyBottom } = enemy.getCollisionBox();
         return explosionRight > enemyLeft &&
             explosionBottom > enemyTop &&
             explosionLeft < enemyRight &&
@@ -190,14 +178,8 @@
      * @returns {boolean} True when the explosion hits the boss
      */
     explosionHitsBoss(bomb) {
-        let explosionLeft = bomb.x;
-        let explosionRight = bomb.x + bomb.width;
-        let explosionTop = bomb.y;
-        let explosionBottom = bomb.y + bomb.height;
-        let bossLeft = this.finalBoss.x + 800;
-        let bossRight = this.finalBoss.x + 800 + (this.finalBoss.width - 1570);
-        let bossTop = this.finalBoss.y + 1100;
-        let bossBottom = this.finalBoss.y + 1100 + (this.finalBoss.height - 1620);
+        let { left: explosionLeft, right: explosionRight, top: explosionTop, bottom: explosionBottom } = bomb.getCollisionBox();
+        let { left: bossLeft, right: bossRight, top: bossTop, bottom: bossBottom } = this.finalBoss.getCollisionBox();
         return explosionRight > bossLeft &&
             explosionBottom > bossTop &&
             explosionLeft < bossRight &&
@@ -210,15 +192,8 @@
      * @returns {boolean} True when the explosion hits the character
      */
     explosionHitsCharacter(bomb) {
-        let explosionLeft = bomb.x;
-        let explosionRight = bomb.x + bomb.width;
-        let explosionTop = bomb.y;
-        let explosionBottom = bomb.y + bomb.height;
-        let charY = this.mainCharacter.getJumpY();
-        let charLeft = this.mainCharacter.x + 106;
-        let charRight = this.mainCharacter.x + 106 + (this.mainCharacter.width - 266);
-        let charHead = charY + 150;
-        let charFeet = charY + 150 + (this.mainCharacter.height - 244);
+        let { left: explosionLeft, right: explosionRight, top: explosionTop, bottom: explosionBottom } = bomb.getCollisionBox();
+        let { left: charLeft, right: charRight, top: charHead, bottom: charFeet } = this.mainCharacter.getCollisionBox();
         return explosionRight > charLeft &&
             explosionBottom > charHead &&
             explosionLeft < charRight &&
