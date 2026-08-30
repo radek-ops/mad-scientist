@@ -1,188 +1,231 @@
+/**
+ * Global button and overlay references, filled once the DOM is ready.
+ */
+let startGameButton;
+let gameOverlay;
+let controlsButton;
+let overlayControls;
+let descriptionButton;
+let overlayDescription;
+let impressumButton;
+let overlayImpressum;
+let controlsBackButton;
+let descriptionBackButton;
+let impressumBackButton;
+let tryAgain;
+let backToGame;
+let exitGame;
 
 
 /**
- * Waits for the DOM to fully load, then initializes references 
- * to all main menu buttons, game buttons, and UI overlays.
+ * Waits for the DOM to fully load, then initializes references
+ * and wires up all buttons.
  */
-document.addEventListener('DOMContentLoaded', () => {
-    const startGameButton = document.getElementById('start-btn');
-    const gameOverlay = document.getElementById('game-overlay');
-    const controlsButton = document.getElementById('controls-btn');
-    const overlayControls = document.getElementById('controls-overlay');
-    const descriptionButton = document.getElementById('description-btn');
-    const overlayDescription = document.getElementById('description-overlay');
-    const impressumButton = document.getElementById('impressum-btn');
-    const overlayImpressum = document.getElementById('overlay-impressum');
-    const controlsBackButton = document.getElementById('controls-back');
-    const descriptionBackButton = document.getElementById('description-back');
-    const impressumBackButton = document.getElementById('impressum-back');
-    let tryAgain = document.getElementById('btnTryAgain');
-    let backToGame = document.getElementById('btnBackToGame');
-    const exitGame = document.getElementById('btnExitGame');
-
-    /**
-     * Resets the controls overlay to its default "info" mode:
-     * only the "Back" button is visible.
-     */
-    function resetControlsToInfoMode() {
-        document.getElementById('controls-back').hidden = false;
-        document.getElementById('btnTryAgain').hidden = true;
-        document.getElementById('btnBackToGame').hidden = true;
-        document.getElementById('btnExitGame').hidden = true;
-    }
-
-    /**
- * Event listener for the "Exit Game" button.
- * Hides all active overlays, stops the game loop, unpauses controls, 
- * and resets the control mode back to default.
- */
-    exitGame.addEventListener("click", () => {
-        document.getElementById('controls-overlay').hidden = true;
-        gameOverlay.hidden = true;
-        overlayImpressum.hidden = true;
-        overlayDescription.hidden = true;
-        if (world) {
-            world.isRunning = false;
-            if (world.controls) {
-                world.controls.isPaused = false;
-            }
-            if (world.sound) {
-                world.sound.stopAll();
-            }
-        }
-        resetControlsToInfoMode();
-    });
-
-   /**
- * Event listener for the "Try Again" button on the Game Over screen.
- * Hides the game over overlay, shows the main game overlay, and restarts the game.
- */
-const gameOverTryAgain = document.getElementById('btnGameOverTryAgain');
-gameOverTryAgain.addEventListener("click", () => {
-    document.getElementById('gameOverOverlay').classList.remove('show');
-    gameOverlay.hidden = false;
-    if (gameOverlay) {
-        init();
-    }
-});
+document.addEventListener('DOMContentLoaded', initButtons);
 
 /**
- * Event listener for the "Exit Game" button on the Game Over screen.
- * Hides the game over overlay, hides the game container, and stops the game loop.
+ * Stores the element references and registers all event listeners.
  */
-const gameOverExitGame = document.getElementById('btnGameOverExitGame');
-gameOverExitGame.addEventListener("click", () => {
-    document.getElementById('gameOverOverlay').classList.remove('show');
-    gameOverlay.hidden = true;
+function initButtons() {
+    cacheElements();
+    setupMenuButtons();
+    setupGameOverButtons();
+    setupWinButtons();
+    setupControlsButtons();
+}
+
+/**
+ * Stores the references to all buttons and overlays.
+ */
+function cacheElements() {
+    startGameButton = document.getElementById('start-btn');
+    gameOverlay = document.getElementById('game-overlay');
+    controlsButton = document.getElementById('controls-btn');
+    overlayControls = document.getElementById('controls-overlay');
+    descriptionButton = document.getElementById('description-btn');
+    overlayDescription = document.getElementById('description-overlay');
+    impressumButton = document.getElementById('impressum-btn');
+    overlayImpressum = document.getElementById('overlay-impressum');
+    controlsBackButton = document.getElementById('controls-back');
+    descriptionBackButton = document.getElementById('description-back');
+    impressumBackButton = document.getElementById('impressum-back');
+    tryAgain = document.getElementById('btnTryAgain');
+    backToGame = document.getElementById('btnBackToGame');
+    exitGame = document.getElementById('btnExitGame');
+}
+
+/**
+ * Registers the listeners for the main menu buttons.
+ */
+function setupMenuButtons() {
+    startGameButton.addEventListener('click', startGame);
+    controlsButton.addEventListener('click', openControls);
+    descriptionButton.addEventListener('click', openDescription);
+    impressumButton.addEventListener('click', openImpressum);
+}
+
+/**
+ * Registers the listeners for the Game Over screen.
+ */
+function setupGameOverButtons() {
+    document.getElementById('btnGameOverTryAgain').addEventListener('click', restartGame);
+    document.getElementById('btnGameOverExitGame').addEventListener('click', exitGameFromGameOver);
+}
+
+/**
+ * Registers the listeners for the Win screen.
+ */
+function setupWinButtons() {
+    document.getElementById('btnWinExitGame').addEventListener('click', exitGameFromWin);
+}
+
+/**
+ * Registers the listeners for the controls overlay.
+ */
+function setupControlsButtons() {
+    controlsBackButton.addEventListener('click', closeControls);
+    descriptionBackButton.addEventListener('click', closeDescription);
+    impressumBackButton.addEventListener('click', closeImpressum);
+    tryAgain.addEventListener('click', restartFromControls);
+    backToGame.addEventListener('click', resumeGame);
+    exitGame.addEventListener('click', exitToMenu);
+}
+
+/**
+ * Resets the controls overlay to its default "info" mode:
+ * only the "Back" button is visible.
+ */
+function resetControlsToInfoMode() {
+    document.getElementById('controls-back').hidden = false;
+    document.getElementById('btnTryAgain').hidden = true;
+    document.getElementById('btnBackToGame').hidden = true;
+    document.getElementById('btnExitGame').hidden = true;
+}
+
+/**
+ * Stops the game loop and all sounds.
+ */
+function stopWorld() {
     if (world) {
         world.isRunning = false;
         if (world.sound) {
             world.sound.stopAll();
         }
     }
-});
+}
 
 /**
- * Event listener for the "Exit Game" button on the Win screen.
- * Hides the win overlay, hides the game container, and stops the game loop.
+ * Starts the game and shows the game overlay.
  */
-const winExitGame = document.getElementById('btnWinExitGame');
-winExitGame.addEventListener("click", () => {
-    document.getElementById('winOverlay').classList.remove('show');
-    gameOverlay.hidden = true;
-    if (world) {
-        world.isRunning = false;
-        if (world.sound) {
-            world.sound.stopAll();
-        }
-    }
-});
-
-/**
- * Event listener for the main "Start Game" button.
- * Displays the game overlay and initializes the game.
- */
-startGameButton.addEventListener('click', () => {
+function startGame() {
     gameOverlay.hidden = false;
     if (gameOverlay) {
         init();
     }
-});
+}
 
 /**
- * Event listener for the "Controls" menu button.
- * Resets the controls display and shows the controls overlay.
+ * Restarts the game from the Game Over screen.
  */
-controlsButton.addEventListener('click', () => {
-    resetControlsToInfoMode();
-    overlayControls.hidden = false;
-});
+function restartGame() {
+    document.getElementById('gameOverOverlay').classList.remove('show');
+    startGame();
+}
 
 /**
- * Event listener for the back button inside the controls overlay.
- * Hides the controls overlay and resets the controls mode.
+ * Restarts the game from the controls overlay.
  */
-controlsBackButton.addEventListener('click', () => {
+function restartFromControls() {
     overlayControls.hidden = true;
     resetControlsToInfoMode();
-});
+    startGame();
+}
 
 /**
- * Event listener for the "Description" menu button.
- * Shows the game description overlay.
+ * Resumes the paused game from the controls overlay.
  */
-descriptionButton.addEventListener('click', () => {
-    overlayDescription.hidden = false;
-});
-
-/**
- * Event listener for the back button inside the description overlay.
- * Hides the game description overlay.
- */
-descriptionBackButton.addEventListener('click', () => {
-    overlayDescription.hidden = true;
-});
-
-/**
- * Event listener for the "Impressum" (legal info) menu button.
- * Shows the impressum overlay.
- */
-impressumButton.addEventListener('click', () => {
-    overlayImpressum.hidden = false;
-});
-
-/**
- * Event listener for the back button inside the impressum overlay.
- * Hides the impressum overlay.
- */
-impressumBackButton.addEventListener('click', () => {
-    overlayImpressum.hidden = true;
-});
-
-/**
- * Event listener for a secondary "Try Again" button (found in the controls menu).
- * Hides the controls overlay, resets controls, and restarts the game.
- */
-tryAgain.addEventListener("click", () => {
-    document.getElementById('controls-overlay').hidden = true;
-    resetControlsToInfoMode();
-    gameOverlay.hidden = false;
-    if (gameOverlay) {
-        init();
-    }
-});
-
-/**
- * Event listener for the "Back to Game" button.
- * Hides the controls overlay, resets controls, and unpauses the ongoing game.
- */
-backToGame.addEventListener("click", () => {
-    document.getElementById('controls-overlay').hidden = true;
+function resumeGame() {
+    overlayControls.hidden = true;
     resetControlsToInfoMode();
     gameOverlay.hidden = false;
     if (world && world.controls) {
         world.controls.isPaused = false;
     }
-});
+}
 
-});
+/**
+ * Exits the game from the controls overlay back to the main menu.
+ */
+function exitToMenu() {
+    overlayControls.hidden = true;
+    gameOverlay.hidden = true;
+    overlayImpressum.hidden = true;
+    overlayDescription.hidden = true;
+    if (world && world.controls) {
+        world.controls.isPaused = false;
+    }
+    stopWorld();
+    resetControlsToInfoMode();
+}
+
+/**
+ * Exits the game from the Game Over screen.
+ */
+function exitGameFromGameOver() {
+    document.getElementById('gameOverOverlay').classList.remove('show');
+    gameOverlay.hidden = true;
+    stopWorld();
+}
+
+/**
+ * Exits the game from the Win screen.
+ */
+function exitGameFromWin() {
+    document.getElementById('winOverlay').classList.remove('show');
+    gameOverlay.hidden = true;
+    stopWorld();
+}
+
+/**
+ * Shows the controls overlay.
+ */
+function openControls() {
+    resetControlsToInfoMode();
+    overlayControls.hidden = false;
+}
+
+/**
+ * Hides the controls overlay.
+ */
+function closeControls() {
+    overlayControls.hidden = true;
+    resetControlsToInfoMode();
+}
+
+/**
+ * Shows the description overlay.
+ */
+function openDescription() {
+    overlayDescription.hidden = false;
+}
+
+/**
+ * Hides the description overlay.
+ */
+function closeDescription() {
+    overlayDescription.hidden = true;
+}
+
+/**
+ * Shows the impressum overlay.
+ */
+function openImpressum() {
+    overlayImpressum.hidden = false;
+}
+
+/**
+ * Hides the impressum overlay.
+ */
+function closeImpressum() {
+    overlayImpressum.hidden = true;
+}
