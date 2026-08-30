@@ -277,9 +277,7 @@ button.start-button {
 }
 
 /* Mobile landscape: start page fills the screen with 10px margin on all sides */
-@media (orientation: landscape) and (max-height: 500px),
-       (orientation: landscape) and (max-width: 767px),
-        (orientation: landscape) and (max-width: 1024px) {
+@media (orientation: landscape) {
         
     .start-container {
         width: calc(100% - 20px);
@@ -295,18 +293,18 @@ button.start-button {
     }
 
     .start-title .mad {
-        font-size: clamp(24px, 11vh, 52px);
+        font-size: clamp(24px, 11vh, 70px);
         margin-top: 0;
         margin-bottom: -14px;
     }
 
     .start-title .scientist {
-        font-size: clamp(34px, 15vh, 70px);
+        font-size: clamp(34px, 15vh, 150px);
         margin-bottom: 0;
     }
 
     .start-char {
-        width: 200px;
+        width: clamp(70px, 40vh, 300px);
     }
 
     .start-row {
@@ -321,15 +319,18 @@ button.start-button {
     }
 
     .start-button {
-        height: clamp(36px, 10vh, 48px);
-        padding: 0 24px;
-        font-size: 16px;
+        height: clamp(36px, 10vh, 60px);
+        padding: 0 clamp(24px, 5vh, 50px);
+        font-size: clamp(16px, 3vh, 28px);
     }
 
     .start-footer {
         margin-top: 0;
     }
 }
+
+
+
 
 
 
