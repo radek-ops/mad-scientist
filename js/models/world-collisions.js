@@ -65,11 +65,11 @@
         if (this.mainCharacter.isDead) {
             return;
         }
-        this.hpbar.currentHP -= amount;
-        if (this.hpbar.currentHP < 0) {
-            this.hpbar.currentHP = 0;
+        this.hpBar.currentHP -= amount;
+        if (this.hpBar.currentHP < 0) {
+            this.hpBar.currentHP = 0;
         }
-        if (this.hpbar.currentHP <= 0) {
+        if (this.hpBar.currentHP <= 0) {
             this.killCharacter();
         } else {
             this.playCharacterGetHit();

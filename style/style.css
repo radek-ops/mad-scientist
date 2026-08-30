@@ -75,7 +75,7 @@ body {
 }
 
 .start-char {
-    width: 300px;
+    width: clamp(50px, 40vh, 300px);
     height: auto;
     filter: drop-shadow(0 0 20px rgba(68, 189, 249, 0.5));
 }
@@ -277,7 +277,10 @@ button.start-button {
 }
 
 /* Mobile landscape: start page fills the screen with 10px margin on all sides */
-@media (orientation: landscape) and (max-height: 500px) {
+@media (orientation: landscape) and (max-height: 500px),
+       (orientation: landscape) and (max-width: 767px),
+        (orientation: landscape) and (max-width: 1024px) {
+        
     .start-container {
         width: calc(100% - 20px);
         height: calc(100dvh - 20px);
@@ -303,7 +306,7 @@ button.start-button {
     }
 
     .start-char {
-        width: clamp(70px, 40vh, 200px);
+        width: 200px;
     }
 
     .start-row {
@@ -327,4 +330,6 @@ button.start-button {
         margin-top: 0;
     }
 }
+
+
 

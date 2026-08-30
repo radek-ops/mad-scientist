@@ -18,9 +18,4 @@ class Background extends Moveables {
 
 
   }
-
-
-
-
-
 }

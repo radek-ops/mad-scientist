@@ -6,12 +6,11 @@ class World {
     finalBoss;
     gunsProjectiles;
     IMAGES_BACKGROUND = [];
-    map_scroll_x = 0;
+    mapScrollX = 0; 
     statusBar;
-    hpbar;
+    hpBar;
     bossHpBar;
     sound;
-
     potions;
     bombs;
     thrownBombs;
@@ -64,7 +63,7 @@ class World {
      */
     initBars() {
         this.statusBar = new StatusBar();
-        this.hpbar = new HPBar();
+        this.hpBar = new HPBar();
         this.bossHpBar = new BossHPBar();
         this.sound = new Sound();
         this.sound.playMusic('mainTheme');
@@ -160,8 +159,15 @@ class World {
             this.nextFrame();
             return;
         }
+
+        // WICHTIG: Hier wird die Kamera aktualisiert!
+        // Wir verschieben die Welt in die entgegengesetzte Richtung des Charakters.
+        // Die Zahl 100 ist der Abstand vom linken Rand.
+        this.mapScrollX = -this.mainCharacter.x + 100;
+
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.translate(this.map_scroll_x, 0);
+        
+        this.ctx.translate(this.mapScrollX, 0); // Kamera anwenden
         this.updateGunPosition();
         this.allfunctions();
     }
@@ -231,13 +237,14 @@ class World {
      * Draws the status bars and collected items at the top.
      */
     drawUI() {
-        this.ctx.translate(-this.map_scroll_x, 0);
+        // UI Fixierung (Kamera zurückschieben)
+        this.ctx.translate(-this.mapScrollX, 0);
         this.addToMap(this.statusBar);
-        this.addToMap(this.hpbar);
+        this.addToMap(this.hpBar);
         this.addToMap(this.bossHpBar);
         this.addObjectToMap(this.potions.filter(potion => potion.isCollected));
         this.addObjectToMap(this.bombs.filter(bomb => bomb.isCollected));
-        this.ctx.translate(this.map_scroll_x, 0);
+        this.ctx.translate(this.mapScrollX, 0);
     }
 
     /**
@@ -249,7 +256,9 @@ class World {
         this.addToMap(this.mainCharacter);
         this.addToMap(this.gunsProjectiles);
         this.addObjectToMap(this.thrownBombs);
-        this.ctx.translate(-this.map_scroll_x, 0);
+        
+        // Am Ende aller Zeichnungen den Context zurücksetzen
+        this.ctx.translate(-this.mapScrollX, 0);
     }
 
     /**

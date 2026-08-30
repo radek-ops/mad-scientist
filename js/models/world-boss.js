@@ -106,7 +106,7 @@
         }
         if (this.boxingHitsCharacter()) {
             this.boxing.hasDamaged = true;
-            this.damageCharacter(this.hpbar.maxHP * 0.25);
+            this.damageCharacter(this.hpBar.maxHP * 0.25);
         }
     },
 

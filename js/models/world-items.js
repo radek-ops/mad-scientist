@@ -70,7 +70,7 @@
             return;
         }
         this.consumePotion();
-        this.hpbar.currentHP = this.hpbar.maxHP;
+        this.hpBar.currentHP = this.hpBar.maxHP;
 
     },
 
@@ -159,7 +159,7 @@
             this.damageBoss(5);
         }
         if (this.explosionHitsCharacter(bomb)) {
-            this.damageCharacter(this.hpbar.maxHP * 0.25);
+            this.damageCharacter(this.hpBar.maxHP * 0.25);
         }
     },
 
