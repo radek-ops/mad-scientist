@@ -15,7 +15,5 @@ class Background extends Moveables {
     this.y = y;
     this.width = width;
     this.height = height;
-
-
   }
 }

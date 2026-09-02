@@ -9,7 +9,6 @@ class Controls {
     mouseClickRight = false;
     isPaused = false;
 
-
     /**
      * Sets up all keyboard and mouse listeners that set the control flags.
      */
@@ -23,13 +22,12 @@ class Controls {
     }
 
     /**
-     * Prevents the context menu inside the game and starts a bomb throw.
+     * Prevents the browser context menu inside the game.
      */
     setupContextMenu() {
         window.addEventListener('contextmenu', (event) => {
             if (event.target && event.target.closest && event.target.closest('#game-overlay')) {
                 event.preventDefault();
-                this.mouseClickRight = true;
             }
         });
     }
@@ -38,23 +36,34 @@ class Controls {
      * Sets up the movement and pause keyboard listeners.
      */
     setupMovementKeys() {
-        window.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
-                this.togglePause();
-                return
-            }
-            (event.key === 'w') ? this.up = true : false;
-            (event.key === 'a') ? this.back = true : false;
-            (event.key === 's') ? this.down = true : false;
-            (event.key === 'd') ? this.forward = true : false;
-        });
+        window.addEventListener('keydown', (event) => this.onMovementKeyDown(event));
+        window.addEventListener('keyup', (event) => this.onMovementKeyUp(event));
+    }
 
-        window.addEventListener('keyup', (event) => {
-            (event.key === 'w') ? this.up = false : false;
-            (event.key === 'a') ? this.back = false : false;
-            (event.key === 's') ? this.down = false : false;
-            (event.key === 'd') ? this.forward = false : false;
-        });
+    /**
+     * Handles the movement and pause keydown events.
+     * @param {KeyboardEvent} event - The key event
+     */
+    onMovementKeyDown(event) {
+        if (event.key === 'Escape') {
+            this.togglePause();
+            return;
+        }
+        if (event.code === 'KeyW') this.up = true;
+        if (event.code === 'KeyA') this.back = true;
+        if (event.code === 'KeyS') this.down = true;
+        if (event.code === 'KeyD') this.forward = true;
+    }
+
+    /**
+     * Handles the movement keyup events.
+     * @param {KeyboardEvent} event - The key event
+     */
+    onMovementKeyUp(event) {
+        if (event.code === 'KeyW') this.up = false;
+        if (event.code === 'KeyA') this.back = false;
+        if (event.code === 'KeyS') this.down = false;
+        if (event.code === 'KeyD') this.forward = false;
     }
 
     /**
@@ -80,24 +89,39 @@ class Controls {
      * Sets up the mouse and pointer listeners for shooting.
      */
     setupMouseInput() {
-        window.addEventListener('pointerdown', (event) => {
-            if (event.target && event.target.closest && event.target.closest('.touch-btn')) {
-                return;
-            }
-            (event.button === 0) ? this.mouseClickLeft = true : false;
-        });
-        window.addEventListener('pointerup', (event) => {
-            (event.button === 0) ? this.mouseClickLeft = false : false;
-            (event.button === 2) ? this.mouseClickRight = false : false;
-        });
-        window.addEventListener('pointercancel', () => {
-            this.mouseClickLeft = false;
-            this.mouseClickRight = false;
-        });
-        document.documentElement.addEventListener('mouseleave', () => {
-            this.mouseClickLeft = false;
-            this.mouseClickRight = false;
-        });
+        window.addEventListener('pointerdown', (event) => this.onPointerDown(event));
+        window.addEventListener('pointerup', (event) => this.onPointerUp(event));
+        window.addEventListener('pointercancel', () => this.resetMouseButtons());
+        document.documentElement.addEventListener('mouseleave', () => this.resetMouseButtons());
+    }
+
+    /**
+     * Starts shooting or throwing a bomb when a mouse button is pressed.
+     * @param {PointerEvent} event - The pointer event
+     */
+    onPointerDown(event) {
+        if (event.target && event.target.closest && event.target.closest('.touch-btn')) {
+            return;
+        }
+        if (event.button === 0) this.mouseClickLeft = true;
+        if (event.button === 2) this.mouseClickRight = true;
+    }
+
+    /**
+     * Stops shooting when the mouse button is released.
+     * @param {PointerEvent} event - The pointer event
+     */
+    onPointerUp(event) {
+        (event.button === 0) ? this.mouseClickLeft = false : false;
+        (event.button === 2) ? this.mouseClickRight = false : false;
+    }
+
+    /**
+     * Resets both mouse button flags.
+     */
+    resetMouseButtons() {
+        this.mouseClickLeft = false;
+        this.mouseClickRight = false;
     }
 
     /**
@@ -152,46 +176,32 @@ class Controls {
         if (!btn) {
             return;
         }
-        this.addTouchButtonEvents(btn, onStart, onEnd);
-        this.addMouseButtonEvents(btn, onStart, onEnd);
+        this.addButtonPointerEvents(btn, onStart, onEnd);
     }
 
     /**
-     * Adds the touch listeners of one button.
+     * Adds pointer listeners (mouse and touch) of one button.
+     * Pointer events avoid the double firing of touch + synthetic mouse events.
      */
-    addTouchButtonEvents(btn, onStart, onEnd) {
-        btn.addEventListener('touchstart', (event) => {
-            if (event.cancelable) {
-                event.preventDefault();
-            }
-            onStart();
-        }, { passive: false });
-        btn.addEventListener('touchend', (event) => {
-            if (event.cancelable) {
-                event.preventDefault();
-            }
-            onEnd();
-        }, { passive: false });
-        btn.addEventListener('touchcancel', (event) => {
-            onEnd();
-        });
+    addButtonPointerEvents(btn, onStart, onEnd) {
+        btn.addEventListener('pointerdown', (event) => this.onButtonPointerDown(event, onStart));
+        btn.addEventListener('pointerup', () => onEnd());
+        btn.addEventListener('pointercancel', () => onEnd());
+        btn.addEventListener('pointerleave', () => onEnd());
     }
 
     /**
-     * Adds the mouse listeners of one button.
+     * Starts the button action on a left press.
+     * @param {PointerEvent} event - The pointer event
+     * @param {Function} onStart - Called when the button is pressed
      */
-    addMouseButtonEvents(btn, onStart, onEnd) {
-        btn.addEventListener('mousedown', (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            onStart();
-        });
-        btn.addEventListener('mouseup', (event) => {
-            onEnd();
-        });
-        btn.addEventListener('mouseleave', (event) => {
-            onEnd();
-        });
+    onButtonPointerDown(event, onStart) {
+        if (event.button !== 0) {
+            return;
+        }
+        event.preventDefault();
+        event.stopPropagation();
+        onStart();
     }
 
     /**
@@ -219,13 +229,10 @@ class Controls {
     setupPotionButton() {
         let potionBtn = document.getElementById('btn-potion');
         if (potionBtn) {
-            potionBtn.addEventListener('touchstart', (event) => {
-                if (event.cancelable) {
-                    event.preventDefault();
+            potionBtn.addEventListener('pointerdown', (event) => {
+                if (event.button !== 0) {
+                    return;
                 }
-                this.usePotion = true;
-            }, { passive: false });
-            potionBtn.addEventListener('mousedown', (event) => {
                 event.preventDefault();
                 event.stopPropagation();
                 this.usePotion = true;

@@ -22,7 +22,6 @@
         }
         this.bossHpBar.loseHP(amount);
         this.sound.play('bossHit');
-
         if (this.bossHpBar.currentHP <= 0) {
             this.finalBoss.isDead = true;
             this.playBossDestroy();
@@ -126,7 +125,7 @@
             this.lastSection = section;
             let offset = section * 1280;
             for (let i = 0; i < 5; i++) {
-                let e = new Enemy(this.controls);
+                let e = createRandomEnemy(this.controls);
                 e.x += offset;
                 if (e.x > 2400) {
                     e.x = 1600 + Math.random() * 700;
@@ -145,7 +144,7 @@
         }
         this.hasSpawnedBossEnemies = true;
         for (let i = 0; i < 5; i++) {
-            let enemy = new Enemy(this.controls);
+            let enemy = createRandomEnemy(this.controls);
             enemy.x = 2000 + (i * 80);
             this.enemies.push(enemy);
         }

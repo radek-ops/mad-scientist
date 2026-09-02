@@ -9,6 +9,7 @@ class Character extends Moveables {
     IMAGES_DEATH = [];
     controls;
     currentThrowBombImages = 0;
+    hasThrownBomb = false;
     currentShootFXImages = 0;
     currentJumpImages = 0;
     currentGetHitImages = 0;
@@ -26,7 +27,6 @@ class Character extends Moveables {
     width = 375;
     height = 375;
     COLLISION = { left: 106, shrinkX: 266, top: 150, shrinkY: 244 };
-
 
     /**
      * Returns the starting x position of the character.
@@ -53,7 +53,6 @@ class Character extends Moveables {
         this.loadAllImages();
         this.moveCharacter();
         this.applyGravity();
-
     }
 
     /**
@@ -157,7 +156,6 @@ class Character extends Moveables {
             this.movement();
             this.animate();
             this.jump();
-          
         }, 1000 / 60);
     }
 
@@ -165,50 +163,73 @@ class Character extends Moveables {
      * Moves the character based on the pressed keys.
      */
     movement() {
-        if (this.isDead) {
-            return;
-        }
+        if (this.isDead) return;
+        this.moveVertical();
+        this.moveHorizontal();
+        this.movementUpdate();
+    }
+
+    /**
+     * Moves the character up and down.
+     */
+    moveVertical() {
         if (this.controls.up && this.y > 262) {
             this.y -= 10;
         }
         if (this.controls.down && this.y < 338) {
             this.y += 10;
         }
+    }
+
+    /**
+     * Moves the character left and right.
+     */
+    moveHorizontal() {
         if (this.controls.back && this.x > 0) {
             this.x -= 10;
             this.otherDirection = true;
-        }
-        else if (this.controls.forward && this.x < 3300) {
+        } else if (this.controls.forward && this.x < 3300) {
             this.x += 10;
             this.otherDirection = false;
         }
-           this.movementUpdate();
     }
 
     /**
      * Updates the scrolling of the world when the character moves.
      */
-    movementUpdate(){
-        let deadZone = 427; // 1/3 of the first background image (1280/3)
+    movementUpdate() {
+        this.updateMapScroll();
+        this.clampMapScroll();
+    }
+
+    /**
+     * Sets the camera scroll based on the character position.
+     */
+    updateMapScroll() {
+        let deadZone = 480;
         let bossPanStart = 2500;
         let bossTargetScroll = -(3840 - 1280);
-
         if (this.x >= bossPanStart) {
-            let diff = bossTargetScroll - this.world.map_scroll_x;
-            this.world.map_scroll_x += diff * 0.04;
+            let diff = bossTargetScroll - this.world.mapScrollX;
+            this.world.mapScrollX += diff * 0.04;
         } else if (this.x > deadZone) {
-            this.world.map_scroll_x = -(this.x - deadZone);
+            this.world.mapScrollX = -(this.x - deadZone);
         } else {
-            this.world.map_scroll_x = 0;
+            this.world.mapScrollX = 0;
         }
+    }
 
-        if (this.world.map_scroll_x > 0) {
-            this.world.map_scroll_x = 0;
+    /**
+     * Keeps the camera scroll inside the level bounds.
+     */
+    clampMapScroll() {
+        let bossTargetScroll = -(3840 - 1280);
+        if (this.world.mapScrollX > 0) {
+            this.world.mapScrollX = 0;
         }
-        if (this.world.map_scroll_x < bossTargetScroll) {
-            this.world.map_scroll_x = bossTargetScroll;
+        if (this.world.mapScrollX < bossTargetScroll) {
+            this.world.mapScrollX = bossTargetScroll;
         }
-
     }
 
     /**
@@ -237,8 +258,8 @@ class Character extends Moveables {
     startThrowBomb() {
         this.controls.mouseClickRight = false;
         this.currentThrowBombImages = 0;
+        this.hasThrownBomb = false;
         this.throwBombAnimate();
-        this.world.throwBomb();
     }
 
     /**
@@ -247,14 +268,23 @@ class Character extends Moveables {
     walkAnimate() {
         this.walkFrameCounter++;
         if (this.walkFrameCounter % 3 !== 0) return;
-        let isMoving = this.controls.up || this.controls.back || this.controls.down || this.controls.forward;
+        let images = this.isMoving() ? this.IMAGES_WALK : this.IMAGES_IDLE;
+        this.advanceWalkFrame(images);
+    }
 
-        let images;
-        if (isMoving) {
-            images = this.IMAGES_WALK;
-        } else {
-            images = this.IMAGES_IDLE;
-        }
+    /**
+     * Returns true when a movement key is pressed.
+     * @returns {boolean} True when the character is moving
+     */
+    isMoving() {
+        return this.controls.up || this.controls.back || this.controls.down || this.controls.forward;
+    }
+
+    /**
+     * Advances the walk or idle animation frame.
+     * @param {string[]} images - The image paths of the animation
+     */
+    advanceWalkFrame(images) {
         this.currentWalkImages++;
         if (this.currentWalkImages >= images.length) {
             this.currentWalkImages = 0;
@@ -283,6 +313,10 @@ class Character extends Moveables {
     throwBombAnimate() {
         let imgPath = this.IMAGES_THROWBOMB[this.currentThrowBombImages];
         this.img = this.imageCache[imgPath];
+        if (this.currentThrowBombImages === 10 && !this.hasThrownBomb) {
+            this.hasThrownBomb = true;
+            this.world.throwBomb();
+        }
         this.currentThrowBombImages++;
         if (this.currentThrowBombImages >= this.IMAGES_THROWBOMB.length) {
             this.currentThrowBombImages = 0;
@@ -303,8 +337,6 @@ class Character extends Moveables {
             }
         }, 1000 / 60);
     }
-
-
 
     /**
      * Checks if the character is in the air.

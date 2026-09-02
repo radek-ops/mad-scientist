@@ -40,7 +40,6 @@ class GunsProjectiles extends Moveables {
         for (let i = 0; i < 5; i++) {
             let imgNumber = '0' + i;
             this.LASER.push(`./img/PNG/Projectile/Laser/skeleton-animation_${imgNumber}.png`);
-
         }
     }
 
@@ -64,13 +63,10 @@ class GunsProjectiles extends Moveables {
                 this.currentProjectileImages = 0;
             }
             this.img = this.imageCache[imgPath];
-
         } else {
             this.currentProjectileImages = 0;
             this.img = this.EMPTY_IMG;
-
         }
     }
-
 
 }

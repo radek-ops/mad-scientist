@@ -12,7 +12,6 @@ class StatusBar extends Moveables {
         this.width = 350;
         this.height = 100;
         this.loadImages(this.PRO_BAR[0]);
-
     }
 
     /**
@@ -25,20 +24,3 @@ class StatusBar extends Moveables {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

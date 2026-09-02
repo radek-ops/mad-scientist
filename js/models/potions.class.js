@@ -4,7 +4,6 @@
     isCollected = false;
     isConsumed = false;
 
-
     /**
      * Creates a collectible potion at a world position.
      * @param {number} worldX - The x position in the world

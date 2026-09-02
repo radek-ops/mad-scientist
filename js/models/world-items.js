@@ -11,7 +11,6 @@
                 bomb.collect(this.collectedBombCount);
                 this.collectedBombCount++;
                 this.sound.play('key');
-
             }
         });
     },
@@ -28,7 +27,6 @@
                 potion.collect(this.collectedPotionCount);
                 this.collectedPotionCount++;
                 this.sound.play('key');
-
             }
         });
     },
@@ -65,7 +63,6 @@
         }
         this.consumePotion();
         this.hpBar.currentHP = this.hpBar.maxHP;
-
     },
 
     /**
@@ -207,19 +204,29 @@
     killEnemyWithBomb(enemy) {
         enemy.isHit = true;
         let deathInterval = setInterval(() => {
-            let done;
-            if (enemy.enemyType === '01') {
-                done = enemy.enemy01Death();
-            } else if (enemy.enemyType === '07') {
-                done = enemy.enemy07Death();
-            } else if (enemy.enemyType === '09') {
-                done = enemy.enemy09Death();
-            }
+            let done = this.playBombEnemyDeath(enemy);
             if (done) {
                 clearInterval(deathInterval);
                 enemy.isDead = true;
                 this.sound.play('enemyDeath');
             }
         }, 60);
+    },
+
+    /**
+     * Plays the death animation of the matching enemy type.
+     * @param {Enemy} enemy - The enemy to kill
+     * @returns {boolean} True when the death animation finished
+     */
+    playBombEnemyDeath(enemy) {
+        if (enemy.enemyType === 'shieldEnemy') {
+            return enemy.shieldEnemyDeath();
+        }
+        if (enemy.enemyType === 'unshieldedEnemy') {
+            return enemy.unshieldedEnemyDeath();
+        }
+        if (enemy.enemyType === 'flyingEnemy') {
+            return enemy.flyingEnemyDeath();
+        }
     },
 });

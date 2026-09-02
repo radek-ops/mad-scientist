@@ -6,7 +6,6 @@ class BossHPBar extends Moveables {
     currentHP = 100;
     maxWidth = 250;
 
-
     /**
      * Creates the boss health bar shown at the top right of the screen.
      */
@@ -27,18 +26,58 @@ class BossHPBar extends Moveables {
      * @param {CanvasRenderingContext2D} ctx - The canvas context
      */
     draw(ctx) {
+        this.drawPanel(ctx);
+        this.drawHeart(ctx);
+        this.drawHpBar(ctx);
+        this.drawLabel(ctx);
+        this.drawFrame(ctx);
+    }
+
+    /**
+     * Draws the dark panel behind the bar.
+     * @param {CanvasRenderingContext2D} ctx - The canvas context
+     */
+    drawPanel(ctx) {
         ctx.fillStyle = '#000000';
         ctx.beginPath();
         ctx.roundRect(this.x - 10, this.y - 10, 330, 60, 15);
         ctx.fill();
+    }
+
+    /**
+     * Draws the heart icon on the left.
+     * @param {CanvasRenderingContext2D} ctx - The canvas context
+     */
+    drawHeart(ctx) {
         ctx.drawImage(this.heartImg, this.x, this.y, 40, 40);
+    }
+
+    /**
+     * Draws the red health bar.
+     * @param {CanvasRenderingContext2D} ctx - The canvas context
+     */
+    drawHpBar(ctx) {
         let currentWidth = this.maxWidth * (this.currentHP / this.maxHP);
         ctx.fillStyle = '#cc0000';
         ctx.fillRect(this.x + 50, this.y + 5, currentWidth, this.height);
+    }
+
+    /**
+     * Draws the "Boss" label.
+     * @param {CanvasRenderingContext2D} ctx - The canvas context
+     */
+    drawLabel(ctx) {
         ctx.fillStyle = '#ffffff';
         ctx.font = '18px "blablaHawk", sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText('Boss', this.x + 175, this.y + 25);
+    }
+
+    /**
+     * Draws the black frame around the bar.
+     * @param {CanvasRenderingContext2D} ctx - The canvas context
+     */
+    drawFrame(ctx) {
         ctx.beginPath();
         ctx.roundRect(this.x - 10, this.y - 10, 330, 60, 15);
         ctx.lineWidth = "4";

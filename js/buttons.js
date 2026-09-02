@@ -16,7 +16,6 @@ let tryAgain;
 let backToGame;
 let exitGame;
 
-
 /**
  * Waits for the DOM to fully load, then initializes references
  * and wires up all buttons.

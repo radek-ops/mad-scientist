@@ -16,7 +16,10 @@
     <script defer src="./js/models/final-boss.class.js"></script>
     <script defer src="./js/models/guns-projectiles.class.js"></script>
     <script defer src="./js/models/main-character.class.js"></script>
-    <script defer src="./js/models/enemy-character.class.js"></script>
+    <script defer src="./js/models/enemy.class.js"></script>
+    <script defer src="./js/models/shield-enemy.class.js"></script>
+    <script defer src="./js/models/unshielded-enemy.class.js"></script>
+    <script defer src="./js/models/flying-enemy.class.js"></script>
     <script defer src="./js/models/potions.class.js"></script>
     <script defer src="./js/models/bomb.class.js"></script>
     <script defer src="./js/models/thrown-bomb.class.js"></script>
@@ -36,6 +39,13 @@
 </head>
 
 <body>
+    <div class="landscape-warning">
+        <div class="warning-message">
+            <h1>Please rotate your phone</h1>
+            <p>🔄 to landscape view</p>
+        </div>
+    </div>
+
     <main class="start-main" id="startPage">
         <div class="start-container">
 
@@ -62,12 +72,6 @@
     <!-- Start Game -->
 
     <div  class="game-overlay" id="game-overlay" hidden>
-        <div class="landscape-warning">
-            <div class="warning-message">
-                <h1>Please rotate your device</h1>
-                <p>🔄 Landscape mode required</p>
-            </div>
-        </div>
         <div class="game-content">
             <h1>
                 <span class="mad">MAD</span>
@@ -88,10 +92,10 @@
             <button class="touch-btn btn-right" id="btn-right" type="button">→</button>
             <button class="touch-btn btn-down" id="btn-down" type="button">↓</button>
         </div>
-        <button class="touch-btn btn-potion" id="btn-potion" type="button">HP</button>
-        <button class="touch-btn btn-jump" id="btn-jump" type="button">Jump</button>
-        <button class="touch-btn btn-shoot" id="btn-shoot" type="button">Shoot</button>
-        <button class="touch-btn btn-bomb" id="btn-bomb" type="button">Bomb</button>
+        <button class="touch-btn btn-potion" id="btn-potion" type="button"><img class="touch-icon" src="./img/PNG/User_Interfaces/potion1.png" alt="Heal"></button>
+        <button class="touch-btn btn-jump" id="btn-jump" type="button"><img class="touch-icon touch-icon-jump" src="./img/PNG/Main_Characters/Gun01/Jump/Jump_04.png" alt="Jump"></button>
+        <button class="touch-btn btn-shoot" id="btn-shoot" type="button"><img class="touch-icon touch-icon-laser" src="./img/PNG/Projectile/Laser/skeleton-animation_00.png" alt="Shoot"></button>
+        <button class="touch-btn btn-bomb" id="btn-bomb" type="button"><img class="touch-icon" src="./img/PNG/Projectile/Other/1.png" alt="Bomb"></button>
         <button type="button" class="touch-btn btn-gear" id="btn-gear">⚙️</button>
     </div>
 
@@ -150,22 +154,21 @@
 
             <h2 class="ctrls-h2">Controls</h2>
 
-            <p class="ctrls-text">On mobile: use the on-screen touch buttons (D-Pad, Jump, Shoot, Bomb, HP). The HP
-                button uses a potion to heal &ndash; same as the R key.</p>
-
             <div class="ctrls-table">
-                <div class="ctrls-row"><span class="ctrls-key">W</span><span class="ctrls-action">Up</span></div>
-                <div class="ctrls-row"><span class="ctrls-key">A</span><span class="ctrls-action">Left</span></div>
-                <div class="ctrls-row"><span class="ctrls-key">S</span><span class="ctrls-action">Down</span></div>
-                <div class="ctrls-row"><span class="ctrls-key">D</span><span class="ctrls-action">Right</span></div>
-                <div class="ctrls-row"><span class="ctrls-key">Space</span><span class="ctrls-action">Jump</span></div>
-                <div class="ctrls-row"><span class="ctrls-key">Left Click</span><span class="ctrls-action">Shoot</span>
+                <div class="ctrls-row ctrls-header">
+                    <span class="ctrls-head">Desktop</span>
+                    <span class="ctrls-head">Mobile</span>
+                    <span class="ctrls-head">Action</span>
                 </div>
-                <div class="ctrls-row"><span class="ctrls-key">Right Click</span><span class="ctrls-action">Bomb</span>
-                </div>
-                <div class="ctrls-row"><span class="ctrls-key">R</span><span class="ctrls-action">Use Potion
-                        (Heal)</span></div>
-                <div class="ctrls-row"><span class="ctrls-key">Esc</span><span class="ctrls-action">Break</span></div>
+                <div class="ctrls-row"><span class="ctrls-key">W</span><span class="ctrls-mobile">↑</span><span class="ctrls-action">Up</span></div>
+                <div class="ctrls-row"><span class="ctrls-key">A</span><span class="ctrls-mobile">←</span><span class="ctrls-action">Left</span></div>
+                <div class="ctrls-row"><span class="ctrls-key">S</span><span class="ctrls-mobile">↓</span><span class="ctrls-action">Down</span></div>
+                <div class="ctrls-row"><span class="ctrls-key">D</span><span class="ctrls-mobile">→</span><span class="ctrls-action">Right</span></div>
+                <div class="ctrls-row"><span class="ctrls-key">Space</span><span class="ctrls-mobile"><span class="ctrls-crop"><img class="ctrls-icon ctrls-icon-jump" src="./img/PNG/Main_Characters/Gun01/Jump/Jump_04.png" alt="Jump"></span></span><span class="ctrls-action">Jump</span></div>
+                <div class="ctrls-row"><span class="ctrls-key">Left Click</span><span class="ctrls-mobile"><img class="ctrls-icon" src="./img/PNG/Projectile/Laser/skeleton-animation_00.png" alt="Shoot"></span><span class="ctrls-action">Shoot</span></div>
+                <div class="ctrls-row"><span class="ctrls-key">Right Click</span><span class="ctrls-mobile"><img class="ctrls-icon" src="./img/PNG/Projectile/Other/1.png" alt="Bomb"></span><span class="ctrls-action">Bomb</span></div>
+                <div class="ctrls-row"><span class="ctrls-key">R</span><span class="ctrls-mobile"><img class="ctrls-icon" src="./img/PNG/User_Interfaces/potion1.png" alt="Heal"></span><span class="ctrls-action">Use Potion (Heal)</span></div>
+                <div class="ctrls-row"><span class="ctrls-key">Esc</span><span class="ctrls-mobile">⚙️</span><span class="ctrls-action">Break</span></div>
             </div>
 
             <div class="ctrls-buttons">

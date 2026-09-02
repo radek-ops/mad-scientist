@@ -1,5 +1,5 @@
 /**
- * Adds a click sound effect to all navigation links and buttons 
+ * Adds a click sound effect to all navigation links and buttons
  * (excluding mute and touch buttons), provided the game sound is not muted.
  */
 document.addEventListener('DOMContentLoaded', () => {

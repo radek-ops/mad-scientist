@@ -5,7 +5,6 @@ class Bomb extends Moveables {
     isConsumed = false;
     collectedSlotNumber;
 
-
     /**
      * Creates a collectible bomb at a world position.
      * @param {number} worldX - The x position in the world

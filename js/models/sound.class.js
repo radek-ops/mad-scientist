@@ -4,7 +4,6 @@ class Sound {
     music;
     musicVolume = 0.3;
 
-
     /**
      * Creates the sound manager and loads all sounds.
      */
@@ -62,13 +61,16 @@ class Sound {
      */
     playMusic(name) {
         this.stopMusic();
-        if (isMuted() || !this.audioList[name]) {
+        if (!this.audioList[name]) {
             return;
         }
         this.music = this.audioList[name];
         this.music.loop = true;
         this.music.volume = this.musicVolume;
         this.music.currentTime = 0;
+        if (isMuted()) {
+            return;
+        }
         this.startMusicPlayback(this.music);
     }
 
@@ -132,7 +134,7 @@ class Sound {
                 this.audioList[name].pause();
             });
         } else if (this.music) {
-            this.music.play();
+            this.startMusicPlayback(this.music);
         }
     }
 }

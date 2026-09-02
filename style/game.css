@@ -296,7 +296,7 @@ canvas {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.95);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 9999;
     justify-content: center;
     align-items: center;
@@ -323,7 +323,7 @@ canvas {
     color: rgba(255, 255, 255, 0.7);
 }
 
-@media (orientation: portrait) and (min-width: 320px) {
+@media (hover: none) and (pointer: coarse) and (orientation: portrait) {
     .landscape-warning {
         display: flex;
     }

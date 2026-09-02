@@ -51,13 +51,9 @@ class Moveables {
      * Starts the animation loop at 60 frames per second.
      */
     startAnimation() {
-        
        window.startAnimation =  setInterval(() => {
-            
-            this.startAnimationUpdate(); 
-            
+            this.startAnimationUpdate();
         }, 1000 / 60);
     }
 
 }
-

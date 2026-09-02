@@ -11,7 +11,6 @@ class ThrownBomb extends Moveables {
     hasDamaged = false;
     explosionFrame = 0;
 
-
     /**
      * Creates a thrown bomb that flies in an arc.
      * @param {number} startX - The start x position

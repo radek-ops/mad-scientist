@@ -6,7 +6,7 @@ class World {
     finalBoss;
     gunsProjectiles;
     IMAGES_BACKGROUND = [];
-    mapScrollX = 0; 
+    mapScrollX = 0;
     statusBar;
     hpBar;
     bossHpBar;
@@ -49,7 +49,6 @@ class World {
         this.bossLaserCooldown = 0;
         this.laserSoundCooldown = 0;
         this.boxingCooldown = 0;
-
         this.addBackgroundImages();
         this.addBackgroundLayer();
         this.initBars();
@@ -117,7 +116,7 @@ class World {
     initEnemies() {
         this.enemies = [];
         for (let i = 0; i < 15; i++) {
-            let enemy = new Enemy(this.controls);
+            let enemy = createRandomEnemy(this.controls);
             enemy.x = 400 + (i * 130);
             this.enemies.push(enemy);
         }
@@ -152,14 +151,7 @@ class World {
             this.nextFrame();
             return;
         }
-
-        // WICHTIG: Hier wird die Kamera aktualisiert!
-        // Wir verschieben die Welt in die entgegengesetzte Richtung des Charakters.
-        // Die Zahl 100 ist der Abstand vom linken Rand.
-        this.mapScrollX = -this.mainCharacter.x + 100;
-
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        
         this.ctx.translate(this.mapScrollX, 0); // Kamera anwenden
         this.updateGunPosition();
         this.updateFrame();
@@ -169,7 +161,7 @@ class World {
      * Places the gun in the hand of the character.
      */
     updateGunPosition() {
-        let gunOffsetY = this.mainCharacter.isAboveGround() ? 70 : 180;
+        let gunOffsetY = this.getGunOffsetY();
         this.gunsProjectiles.otherDirection = this.mainCharacter.otherDirection;
         if (this.gunsProjectiles.otherDirection) {
             this.gunsProjectiles.x = this.mainCharacter.x - 50;
@@ -178,6 +170,19 @@ class World {
             this.gunsProjectiles.x = this.mainCharacter.x + 280;
             this.gunsProjectiles.y = this.calcJumpPos() + gunOffsetY;
         }
+    }
+
+    /**
+     * Returns the vertical offset of the gun inside the character sprite.
+     * While jumping the arms are raised, otherwise the gun stays at chest height.
+     * @returns {number} The gun offset in pixels
+     */
+    getGunOffsetY() {
+        if (this.mainCharacter.isHit || this.mainCharacter.isDead || !this.mainCharacter.isAboveGround()) {
+            return 180;
+        }
+        let jumpHeight = 240 - this.mainCharacter.jumpY;
+        return 180 - jumpHeight * 0.6;
     }
 
     /**
@@ -205,19 +210,47 @@ class World {
      * Runs all collision and spawn checks.
      */
     runChecks() {
-        if (this.controls.isPaused) return; 
+        if (this.controls.isPaused) return;
+        this.runSpawnChecks();
+        this.runEnemyCollisionChecks();
+        this.runLaserAndBossChecks();
+        this.runItemChecks();
+    }
+
+    /**
+     * Runs all enemy spawn checks.
+     */
+    runSpawnChecks() {
         this.spawnNewEnemies();
         this.spawnBossAreaEnemies();
-        this.checkEnemyCollision01();
-        this.checkEnemyHeadBump09();
+    }
+
+    /**
+     * Runs all enemy collision checks.
+     */
+    runEnemyCollisionChecks() {
+        this.checkShieldEnemyCollision();
+        this.checkFlyingEnemyHeadBump();
         this.checkEnemyAttack();
-        this.checkLaserEnemyCollision07();
-        this.checkLaserEnemyCollision09();
-        this.checkLaserEnemyCollision01();
+    }
+
+    /**
+     * Runs all laser and boss checks.
+     */
+    runLaserAndBossChecks() {
+        this.checkLaserUnshieldedEnemyCollision();
+        this.checkLaserFlyingEnemyCollision();
+        this.checkLaserShieldEnemyCollision();
         this.checkLaserHitsBoss();
         this.checkLaserSound();
         this.checkBossBoxing();
         this.checkBoxingHitsCharacter();
+    }
+
+    /**
+     * Runs all item and bomb checks.
+     */
+    runItemChecks() {
         this.checkBombCollection();
         this.checkPotionCollection();
         this.usePotion();
@@ -248,8 +281,6 @@ class World {
         this.addToMap(this.mainCharacter);
         this.addToMap(this.gunsProjectiles);
         this.addObjectToMap(this.thrownBombs);
-        
-        // Am Ende aller Zeichnungen den Context zurücksetzen
         this.ctx.translate(-this.mapScrollX, 0);
     }
 
@@ -268,22 +299,44 @@ class World {
      * @param {Object} value - The object to draw
      */
     addToMap(value) {
-        if (value.otherDirection) {
-            this.ctx.save();
-            this.ctx.translate(value.width, 0);
-            this.ctx.scale(-1, 1);
-            value.x = value.x * -1;
-        }
+        this.flipBeforeDraw(value);
+        this.drawValue(value);
+        this.flipBack(value);
+    }
+
+    /**
+     * Flips the canvas for objects that face left.
+     * @param {Object} value - The object to draw
+     */
+    flipBeforeDraw(value) {
+        if (!value.otherDirection) return;
+        this.ctx.save();
+        this.ctx.translate(value.width, 0);
+        this.ctx.scale(-1, 1);
+        value.x = value.x * -1;
+    }
+
+    /**
+     * Draws the object itself.
+     * @param {Object} value - The object to draw
+     */
+    drawValue(value) {
         this.drawY = (value === this.mainCharacter) ? this.calcJumpPos() : value.y;
         if (value.draw) {
             value.draw(this.ctx);
         } else {
             this.ctx.drawImage(value.img, value.x, this.drawY, value.width, value.height);
         }
-        if (value.otherDirection) {
-            value.x = value.x * -1;
-            this.ctx.restore();
-        }
+    }
+
+    /**
+     * Restores the canvas after drawing a flipped object.
+     * @param {Object} value - The object to draw
+     */
+    flipBack(value) {
+        if (!value.otherDirection) return;
+        value.x = value.x * -1;
+        this.ctx.restore();
     }
 
     /**

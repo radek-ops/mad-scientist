@@ -10,7 +10,6 @@ class FinalBoss extends Moveables {
     destroyFinished = false;
     COLLISION = { left: 800, shrinkX: 1570, top: 1100, shrinkY: 1620 };
 
-
     /**
      * Creates the final boss.
      */
@@ -114,4 +113,3 @@ class FinalBoss extends Moveables {
     }
 
 }
-

@@ -5,7 +5,6 @@ class Boxing extends Moveables {
     hasDamaged = false;
     animationInterval;
 
-
     /**
      * Creates the boss boxing (punch) animation.
      * @param {number} x - The x position
@@ -22,7 +21,6 @@ class Boxing extends Moveables {
         this.img = this.imageCache[this.BOXING_IMAGES[0]];
     }
 
-
     /**
      * Loads the boxing animation images.
      */
@@ -31,7 +29,6 @@ class Boxing extends Moveables {
             this.BOXING_IMAGES.push(`./img/PNG/Projectile/Boxing/skeleton-animation_${i}.png`);
         }
     }
-
 
     /**
      * Draws the boxing animation.
@@ -47,7 +44,6 @@ class Boxing extends Moveables {
         ctx.drawImage(this.img, 0, 0, this.width, this.height);
         ctx.restore();
     }
-
 
     /**
      * Starts the boxing animation.
