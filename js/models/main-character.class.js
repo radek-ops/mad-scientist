@@ -52,7 +52,6 @@ class Character extends Moveables {
         this.jumpY = 240;
         this.loadAllImages();
         this.moveCharacter();
-        this.applyGravity();
     }
 
     /**
@@ -324,18 +323,17 @@ class Character extends Moveables {
     }
 
     /**
-     * Applies gravity to the character every frame.
+     * Applies one gravity step to the character.
+     * Called every render frame so the physics stay in sync with the drawing.
      */
     applyGravity() {
-        setInterval(() => {
-            if (this.isAboveGround() || this.speedY > 0) {
-                this.jumpY -= this.speedY;
-                this.speedY -= this.acceleration;
-            } else {
-                this.speedY = 0;
-                this.jumpY = 240;
-            }
-        }, 1000 / 60);
+        if (this.isAboveGround() || this.speedY > 0) {
+            this.jumpY -= this.speedY;
+            this.speedY -= this.acceleration;
+        } else {
+            this.speedY = 0;
+            this.jumpY = 240;
+        }
     }
 
     /**

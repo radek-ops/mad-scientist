@@ -8,7 +8,7 @@ class Background extends Moveables {
    * @param {number} width - The width in pixels
    * @param {number} height - The height in pixels
    */
-  constructor(imgPath, x, y = 0, width = 1283, height = 720) {
+    constructor(imgPath, x, y = 0, width = 1283, height = 720) {
     super();
     this.loadImages(imgPath);
     this.x = x;

@@ -68,5 +68,4 @@ class GunsProjectiles extends Moveables {
             this.img = this.EMPTY_IMG;
         }
     }
-
 }

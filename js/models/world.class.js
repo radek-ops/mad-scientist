@@ -144,45 +144,32 @@ class World {
      * Clears the canvas and draws the next frame.
      */
     draw() {
-        if (!this.isRunning) {
-            return;
-        }
+        if (!this.isRunning) { return; }
         if (this.controls && this.controls.isPaused) {
             this.nextFrame();
             return;
         }
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.translate(this.mapScrollX, 0); // Kamera anwenden
+        this.ctx.translate(this.mapScrollX, 0); 
+        this.mainCharacter.applyGravity();
         this.updateGunPosition();
         this.updateFrame();
     }
 
     /**
-     * Places the gun in the hand of the character.
+     * Places the gun fixed (welded) to the character.
+     * On the ground the gun sits 180px below the character top,
+     * while jumping it is raised to follow the raised arms.
      */
     updateGunPosition() {
-        let gunOffsetY = this.getGunOffsetY();
         this.gunsProjectiles.otherDirection = this.mainCharacter.otherDirection;
         if (this.gunsProjectiles.otherDirection) {
             this.gunsProjectiles.x = this.mainCharacter.x - 50;
-            this.gunsProjectiles.y = this.calcJumpPos() + gunOffsetY;
         } else {
             this.gunsProjectiles.x = this.mainCharacter.x + 280;
-            this.gunsProjectiles.y = this.calcJumpPos() + gunOffsetY;
         }
-    }
-
-    /**
-     * Returns the vertical offset of the gun inside the character sprite.
-     * While jumping the arms are raised, otherwise the gun stays at chest height.
-     * @returns {number} The gun offset in pixels
-     */
-    getGunOffsetY() {
-        if (this.mainCharacter.isHit || this.mainCharacter.isDead || !this.mainCharacter.isAboveGround()) {
-            return 180;
-        }
-        let jumpHeight = 240 - this.mainCharacter.jumpY;
-        return 180 - jumpHeight * 0.6;
+        let offsetY = (this.mainCharacter.isAboveGround() && !this.mainCharacter.isHit) ? 78 : 180;
+        this.gunsProjectiles.y = this.calcJumpPos() + offsetY;
     }
 
     /**
@@ -262,7 +249,7 @@ class World {
      * Draws the status bars and collected items at the top.
      */
     drawUI() {
-        // UI Fixierung (Kamera zurückschieben)
+      
         this.ctx.translate(-this.mapScrollX, 0);
         this.addToMap(this.statusBar);
         this.addToMap(this.hpBar);

@@ -139,19 +139,11 @@
      */
     applyBombExplosionDamage(bomb) {
         this.enemies.forEach((enemy) => {
-            if (enemy.isDead || enemy.isHit) {
-                return;
-            }
-            if (this.explosionHitsEnemy(bomb, enemy)) {
-                this.killEnemyWithBomb(enemy);
-            }
+            if (enemy.isDead || enemy.isHit) { return; }
+            if (this.explosionHitsEnemy(bomb, enemy)) {this.killEnemyWithBomb(enemy); }
         });
-        if (this.explosionHitsBoss(bomb)) {
-            this.damageBoss(5);
-        }
-        if (this.explosionHitsCharacter(bomb)) {
-            this.damageCharacter(this.hpBar.maxHP * 0.25);
-        }
+        if (this.explosionHitsBoss(bomb)) { this.damageBoss(5); }
+        if (this.explosionHitsCharacter(bomb)) {this.damageCharacter(this.hpBar.maxHP * 0.25); }
     },
 
     /**

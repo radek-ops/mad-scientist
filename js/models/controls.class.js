@@ -72,17 +72,10 @@ class Controls {
     setupActionKeys() {
         window.addEventListener('keydown', (event) => {
             if (event.repeat) return;
-            if (event.key === 'r') {
-                this.usePotion = true;
-            }
-            if (event.code === 'Space') {
-                event.preventDefault();
-                this.space = true;
-            }
+            if (event.key === 'r') {this.usePotion = true; }
+            if (event.code === 'Space') {event.preventDefault(); this.space = true; }
         });
-        window.addEventListener('keyup', (event) => {
-            (event.code === 'Space') ? this.space = false : false;
-        });
+        window.addEventListener('keyup', (event) => {(event.code === 'Space') ? this.space = false : false; });
     }
 
     /**
@@ -230,9 +223,7 @@ class Controls {
         let potionBtn = document.getElementById('btn-potion');
         if (potionBtn) {
             potionBtn.addEventListener('pointerdown', (event) => {
-                if (event.button !== 0) {
-                    return;
-                }
+                if (event.button !== 0) {return; }
                 event.preventDefault();
                 event.stopPropagation();
                 this.usePotion = true;
@@ -257,5 +248,4 @@ class Controls {
             });
         }
     }
-
 }
